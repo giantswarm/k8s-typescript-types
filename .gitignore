@@ -6,9 +6,6 @@ node_modules/
 !.yarn/patches
 !.yarn/releases
 
-# Build output
-dist/
-
 # OS files
 .DS_Store
 
