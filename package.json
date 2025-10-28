@@ -1,0 +1,38 @@
+{
+  "name": "@giantswarm/k8s-types",
+  "version": "0.1.0",
+  "description": "TypeScript type definitions for Kubernetes core objects and custom resource definitions",
+  "main": "dist/types/index.js",
+  "types": "dist/types/index.d.ts",
+  "license": "Apache-2.0",
+  "author": "Giant Swarm",
+  "keywords": [
+    "kubernetes",
+    "k8s",
+    "typescript",
+    "types"
+  ],
+  "scripts": {
+    "generate": "tsx src/generator/index.ts",
+    "build": "tsc",
+    "clean": "rm -rf dist src/types/crds/*",
+    "regenerate": "yarn generate && yarn build"
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@types/js-yaml": "^4",
+    "@types/lodash": "^4.17.5",
+    "@types/node": "^24.9.1",
+    "js-yaml": "^4.1.0",
+    "json-schema-to-typescript": "^15.0.2",
+    "lodash": "^4.17.21",
+    "node-fetch": "^3",
+    "tsx": "^4.7.0",
+    "typescript": "~5.9.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

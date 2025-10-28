@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Yarn files
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+
+# Build output
+dist/
+
+# OS files
+.DS_Store
+
+# Code editors
+.vscode/
