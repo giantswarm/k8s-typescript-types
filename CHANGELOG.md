@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-01-28
+
 ### Changed
 
 - Update types.
@@ -18,5 +20,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added initial generator code.
 - Added core and auto generated types.
 
-[Unreleased]: https://github.com/giantswarm/k8s-typescript-types/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/giantswarm/k8s-typescript-types/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/giantswarm/k8s-typescript-types/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/giantswarm/k8s-typescript-types/releases/tag/v0.1.0
