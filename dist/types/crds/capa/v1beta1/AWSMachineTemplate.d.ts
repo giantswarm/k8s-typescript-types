@@ -67,6 +67,7 @@ export interface AWSMachineTemplate {
                 additionalSecurityGroups?: {
                     /**
                      * ARN of resource.
+                     *
                      * Deprecated: This field has no function and is going to be removed in the next release.
                      */
                     arn?: string;
@@ -301,6 +302,7 @@ export interface AWSMachineTemplate {
                 subnet?: {
                     /**
                      * ARN of resource.
+                     *
                      * Deprecated: This field has no function and is going to be removed in the next release.
                      */
                     arn?: string;

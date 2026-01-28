@@ -275,6 +275,38 @@ export interface HelmRelease {
       mode?: 'enabled' | 'warn' | 'disabled';
     };
     /**
+     * HealthCheckExprs is a list of healthcheck expressions for evaluating the
+     * health of custom resources using Common Expression Language (CEL).
+     * The expressions are evaluated only when the specific Helm action
+     * taking place has wait enabled, i.e. DisableWait is false, and the
+     * 'watcher' WaitStrategy is used.
+     */
+    healthCheckExprs?: {
+      /**
+       * APIVersion of the custom resource under evaluation.
+       */
+      apiVersion: string;
+      /**
+       * Current is the CEL expression that determines if the status
+       * of the custom resource has reached the desired state.
+       */
+      current: string;
+      /**
+       * Failed is the CEL expression that determines if the status
+       * of the custom resource has failed to reach the desired state.
+       */
+      failed?: string;
+      /**
+       * InProgress is the CEL expression that determines if the status
+       * of the custom resource has not yet reached the desired state.
+       */
+      inProgress?: string;
+      /**
+       * Kind of the custom resource under evaluation.
+       */
+      kind: string;
+    }[];
+    /**
      * Install holds the configuration for Helm install actions for this HelmRelease.
      */
     install?: {
@@ -360,6 +392,11 @@ export interface HelmRelease {
        * if that name is a deleted release which remains in the history.
        */
       replace?: boolean;
+      /**
+       * ServerSideApply enables server-side apply for resources during install.
+       * Defaults to true (or false when UseHelm3Defaults feature gate is enabled).
+       */
+      serverSideApply?: boolean;
       /**
        * SkipCRDs tells the Helm install action to not install any CRDs. By default,
        * CRDs are installed if not already present.
@@ -604,9 +641,24 @@ export interface HelmRelease {
        */
       force?: boolean;
       /**
-       * Recreate performs pod restarts for the resource if applicable.
+       * Recreate performs pod restarts for any managed workloads.
+       *
+       * Deprecated: This behavior was deprecated in Helm 3:
+       *   - Deprecation: https://github.com/helm/helm/pull/6463
+       *   - Removal: https://github.com/helm/helm/pull/31023
+       * After helm-controller was upgraded to the Helm 4 SDK,
+       * this field is no longer functional and will print a
+       * warning if set to true. It will also be removed in a
+       * future release.
        */
       recreate?: boolean;
+      /**
+       * ServerSideApply enables server-side apply for resources during rollback.
+       * Can be "enabled", "disabled", or "auto".
+       * When "auto", server-side apply usage will be based on the release's previous usage.
+       * Defaults to "auto".
+       */
+      serverSideApply?: 'enabled' | 'disabled' | 'auto';
       /**
        * Timeout is the time to wait for any individual Kubernetes operation (like
        * Jobs for hooks) during the performance of a Helm rollback action. Defaults to
@@ -797,6 +849,13 @@ export interface HelmRelease {
         strategy?: 'rollback' | 'uninstall';
       };
       /**
+       * ServerSideApply enables server-side apply for resources during upgrade.
+       * Can be "enabled", "disabled", or "auto".
+       * When "auto", server-side apply usage will be based on the release's previous usage.
+       * Defaults to "auto".
+       */
+      serverSideApply?: 'enabled' | 'disabled' | 'auto';
+      /**
        * Strategy defines the upgrade strategy to use for this HelmRelease.
        * Defaults to 'RemediateOnFailure'.
        */
@@ -857,6 +916,21 @@ export interface HelmRelease {
        */
       valuesKey?: string;
     }[];
+    /**
+     * WaitStrategy defines Helm's wait strategy for waiting for applied
+     * resources to become ready.
+     */
+    waitStrategy?: {
+      /**
+       * Name is Helm's wait strategy for waiting for applied resources to
+       * become ready. One of 'watcher' or 'legacy'. The 'watcher' strategy uses
+       * kstatus to watch resource statuses, while the 'legacy' strategy uses
+       * Helm v3's waiting logic.
+       * Defaults to 'watcher', or to 'legacy' when UseHelm3Defaults feature
+       * gate is enabled.
+       */
+      name: 'watcher' | 'legacy';
+    };
   };
   /**
    * HelmReleaseStatus defines the observed state of a HelmRelease.
@@ -1006,6 +1080,26 @@ export interface HelmRelease {
      * state. It is reset after a successful reconciliation.
      */
     installFailures?: number;
+    /**
+     * Inventory contains the list of Kubernetes resource object references
+     * that have been applied for this release.
+     */
+    inventory?: {
+      /**
+       * Entries of Kubernetes resource object references.
+       */
+      entries: {
+        /**
+         * ID is the string representation of the Kubernetes resource object's metadata,
+         * in the format '<namespace>_<name>_<group>_<kind>'.
+         */
+        id: string;
+        /**
+         * Version is the API version of the Kubernetes resource object's kind.
+         */
+        v: string;
+      }[];
+    };
     /**
      * LastAttemptedConfigDigest is the digest for the config (better known as
      * "values") of the last reconciliation attempt.

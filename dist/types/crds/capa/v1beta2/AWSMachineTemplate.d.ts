@@ -168,6 +168,20 @@ export interface AWSMachineTemplate {
                     confidentialCompute?: 'Disabled' | 'AMDEncryptedVirtualizationNestedPaging';
                 };
                 /**
+                 * DynamicHostAllocation enables automatic allocation of a single dedicated host.
+                 * Cost effectiveness of allocating a single instance on a dedicated host may vary
+                 * depending on the instance type and the region.
+                 * This field is mutually exclusive with HostID and always allocates exactly one host.
+                 */
+                dynamicHostAllocation?: {
+                    /**
+                     * Tags to apply to the allocated dedicated host.
+                     */
+                    tags?: {
+                        [k: string]: string;
+                    };
+                };
+                /**
                  * ElasticIPPool is the configuration to allocate Public IPv4 address (Elastic IP/EIP) from user-defined pool.
                  */
                 elasticIpPool?: {
@@ -191,13 +205,18 @@ export interface AWSMachineTemplate {
                 };
                 /**
                  * HostAffinity specifies the dedicated host affinity setting for the instance.
-                 * When hostAffinity is set to host, an instance started onto a specific host always restarts on the same host if stopped.
-                 * When hostAffinity is set to default, and you stop and restart the instance, it can be restarted on any available host.
-                 * When HostAffinity is defined, HostID is required.
+                 * When HostAffinity is set to "host", an instance started onto a specific host always restarts on the same host if stopped:
+                 * - If HostID is set, the instance launches on the specific host and must return to that same host after any stop/start (Targeted & Pinned).
+                 * - If HostID is not set, the instance gets launched on any available and must returns to the same host after any stop/start (Auto-placed & Pinned).
+                 * When HostAffinity is set to "default" (the default value), the instance (when restarted) can return on any available host:
+                 * - If HostID is set, the instance launches on the specified host now, but (when restarted) can return to any available hosts (Targeted & Flexible).
+                 * - If HostID is not set, the instance launches on any available host now, and (when restarted) can return to any available hosts (Auto-placed & Flexible).
+                 * If HostAffinity is not specified, it defaults to "default".
                  */
                 hostAffinity?: 'default' | 'host';
                 /**
                  * HostID specifies the Dedicated Host on which the instance must be started.
+                 * This field is mutually exclusive with DynamicHostAllocation.
                  */
                 hostID?: string;
                 /**
@@ -537,6 +556,10 @@ export interface AWSMachineTemplate {
                 };
                 /**
                  * Tenancy indicates if instance should run on shared or single-tenant hardware.
+                 * When Tenancy=host, AWS will attempt to find a suitable host from:
+                 * - Preexisting allocated hosts that have auto-placement enabled
+                 * - A specific host ID, if configured
+                 * - Allocating a new dedicated host if DynamicHostAllocation is configured
                  */
                 tenancy?: 'default' | 'dedicated' | 'host';
                 /**
@@ -559,6 +582,61 @@ export interface AWSMachineTemplate {
          */
         capacity?: {
             [k: string]: number | string;
+        };
+        /**
+         * Conditions defines current service state of the AWSMachineTemplate.
+         */
+        conditions?: {
+            /**
+             * lastTransitionTime is the last time the condition transitioned from one status to another.
+             * This should be when the underlying condition changed. If that is not known, then using the time when
+             * the API field changed is acceptable.
+             */
+            lastTransitionTime: string;
+            /**
+             * message is a human readable message indicating details about the transition.
+             * This field may be empty.
+             */
+            message?: string;
+            /**
+             * reason is the reason for the condition's last transition in CamelCase.
+             * The specific API may choose whether or not this field is considered a guaranteed API.
+             * This field may be empty.
+             */
+            reason?: string;
+            /**
+             * severity provides an explicit classification of Reason code, so the users or machines can immediately
+             * understand the current situation and act accordingly.
+             * The Severity field MUST be set only when Status=False.
+             */
+            severity?: string;
+            /**
+             * status of the condition, one of True, False, Unknown.
+             */
+            status: string;
+            /**
+             * type of condition in CamelCase or in foo.example.com/CamelCase.
+             * Many .condition.type values are consistent across resources like Available, but because arbitrary conditions
+             * can be useful (see .node.status.conditions), the ability to deconflict is important.
+             */
+            type: string;
+        }[];
+        /**
+         * NodeInfo contains information about the node's architecture and operating system.
+         * This value is used for autoscaling from zero operations as defined in:
+         * https://github.com/kubernetes-sigs/cluster-api/blob/main/docs/proposals/20210310-opt-in-autoscaling-from-zero.md
+         */
+        nodeInfo?: {
+            /**
+             * Architecture is the CPU architecture of the node.
+             * Its underlying type is a string and its value can be any of amd64, arm64.
+             */
+            architecture?: 'amd64' | 'arm64';
+            /**
+             * OperatingSystem is the operating system of the node.
+             * Its underlying type is a string and its value can be any of linux, windows.
+             */
+            operatingSystem?: 'linux' | 'windows';
         };
     };
 }

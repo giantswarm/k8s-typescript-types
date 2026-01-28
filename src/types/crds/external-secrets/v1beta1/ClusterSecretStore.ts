@@ -28,7 +28,7 @@ export interface ClusterSecretStore {
    */
   spec?: {
     /**
-     * Used to constraint a ClusterSecretStore to specific namespaces. Relevant only to ClusterSecretStore
+     * Used to constrain a ClusterSecretStore to specific namespaces. Relevant only to ClusterSecretStore.
      */
     conditions?: {
       /**
@@ -766,6 +766,10 @@ export interface ClusterSecretStore {
            */
           clientTimeOutSeconds?: number;
           /**
+           * When true, the response includes the decrypted password. When false, the password field is omitted. This option only applies to the SECRET retrieval type. Default: true.
+           */
+          decrypt?: boolean;
+          /**
            * The secret retrieval type. SECRET = Secrets Safe (credential, text, file). MANAGED_ACCOUNT = Password Safe account associated with a system.
            */
           retrievalType?: string;
@@ -1390,7 +1394,7 @@ export interface ClusterSecretStore {
         projectID?: string;
       };
       /**
-       * Github configures this store to push Github Action secrets using Github API provider
+       * Github configures this store to push GitHub Actions secrets using the GitHub API provider.
        */
       github?: {
         /**
@@ -2239,7 +2243,7 @@ export interface ClusterSecretStore {
         project: string;
       };
       /**
-       * Scaleway
+       * Scaleway configures this store to sync secrets using the Scaleway provider.
        */
       scaleway?: {
         /**
@@ -2422,7 +2426,7 @@ export interface ClusterSecretStore {
         url: string;
       };
       /**
-       * Vault configures this store to sync secrets using Hashi provider
+       * Vault configures this store to sync secrets using the HashiCorp Vault provider.
        */
       vault?: {
         /**
@@ -3281,7 +3285,7 @@ export interface ClusterSecretStore {
      */
     refreshInterval?: number;
     /**
-     * Used to configure http retries if failed
+     * Used to configure HTTP retries on failures.
      */
     retrySettings?: {
       /**

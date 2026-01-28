@@ -27,7 +27,7 @@ export interface ClusterSecretStore {
      */
     spec?: {
         /**
-         * Used to constraint a ClusterSecretStore to specific namespaces. Relevant only to ClusterSecretStore
+         * Used to constrain a ClusterSecretStore to specific namespaces. Relevant only to ClusterSecretStore.
          */
         conditions?: {
             /**
@@ -565,8 +565,11 @@ export interface ClusterSecretStore {
                  */
                 authType?: 'ServicePrincipal' | 'ManagedIdentity' | 'WorkloadIdentity';
                 /**
-                 * CustomCloudConfig defines custom Azure Stack Hub or Azure Stack Edge endpoints.
+                 * CustomCloudConfig defines custom Azure endpoints for non-standard clouds.
                  * Required when EnvironmentType is AzureStackCloud.
+                 * Optional for other environment types - useful for Azure China when using Workload Identity
+                 * with AKS, where the OIDC issuer (login.partner.microsoftonline.cn) differs from the
+                 * standard China Cloud endpoint (login.chinacloudapi.cn).
                  * IMPORTANT: This feature REQUIRES UseAzureSDK to be set to true. Custom cloud
                  * configuration is not supported with the legacy go-autorest SDK.
                  */
@@ -635,6 +638,71 @@ export interface ClusterSecretStore {
                  * Vault Url from which the secrets to be fetched from.
                  */
                 vaultUrl: string;
+            };
+            /**
+             * Barbican configures this store to sync secrets using the OpenStack Barbican provider
+             */
+            barbican?: {
+                /**
+                 * BarbicanAuth contains the authentication information for Barbican.
+                 */
+                auth: {
+                    /**
+                     * BarbicanProviderPasswordRef defines a reference to a secret containing password for the Barbican provider.
+                     */
+                    password: {
+                        /**
+                         * SecretKeySelector is a reference to a specific 'key' within a Secret resource.
+                         * In some instances, `key` is a required field.
+                         */
+                        secretRef: {
+                            /**
+                             * A key in the referenced Secret.
+                             * Some instances of this field may be defaulted, in others it may be required.
+                             */
+                            key?: string;
+                            /**
+                             * The name of the Secret resource being referred to.
+                             */
+                            name?: string;
+                            /**
+                             * The namespace of the Secret resource being referred to.
+                             * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+                             */
+                            namespace?: string;
+                        };
+                    };
+                    /**
+                     * BarbicanProviderUsernameRef defines a reference to a secret containing username for the Barbican provider.
+                     */
+                    username: {
+                        /**
+                         * SecretKeySelector is a reference to a specific 'key' within a Secret resource.
+                         * In some instances, `key` is a required field.
+                         */
+                        secretRef?: {
+                            /**
+                             * A key in the referenced Secret.
+                             * Some instances of this field may be defaulted, in others it may be required.
+                             */
+                            key?: string;
+                            /**
+                             * The name of the Secret resource being referred to.
+                             */
+                            name?: string;
+                            /**
+                             * The namespace of the Secret resource being referred to.
+                             * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+                             */
+                            namespace?: string;
+                        };
+                        value?: string;
+                    };
+                };
+                authURL?: string;
+                domainName?: string;
+                region?: string;
+                tenantName?: string;
             };
             /**
              * Beyondtrust configures this store to sync secrets using Password Safe provider.
@@ -795,6 +863,10 @@ export interface ClusterSecretStore {
                      * Timeout specifies a time limit for requests made by this Client. The timeout includes connection time, any redirects, and reading the response body. Defaults to 45 seconds.
                      */
                     clientTimeOutSeconds?: number;
+                    /**
+                     * When true, the response includes the decrypted password. When false, the password field is omitted. This option only applies to the SECRET retrieval type. Default: true.
+                     */
+                    decrypt?: boolean;
                     /**
                      * The secret retrieval type. SECRET = Secrets Safe (credential, text, file). MANAGED_ACCOUNT = Password Safe account associated with a system.
                      */
@@ -1251,9 +1323,43 @@ export interface ClusterSecretStore {
                  */
                 auth: {
                     /**
-                     * DopplerAuthSecretRef contains the secret reference for accessing the Doppler API.
+                     * OIDCConfig authenticates using Kubernetes ServiceAccount tokens via OIDC.
                      */
-                    secretRef: {
+                    oidcConfig?: {
+                        /**
+                         * ExpirationSeconds sets the ServiceAccount token validity duration.
+                         * Defaults to 10 minutes.
+                         */
+                        expirationSeconds?: number;
+                        /**
+                         * Identity is the Doppler Service Account Identity ID configured for OIDC authentication.
+                         */
+                        identity: string;
+                        /**
+                         * ServiceAccountRef specifies the Kubernetes ServiceAccount to use for authentication.
+                         */
+                        serviceAccountRef: {
+                            /**
+                             * Audience specifies the `aud` claim for the service account token
+                             * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
+                             * then this audiences will be appended to the list
+                             */
+                            audiences?: string[];
+                            /**
+                             * The name of the ServiceAccount resource being referred to.
+                             */
+                            name: string;
+                            /**
+                             * Namespace of the resource being referred to.
+                             * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+                             */
+                            namespace?: string;
+                        };
+                    };
+                    /**
+                     * SecretRef authenticates using a Doppler service token stored in a Kubernetes Secret.
+                     */
+                    secretRef?: {
                         /**
                          * The DopplerToken is used for authentication.
                          * See https://docs.doppler.com/reference/api#authentication for auth token types.
@@ -1293,6 +1399,69 @@ export interface ClusterSecretStore {
                  * Doppler project (required if not using a Service Token)
                  */
                 project?: string;
+            };
+            /**
+             * DVLS configures this store to sync secrets using Devolutions Server provider
+             */
+            dvls?: {
+                /**
+                 * Auth defines the authentication method to use.
+                 */
+                auth: {
+                    /**
+                     * SecretRef contains the Application ID and Application Secret for authentication.
+                     */
+                    secretRef: {
+                        /**
+                         * AppID is the reference to the secret containing the Application ID.
+                         */
+                        appId: {
+                            /**
+                             * A key in the referenced Secret.
+                             * Some instances of this field may be defaulted, in others it may be required.
+                             */
+                            key?: string;
+                            /**
+                             * The name of the Secret resource being referred to.
+                             */
+                            name?: string;
+                            /**
+                             * The namespace of the Secret resource being referred to.
+                             * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+                             */
+                            namespace?: string;
+                        };
+                        /**
+                         * AppSecret is the reference to the secret containing the Application Secret.
+                         */
+                        appSecret: {
+                            /**
+                             * A key in the referenced Secret.
+                             * Some instances of this field may be defaulted, in others it may be required.
+                             */
+                            key?: string;
+                            /**
+                             * The name of the Secret resource being referred to.
+                             */
+                            name?: string;
+                            /**
+                             * The namespace of the Secret resource being referred to.
+                             * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+                             */
+                            namespace?: string;
+                        };
+                    };
+                };
+                /**
+                 * Insecure allows connecting to DVLS over plain HTTP.
+                 * This is NOT RECOMMENDED for production use.
+                 * Set to true only if you understand the security implications.
+                 */
+                insecure?: boolean;
+                /**
+                 * ServerURL is the DVLS instance URL (e.g., https://dvls.example.com).
+                 */
+                serverUrl: string;
             };
             /**
              * Fake configures a store with static key/value pairs
@@ -1516,7 +1685,7 @@ export interface ClusterSecretStore {
                 secretVersionSelectionPolicy?: string;
             };
             /**
-             * Github configures this store to push GitHub Action secrets using GitHub API provider.
+             * Github configures this store to push GitHub Actions secrets using the GitHub API provider.
              * Note: This provider only supports write operations (PushSecret) and cannot fetch secrets from GitHub
              */
             github?: {
@@ -1681,6 +1850,10 @@ export interface ClusterSecretStore {
                      * IBMAuthSecretRef contains the secret reference for IBM Cloud API key authentication.
                      */
                     secretRef?: {
+                        /**
+                         * The IAM endpoint used to obain a token
+                         */
+                        iamEndpoint?: string;
                         /**
                          * The SecretAccessKey is used for authentication
                          */
@@ -2227,6 +2400,35 @@ export interface ClusterSecretStore {
                     };
                 };
                 /**
+                 * CABundle is a PEM-encoded CA certificate bundle used to validate
+                 * the Infisical server's TLS certificate. Mutually exclusive with CAProvider.
+                 */
+                caBundle?: string;
+                /**
+                 * CAProvider is a reference to a Secret or ConfigMap that contains a CA certificate.
+                 * The certificate is used to validate the Infisical server's TLS certificate.
+                 * Mutually exclusive with CABundle.
+                 */
+                caProvider?: {
+                    /**
+                     * The key where the CA certificate can be found in the Secret or ConfigMap.
+                     */
+                    key?: string;
+                    /**
+                     * The name of the object located at the provider type.
+                     */
+                    name: string;
+                    /**
+                     * The namespace the Provider type is in.
+                     * Can only be defined when used in a ClusterSecretStore.
+                     */
+                    namespace?: string;
+                    /**
+                     * The type of provider to use such as "Secret", or "ConfigMap".
+                     */
+                    type: 'Secret' | 'ConfigMap';
+                };
+                /**
                  * HostAPI specifies the base URL of the Infisical API. If not provided, it defaults to "https://app.infisical.com/api".
                  */
                 hostAPI?: string;
@@ -2621,6 +2823,25 @@ export interface ClusterSecretStore {
                     };
                 };
                 /**
+                 * Cache configures client-side caching for read operations (GetSecret, GetSecretMap).
+                 * When enabled, secrets are cached with the specified TTL.
+                 * Write operations (PushSecret, DeleteSecret) automatically invalidate relevant cache entries.
+                 * If omitted, caching is disabled (default).
+                 * cache: {} is a valid option to set.
+                 */
+                cache?: {
+                    /**
+                     * MaxSize is the maximum number of secrets to cache.
+                     * When the cache is full, least-recently-used entries are evicted.
+                     */
+                    maxSize?: number;
+                    /**
+                     * TTL is the time-to-live for cached secrets.
+                     * Format: duration string (e.g., "5m", "1h", "30s")
+                     */
+                    ttl?: string;
+                };
+                /**
                  * IntegrationInfo specifies the name and version of the integration built using the 1Password Go SDK.
                  * If you don't know which name and version to use, use `DefaultIntegrationName` and `DefaultIntegrationVersion`, respectively.
                  */
@@ -2928,7 +3149,7 @@ export interface ClusterSecretStore {
                 project: string;
             };
             /**
-             * Scaleway
+             * Scaleway configures this store to sync secrets using the Scaleway provider.
              */
             scaleway?: {
                 /**
@@ -3005,6 +3226,34 @@ export interface ClusterSecretStore {
              * https://docs.delinea.com/online-help/secret-server/start.htm
              */
             secretserver?: {
+                /**
+                 * PEM/base64 encoded CA bundle used to validate Secret ServerURL. Only used
+                 * if the ServerURL URL is using HTTPS protocol. If not set the system root certificates
+                 * are used to validate the TLS connection.
+                 */
+                caBundle?: string;
+                /**
+                 * The provider for the CA bundle to use to validate Secret ServerURL certificate.
+                 */
+                caProvider?: {
+                    /**
+                     * The key where the CA certificate can be found in the Secret or ConfigMap.
+                     */
+                    key?: string;
+                    /**
+                     * The name of the object located at the provider type.
+                     */
+                    name: string;
+                    /**
+                     * The namespace the Provider type is in.
+                     * Can only be defined when used in a ClusterSecretStore.
+                     */
+                    namespace?: string;
+                    /**
+                     * The type of provider to use such as "Secret", or "ConfigMap".
+                     */
+                    type: 'Secret' | 'ConfigMap';
+                };
                 /**
                  * Domain is the secret server domain.
                  */
@@ -3115,7 +3364,7 @@ export interface ClusterSecretStore {
                 url: string;
             };
             /**
-             * Vault configures this store to sync secrets using Hashi provider
+             * Vault configures this store to sync secrets using the HashiCorp Vault provider.
              */
             vault?: {
                 /**
@@ -3231,6 +3480,112 @@ export interface ClusterSecretStore {
                              * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
                              */
                             namespace?: string;
+                        };
+                    };
+                    /**
+                     * Gcp authenticates with Vault using Google Cloud Platform authentication method
+                     * GCP authentication method
+                     */
+                    gcp?: {
+                        /**
+                         * Location optionally defines a location/region for the secret
+                         */
+                        location?: string;
+                        /**
+                         * Path where the GCP auth method is enabled in Vault, e.g: "gcp"
+                         */
+                        path?: string;
+                        /**
+                         * Project ID of the Google Cloud Platform project
+                         */
+                        projectID?: string;
+                        /**
+                         * Vault Role. In Vault, a role describes an identity with a set of permissions, groups, or policies you want to attach to a user of the secrets engine.
+                         */
+                        role: string;
+                        /**
+                         * Specify credentials in a Secret object
+                         */
+                        secretRef?: {
+                            /**
+                             * The SecretAccessKey is used for authentication
+                             */
+                            secretAccessKeySecretRef?: {
+                                /**
+                                 * A key in the referenced Secret.
+                                 * Some instances of this field may be defaulted, in others it may be required.
+                                 */
+                                key?: string;
+                                /**
+                                 * The name of the Secret resource being referred to.
+                                 */
+                                name?: string;
+                                /**
+                                 * The namespace of the Secret resource being referred to.
+                                 * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+                                 */
+                                namespace?: string;
+                            };
+                        };
+                        /**
+                         * ServiceAccountRef to a service account for impersonation
+                         */
+                        serviceAccountRef?: {
+                            /**
+                             * Audience specifies the `aud` claim for the service account token
+                             * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
+                             * then this audiences will be appended to the list
+                             */
+                            audiences?: string[];
+                            /**
+                             * The name of the ServiceAccount resource being referred to.
+                             */
+                            name: string;
+                            /**
+                             * Namespace of the resource being referred to.
+                             * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+                             */
+                            namespace?: string;
+                        };
+                        /**
+                         * Specify a service account with Workload Identity
+                         */
+                        workloadIdentity?: {
+                            /**
+                             * ClusterLocation is the location of the cluster
+                             * If not specified, it fetches information from the metadata server
+                             */
+                            clusterLocation?: string;
+                            /**
+                             * ClusterName is the name of the cluster
+                             * If not specified, it fetches information from the metadata server
+                             */
+                            clusterName?: string;
+                            /**
+                             * ClusterProjectID is the project ID of the cluster
+                             * If not specified, it fetches information from the metadata server
+                             */
+                            clusterProjectID?: string;
+                            /**
+                             * ServiceAccountSelector is a reference to a ServiceAccount resource.
+                             */
+                            serviceAccountRef: {
+                                /**
+                                 * Audience specifies the `aud` claim for the service account token
+                                 * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
+                                 * then this audiences will be appended to the list
+                                 */
+                                audiences?: string[];
+                                /**
+                                 * The name of the ServiceAccount resource being referred to.
+                                 */
+                                name: string;
+                                /**
+                                 * Namespace of the resource being referred to.
+                                 * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+                                 */
+                                namespace?: string;
+                            };
                         };
                     };
                     /**
@@ -4105,7 +4460,7 @@ export interface ClusterSecretStore {
          */
         refreshInterval?: number;
         /**
-         * Used to configure http retries if failed
+         * Used to configure HTTP retries on failures.
          */
         retrySettings?: {
             maxRetries?: number;

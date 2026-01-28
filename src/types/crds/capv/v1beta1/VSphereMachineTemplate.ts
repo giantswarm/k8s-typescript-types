@@ -509,6 +509,53 @@ export interface VSphereMachineTemplate {
          */
         resourcePool?: string;
         /**
+         * resources is the definition of the VM's cpu and memory
+         * reservations, limits and shares.
+         */
+        resources?: {
+          /**
+           * limits is the definition of the VM's cpu (in hertz, rounded up to the nearest MHz)
+           * and memory (in bytes, rounded up to the nearest MiB) limits
+           */
+          limits?: {
+            /**
+             * cpu is the definition of the cpu quantity for the given VM hardware policy
+             */
+            cpu?: number | string;
+            /**
+             * memory is the definition of the memory quantity for the given VM hardware policy
+             */
+            memory?: number | string;
+          };
+          /**
+           * requests is the definition of the VM's cpu (in hertz, rounded up to the nearest MHz)
+           * and memory (in bytes, rounded up to the nearest MiB) reservations
+           */
+          requests?: {
+            /**
+             * cpu is the definition of the cpu quantity for the given VM hardware policy
+             */
+            cpu?: number | string;
+            /**
+             * memory is the definition of the memory quantity for the given VM hardware policy
+             */
+            memory?: number | string;
+          };
+          /**
+           * shares is the definition of the VM's cpu and memory shares
+           */
+          shares?: {
+            /**
+             * cpu is the number of spu shares to assign to the VM
+             */
+            cpu?: number;
+            /**
+             * memory is the number of memory shares to assign to the VM
+             */
+            memory?: number;
+          };
+        };
+        /**
          * Server is the IP address or FQDN of the vSphere server on which
          * the virtual machine is created/located.
          */

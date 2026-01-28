@@ -43,6 +43,4676 @@ export interface AWSManagedControlPlane {
             bootstrapClusterCreatorAdminPermissions?: boolean;
         };
         /**
+         * AccessEntries specifies the access entries for the cluster
+         * Access entries require AuthenticationMode to be either "api" or "api_and_config_map"
+         */
+        accessEntries?: {
+            /**
+             * AccessPolicies specifies the policies to associate with this access entry
+             * Cannot be specified if Type is "ec2_linux" or "ec2_windows"
+             *
+             * @maxItems 20
+             */
+            accessPolicies?: [] | [
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                }
+            ] | [
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                }
+            ] | [
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                }
+            ] | [
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                }
+            ] | [
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                }
+            ] | [
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                }
+            ] | [
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                }
+            ] | [
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                }
+            ] | [
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                }
+            ] | [
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                }
+            ] | [
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                }
+            ] | [
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                }
+            ] | [
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                }
+            ] | [
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                }
+            ] | [
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                }
+            ] | [
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                }
+            ] | [
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                }
+            ] | [
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                }
+            ] | [
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                }
+            ] | [
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                },
+                {
+                    /**
+                     * AccessScope specifies the scope for the policy
+                     */
+                    accessScope: {
+                        /**
+                         * Namespaces are the namespaces for the access scope
+                         * Only valid when Type is namespace
+                         *
+                         * @minItems 1
+                         */
+                        namespaces?: [string, ...string[]];
+                        /**
+                         * Type is the type of access scope. Defaults to "cluster".
+                         */
+                        type: 'cluster' | 'namespace';
+                    };
+                    /**
+                     * PolicyARN is the Amazon Resource Name (ARN) of the access policy
+                     */
+                    policyARN: string;
+                }
+            ];
+            /**
+             * KubernetesGroups represents the Kubernetes groups for the access entry
+             * Cannot be specified if Type is "ec2_linux" or "ec2_windows"
+             */
+            kubernetesGroups?: string[];
+            /**
+             * PrincipalARN is the Amazon Resource Name (ARN) of the IAM principal
+             */
+            principalARN: string;
+            /**
+             * Type is the type of access entry. Defaults to standard if not specified.
+             */
+            type?: 'standard' | 'ec2_linux' | 'ec2_windows' | 'fargate_linux' | 'ec2' | 'hybrid_linux' | 'hyperpod_linux';
+            /**
+             * Username is the username for the access entry
+             */
+            username?: string;
+        }[];
+        /**
          * AdditionalTags is an optional set of tags to add to AWS resources managed by the AWS provider, in addition to the
          * ones added by default.
          */
@@ -671,7 +5341,7 @@ export interface AWSManagedControlPlane {
             };
         };
         /**
-         * IdentityProviderconfig is used to specify the oidc provider config
+         * OIDCIdentityProviderConfig is used to specify the OIDC provider config
          * to be attached with this eks cluster
          */
         oidcIdentityProviderConfig?: {
@@ -1040,6 +5710,18 @@ export interface AWSManagedControlPlane {
                 confidentialCompute?: 'Disabled' | 'AMDEncryptedVirtualizationNestedPaging';
             };
             /**
+             * DynamicHostAllocation enables automatic allocation of dedicated hosts.
+             * This field is mutually exclusive with HostID.
+             */
+            dynamicHostAllocation?: {
+                /**
+                 * Tags to apply to the allocated dedicated host.
+                 */
+                tags?: {
+                    [k: string]: string;
+                };
+            };
+            /**
              * Indicates whether the instance is optimized for Amazon EBS I/O.
              */
             ebsOptimized?: boolean;
@@ -1049,9 +5731,12 @@ export interface AWSManagedControlPlane {
             enaSupport?: boolean;
             /**
              * HostAffinity specifies the dedicated host affinity setting for the instance.
-             * When hostAffinity is set to host, an instance started onto a specific host always restarts on the same host if stopped.
-             * When hostAffinity is set to default, and you stop and restart the instance, it can be restarted on any available host.
-             * When HostAffinity is defined, HostID is required.
+             * When HostAffinity is set to "host", an instance started onto a specific host always restarts on the same host if stopped:
+             * - If HostID is set, the instance launches on the specific host and must return to that same host after any stop/start (Targeted & Pinned).
+             * - If HostID is not set, the instance gets launched on any available and must returns to the same host after any stop/start (Auto-placed & Pinned).
+             * When HostAffinity is set to "default" (the default value), the instance (when restarted) can return on any available host:
+             * - If HostID is set, the instance launches on the specified host now, but (when restarted) can return to any available hosts (Targeted & Flexible).
+             * - If HostID is not set, the instance launches on any available host now, and (when restarted) can return to any available hosts (Auto-placed & Flexible).
              */
             hostAffinity?: 'default' | 'host';
             /**
