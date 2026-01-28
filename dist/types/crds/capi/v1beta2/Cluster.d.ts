@@ -259,6 +259,50 @@ export interface Cluster {
                          */
                         nodeStartupTimeoutSeconds?: number;
                         /**
+                         * unhealthyMachineConditions contains a list of the machine conditions that determine
+                         * whether a machine is considered unhealthy.  The conditions are combined in a
+                         * logical OR, i.e. if any of the conditions is met, the machine is unhealthy.
+                         *
+                         * @minItems 1
+                         * @maxItems 100
+                         */
+                        unhealthyMachineConditions?: [
+                            {
+                                /**
+                                 * status of the condition, one of True, False, Unknown.
+                                 */
+                                status: 'True' | 'False' | 'Unknown';
+                                /**
+                                 * timeoutSeconds is the duration that a machine must be in a given status for,
+                                 * after which the machine is considered unhealthy.
+                                 * For example, with a value of "3600", the machine must match the status
+                                 * for at least 1 hour before being considered unhealthy.
+                                 */
+                                timeoutSeconds: number;
+                                /**
+                                 * type of Machine condition
+                                 */
+                                type: string;
+                            },
+                            ...{
+                                /**
+                                 * status of the condition, one of True, False, Unknown.
+                                 */
+                                status: 'True' | 'False' | 'Unknown';
+                                /**
+                                 * timeoutSeconds is the duration that a machine must be in a given status for,
+                                 * after which the machine is considered unhealthy.
+                                 * For example, with a value of "3600", the machine must match the status
+                                 * for at least 1 hour before being considered unhealthy.
+                                 */
+                                timeoutSeconds: number;
+                                /**
+                                 * type of Machine condition
+                                 */
+                                type: string;
+                            }[]
+                        ];
+                        /**
                          * unhealthyNodeConditions contains a list of conditions that determine
                          * whether a node is considered unhealthy. The conditions are combined in a
                          * logical OR, i.e. if any of the conditions is met, the node is unhealthy.
@@ -275,7 +319,7 @@ export interface Cluster {
                                 /**
                                  * timeoutSeconds is the duration that a node must be in a given status for,
                                  * after which the node is considered unhealthy.
-                                 * For example, with a value of "1h", the node must match the status
+                                 * For example, with a value of "3600", the node must match the status
                                  * for at least 1 hour before being considered unhealthy.
                                  */
                                 timeoutSeconds: number;
@@ -292,7 +336,7 @@ export interface Cluster {
                                 /**
                                  * timeoutSeconds is the duration that a node must be in a given status for,
                                  * after which the node is considered unhealthy.
-                                 * For example, with a value of "1h", the node must match the status
+                                 * For example, with a value of "3600", the node must match the status
                                  * for at least 1 hour before being considered unhealthy.
                                  */
                                 timeoutSeconds: number;
@@ -647,6 +691,50 @@ export interface Cluster {
                                  */
                                 nodeStartupTimeoutSeconds?: number;
                                 /**
+                                 * unhealthyMachineConditions contains a list of the machine conditions that determine
+                                 * whether a machine is considered unhealthy.  The conditions are combined in a
+                                 * logical OR, i.e. if any of the conditions is met, the machine is unhealthy.
+                                 *
+                                 * @minItems 1
+                                 * @maxItems 100
+                                 */
+                                unhealthyMachineConditions?: [
+                                    {
+                                        /**
+                                         * status of the condition, one of True, False, Unknown.
+                                         */
+                                        status: 'True' | 'False' | 'Unknown';
+                                        /**
+                                         * timeoutSeconds is the duration that a machine must be in a given status for,
+                                         * after which the machine is considered unhealthy.
+                                         * For example, with a value of "3600", the machine must match the status
+                                         * for at least 1 hour before being considered unhealthy.
+                                         */
+                                        timeoutSeconds: number;
+                                        /**
+                                         * type of Machine condition
+                                         */
+                                        type: string;
+                                    },
+                                    ...{
+                                        /**
+                                         * status of the condition, one of True, False, Unknown.
+                                         */
+                                        status: 'True' | 'False' | 'Unknown';
+                                        /**
+                                         * timeoutSeconds is the duration that a machine must be in a given status for,
+                                         * after which the machine is considered unhealthy.
+                                         * For example, with a value of "3600", the machine must match the status
+                                         * for at least 1 hour before being considered unhealthy.
+                                         */
+                                        timeoutSeconds: number;
+                                        /**
+                                         * type of Machine condition
+                                         */
+                                        type: string;
+                                    }[]
+                                ];
+                                /**
                                  * unhealthyNodeConditions contains a list of conditions that determine
                                  * whether a node is considered unhealthy. The conditions are combined in a
                                  * logical OR, i.e. if any of the conditions is met, the node is unhealthy.
@@ -663,7 +751,7 @@ export interface Cluster {
                                         /**
                                          * timeoutSeconds is the duration that a node must be in a given status for,
                                          * after which the node is considered unhealthy.
-                                         * For example, with a value of "1h", the node must match the status
+                                         * For example, with a value of "3600", the node must match the status
                                          * for at least 1 hour before being considered unhealthy.
                                          */
                                         timeoutSeconds: number;
@@ -680,7 +768,7 @@ export interface Cluster {
                                         /**
                                          * timeoutSeconds is the duration that a node must be in a given status for,
                                          * after which the node is considered unhealthy.
-                                         * For example, with a value of "1h", the node must match the status
+                                         * For example, with a value of "3600", the node must match the status
                                          * for at least 1 hour before being considered unhealthy.
                                          */
                                         timeoutSeconds: number;
@@ -1052,6 +1140,50 @@ export interface Cluster {
                                  */
                                 nodeStartupTimeoutSeconds?: number;
                                 /**
+                                 * unhealthyMachineConditions contains a list of the machine conditions that determine
+                                 * whether a machine is considered unhealthy.  The conditions are combined in a
+                                 * logical OR, i.e. if any of the conditions is met, the machine is unhealthy.
+                                 *
+                                 * @minItems 1
+                                 * @maxItems 100
+                                 */
+                                unhealthyMachineConditions?: [
+                                    {
+                                        /**
+                                         * status of the condition, one of True, False, Unknown.
+                                         */
+                                        status: 'True' | 'False' | 'Unknown';
+                                        /**
+                                         * timeoutSeconds is the duration that a machine must be in a given status for,
+                                         * after which the machine is considered unhealthy.
+                                         * For example, with a value of "3600", the machine must match the status
+                                         * for at least 1 hour before being considered unhealthy.
+                                         */
+                                        timeoutSeconds: number;
+                                        /**
+                                         * type of Machine condition
+                                         */
+                                        type: string;
+                                    },
+                                    ...{
+                                        /**
+                                         * status of the condition, one of True, False, Unknown.
+                                         */
+                                        status: 'True' | 'False' | 'Unknown';
+                                        /**
+                                         * timeoutSeconds is the duration that a machine must be in a given status for,
+                                         * after which the machine is considered unhealthy.
+                                         * For example, with a value of "3600", the machine must match the status
+                                         * for at least 1 hour before being considered unhealthy.
+                                         */
+                                        timeoutSeconds: number;
+                                        /**
+                                         * type of Machine condition
+                                         */
+                                        type: string;
+                                    }[]
+                                ];
+                                /**
                                  * unhealthyNodeConditions contains a list of conditions that determine
                                  * whether a node is considered unhealthy. The conditions are combined in a
                                  * logical OR, i.e. if any of the conditions is met, the node is unhealthy.
@@ -1068,7 +1200,7 @@ export interface Cluster {
                                         /**
                                          * timeoutSeconds is the duration that a node must be in a given status for,
                                          * after which the node is considered unhealthy.
-                                         * For example, with a value of "1h", the node must match the status
+                                         * For example, with a value of "3600", the node must match the status
                                          * for at least 1 hour before being considered unhealthy.
                                          */
                                         timeoutSeconds: number;
@@ -1085,7 +1217,7 @@ export interface Cluster {
                                         /**
                                          * timeoutSeconds is the duration that a node must be in a given status for,
                                          * after which the node is considered unhealthy.
-                                         * For example, with a value of "1h", the node must match the status
+                                         * For example, with a value of "3600", the node must match the status
                                          * for at least 1 hour before being considered unhealthy.
                                          */
                                         timeoutSeconds: number;

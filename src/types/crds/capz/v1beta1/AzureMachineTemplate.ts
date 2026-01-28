@@ -611,4 +611,34 @@ export interface AzureMachineTemplate {
       };
     };
   };
+  /**
+   * AzureMachineTemplateStatus defines the observed state of AzureMachineTemplate.
+   */
+  status?: {
+    /**
+     * Capacity defines the resource capacity for this machine.
+     * This value is used for autoscaling from zero operations as defined in:
+     * https://github.com/kubernetes-sigs/cluster-api/blob/main/docs/proposals/20210310-opt-in-autoscaling-from-zero.md
+     */
+    capacity?: {
+      [k: string]: number | string;
+    };
+    /**
+     * NodeInfo contains information about the node's architecture and operating system.
+     * This value is used for autoscaling from zero operations as defined in:
+     * https://github.com/kubernetes-sigs/cluster-api/blob/main/docs/proposals/20210310-opt-in-autoscaling-from-zero.md
+     */
+    nodeInfo?: {
+      /**
+       * Architecture is the CPU architecture of the node.
+       * Its underlying type is a string and its value can be any of amd64, arm64.
+       */
+      architecture?: 'amd64' | 'arm64';
+      /**
+       * OperatingSystem is the operating system of the node.
+       * Its underlying type is a string and its value can be any of linux, windows.
+       */
+      operatingSystem?: 'linux' | 'windows';
+    };
+  };
 }

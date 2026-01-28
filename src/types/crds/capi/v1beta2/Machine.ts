@@ -188,6 +188,72 @@ export interface Machine {
       }[]
     ];
     /**
+     * taints are the node taints that Cluster API will manage.
+     * This list is not necessarily complete: other Kubernetes components may add or remove other taints from nodes,
+     * e.g. the node controller might add the node.kubernetes.io/not-ready taint.
+     * Only those taints defined in this list will be added or removed by core Cluster API controllers.
+     *
+     * There can be at most 64 taints.
+     * A pod would have to tolerate all existing taints to run on the corresponding node.
+     *
+     * NOTE: This list is implemented as a "map" type, meaning that individual elements can be managed by different owners.
+     *
+     * @minItems 1
+     * @maxItems 64
+     */
+    taints?: [
+      {
+        /**
+         * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
+         */
+        effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
+        /**
+         * key is the taint key to be applied to a node.
+         * Must be a valid qualified name of maximum size 63 characters
+         * with an optional subdomain prefix of maximum size 253 characters,
+         * separated by a `/`.
+         */
+        key: string;
+        /**
+         * propagation defines how this taint should be propagated to nodes.
+         * Valid values are 'Always' and 'OnInitialization'.
+         * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
+         * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
+         */
+        propagation: 'Always' | 'OnInitialization';
+        /**
+         * value is the taint value corresponding to the taint key.
+         * It must be a valid label value of maximum size 63 characters.
+         */
+        value?: string;
+      },
+      ...{
+        /**
+         * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
+         */
+        effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
+        /**
+         * key is the taint key to be applied to a node.
+         * Must be a valid qualified name of maximum size 63 characters
+         * with an optional subdomain prefix of maximum size 253 characters,
+         * separated by a `/`.
+         */
+        key: string;
+        /**
+         * propagation defines how this taint should be propagated to nodes.
+         * Valid values are 'Always' and 'OnInitialization'.
+         * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
+         * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
+         */
+        propagation: 'Always' | 'OnInitialization';
+        /**
+         * value is the taint value corresponding to the taint key.
+         * It must be a valid label value of maximum size 63 characters.
+         */
+        value?: string;
+      }[]
+    ];
+    /**
      * version defines the desired Kubernetes version.
      * This field is meant to be optionally used by bootstrap providers.
      */
@@ -201,7 +267,7 @@ export interface Machine {
      * addresses is a list of addresses assigned to the machine.
      * This field is copied from the infrastructure provider reference.
      *
-     * @maxItems 32
+     * @maxItems 128
      */
     addresses?: {
       /**
@@ -221,7 +287,7 @@ export interface Machine {
     /**
      * conditions represents the observations of a Machine's current state.
      * Known condition types are Available, Ready, UpToDate, BootstrapConfigReady, InfrastructureReady, NodeReady,
-     * NodeHealthy, Deleting, Paused.
+     * NodeHealthy, Updating, Deleting, Paused.
      * If a MachineHealthCheck is targeting this machine, also HealthCheckSucceeded, OwnerRemediated conditions are added.
      * Additionally control plane Machines controlled by KubeadmControlPlane will have following additional conditions:
      * APIServerPodHealthy, ControllerManagerPodHealthy, SchedulerPodHealthy, EtcdPodHealthy, EtcdMemberHealthy.
@@ -377,6 +443,10 @@ export interface Machine {
       };
     };
     /**
+     * failureDomain is the failure domain where the Machine has been scheduled.
+     */
+    failureDomain?: string;
+    /**
      * initialization provides observations of the Machine initialization process.
      * NOTE: Fields in this struct are part of the Cluster API contract and are used to orchestrate initial Machine provisioning.
      */
@@ -474,6 +544,15 @@ export interface Machine {
     /**
      * phase represents the current phase of machine actuation.
      */
-    phase?: 'Pending' | 'Provisioning' | 'Provisioned' | 'Running' | 'Deleting' | 'Deleted' | 'Failed' | 'Unknown';
+    phase?:
+      | 'Pending'
+      | 'Provisioning'
+      | 'Provisioned'
+      | 'Running'
+      | 'Updating'
+      | 'Deleting'
+      | 'Deleted'
+      | 'Failed'
+      | 'Unknown';
   };
 }

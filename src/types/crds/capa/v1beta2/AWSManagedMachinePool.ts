@@ -394,6 +394,16 @@ export interface AWSManagedMachinePool {
       roleARN?: string;
     }[];
     /**
+     * NodeRepairConfig specifies the node auto repair configuration for the managed node group.
+     */
+    nodeRepairConfig?: {
+      /**
+       * Enabled specifies whether node auto repair is enabled for the node group.
+       * When enabled, EKS will automatically repair unhealthy nodes by replacing them.
+       */
+      enabled?: boolean;
+    };
+    /**
      * ProviderIDList are the provider IDs of instances in the
      * autoscaling group corresponding to the nodegroup represented by this
      * machine pool
