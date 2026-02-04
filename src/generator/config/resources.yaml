@@ -79,6 +79,12 @@
       crdURL: https://raw.githubusercontent.com/fluxcd/source-controller/main/config/crd/bases/source.toolkit.fluxcd.io_ocirepositories.yaml
     - name: HelmRepository
       crdURL: https://raw.githubusercontent.com/fluxcd/source-controller/main/config/crd/bases/source.toolkit.fluxcd.io_helmrepositories.yaml
+    - name: ImagePolicy
+      crdURL: https://raw.githubusercontent.com/fluxcd/image-reflector-controller/main/config/crd/bases/image.toolkit.fluxcd.io_imagepolicies.yaml
+    - name: ImageRepository
+      crdURL: https://raw.githubusercontent.com/fluxcd/image-reflector-controller/main/config/crd/bases/image.toolkit.fluxcd.io_imagerepositories.yaml
+    - name: ImageUpdateAutomation
+      crdURL: https://raw.githubusercontent.com/fluxcd/image-automation-controller/main/config/crd/bases/image.toolkit.fluxcd.io_imageupdateautomations.yaml
 
 - group: giantswarm
   resources:

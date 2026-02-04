@@ -932,9 +932,13 @@ export interface HelmRelease {
      */
     history?: {
       /**
+       * Action is the action that resulted in this snapshot being created.
+       */
+      action?: string;
+      /**
        * APIVersion is the API version of the Snapshot.
-       * Provisional: when the calculation method of the Digest field is changed,
-       * this field will be used to distinguish between the old and new methods.
+       * When the calculation method of the Digest field is changed, this
+       * field will be used to distinguish between the old and new methods.
        */
       apiVersion?: string;
       /**

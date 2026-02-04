@@ -447,6 +447,7 @@ export interface VSphereMachineTemplate {
          * virtual machine.
          * Defaults to the eponymous property value in the template from which the
          * virtual machine is cloned.
+         * Note: Starting with vSphere 8 numCoresPerSocket can be set to 0 to enable "Assigned at power on".
          */
         numCoresPerSocket?: number;
         /**
