@@ -21,4 +21,7 @@ __exportStar(require("./Kustomization"), exports);
 __exportStar(require("./GitRepository"), exports);
 __exportStar(require("./OCIRepository"), exports);
 __exportStar(require("./HelmRepository"), exports);
+__exportStar(require("./ImagePolicy"), exports);
+__exportStar(require("./ImageRepository"), exports);
+__exportStar(require("./ImageUpdateAutomation"), exports);
 //# sourceMappingURL=index.js.map

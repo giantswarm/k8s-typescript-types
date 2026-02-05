@@ -278,7 +278,7 @@ export interface HelmRelease {
          * health of custom resources using Common Expression Language (CEL).
          * The expressions are evaluated only when the specific Helm action
          * taking place has wait enabled, i.e. DisableWait is false, and the
-         * 'watcher' WaitStrategy is used.
+         * 'poller' WaitStrategy is used.
          */
         healthCheckExprs?: {
             /**
@@ -922,13 +922,13 @@ export interface HelmRelease {
         waitStrategy?: {
             /**
              * Name is Helm's wait strategy for waiting for applied resources to
-             * become ready. One of 'watcher' or 'legacy'. The 'watcher' strategy uses
-             * kstatus to watch resource statuses, while the 'legacy' strategy uses
+             * become ready. One of 'poller' or 'legacy'. The 'poller' strategy uses
+             * kstatus to poll resource statuses, while the 'legacy' strategy uses
              * Helm v3's waiting logic.
-             * Defaults to 'watcher', or to 'legacy' when UseHelm3Defaults feature
+             * Defaults to 'poller', or to 'legacy' when UseHelm3Defaults feature
              * gate is enabled.
              */
-            name: 'watcher' | 'legacy';
+            name: 'poller' | 'legacy';
         };
     };
     /**
@@ -988,9 +988,13 @@ export interface HelmRelease {
          */
         history?: {
             /**
+             * Action is the action that resulted in this snapshot being created.
+             */
+            action?: string;
+            /**
              * APIVersion is the API version of the Snapshot.
-             * Provisional: when the calculation method of the Digest field is changed,
-             * this field will be used to distinguish between the old and new methods.
+             * When the calculation method of the Digest field is changed, this
+             * field will be used to distinguish between the old and new methods.
              */
             apiVersion?: string;
             /**

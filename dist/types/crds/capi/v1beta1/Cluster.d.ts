@@ -198,8 +198,7 @@ export interface Cluster {
         /**
          * topology encapsulates the topology for the cluster.
          * NOTE: It is required to enable the ClusterTopology
-         * feature gate flag to activate managed topologies support;
-         * this feature is highly experimental, and parts of it might still be not implemented.
+         * feature gate flag to activate managed topologies support.
          */
         topology?: {
             /**
