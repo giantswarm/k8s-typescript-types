@@ -17,7 +17,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * This file was automatically generated, PLEASE DO NOT MODIFY IT BY HAND.
  */
-__exportStar(require("./ImagePolicy"), exports);
-__exportStar(require("./ImageRepository"), exports);
-__exportStar(require("./ImageUpdateAutomation"), exports);
+__exportStar(require("./KarpenterMachinePool"), exports);
 //# sourceMappingURL=index.js.map

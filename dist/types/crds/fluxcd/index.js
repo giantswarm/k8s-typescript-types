@@ -33,12 +33,11 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.v1beta2 = exports.v1 = exports.v2beta2 = exports.v2 = void 0;
+exports.v1beta2 = exports.v1 = exports.v2 = void 0;
 /**
  * This file was automatically generated, PLEASE DO NOT MODIFY IT BY HAND.
  */
 exports.v2 = __importStar(require("./v2"));
-exports.v2beta2 = __importStar(require("./v2beta2"));
 exports.v1 = __importStar(require("./v1"));
 exports.v1beta2 = __importStar(require("./v1beta2"));
 //# sourceMappingURL=index.js.map
