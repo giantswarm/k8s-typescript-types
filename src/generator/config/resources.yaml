@@ -27,8 +27,6 @@
       crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-aws/main/config/crd/bases/controlplane.cluster.x-k8s.io_awsmanagedcontrolplanes.yaml
     - name: AWSClusterRoleIdentity
       crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-aws/main/config/crd/bases/infrastructure.cluster.x-k8s.io_awsclusterroleidentities.yaml
-    - name: KarpenterMachinePool
-      crdURL: https://raw.githubusercontent.com/giantswarm/aws-resolver-rules-operator/main/config/crd/bases/infrastructure.cluster.x-k8s.io_karpentermachinepools.yaml
 
 - group: capz
   resources:
@@ -106,3 +104,5 @@
       crdURL: https://raw.githubusercontent.com/giantswarm/organization-operator/main/config/crd/bases/security.giantswarm.io_organizations.yaml
     - name: Release
       crdURL: https://raw.githubusercontent.com/giantswarm/releases/refs/heads/master/sdk/config/crd/bases/release.giantswarm.io_releases.yaml
+    - name: KarpenterMachinePool
+      crdURL: https://raw.githubusercontent.com/giantswarm/aws-resolver-rules-operator/main/config/crd/bases/infrastructure.cluster.x-k8s.io_karpentermachinepools.yaml

@@ -5,4 +5,5 @@ export * from './App';
 export * from './Catalog';
 export * from './Organization';
 export * from './Release';
+export * from './KarpenterMachinePool';
 //# sourceMappingURL=index.d.ts.map
