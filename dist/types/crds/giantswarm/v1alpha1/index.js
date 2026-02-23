@@ -21,4 +21,5 @@ __exportStar(require("./App"), exports);
 __exportStar(require("./Catalog"), exports);
 __exportStar(require("./Organization"), exports);
 __exportStar(require("./Release"), exports);
+__exportStar(require("./KarpenterMachinePool"), exports);
 //# sourceMappingURL=index.js.map

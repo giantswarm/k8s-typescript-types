@@ -1,1 +1,1 @@
-{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../../src/types/crds/fluxcd/v1beta2/index.ts"],"names":[],"mappings":"AAAA;;GAEG;AACH,cAAc,iBAAiB,CAAC;AAChC,cAAc,iBAAiB,CAAC;AAChC,cAAc,iBAAiB,CAAC;AAChC,cAAc,kBAAkB,CAAC;AACjC,cAAc,eAAe,CAAC;AAC9B,cAAc,mBAAmB,CAAC;AAClC,cAAc,yBAAyB,CAAC"}
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../../src/types/crds/fluxcd/v1beta2/index.ts"],"names":[],"mappings":"AAAA;;GAEG;AACH,cAAc,eAAe,CAAC;AAC9B,cAAc,mBAAmB,CAAC;AAClC,cAAc,yBAAyB,CAAC"}

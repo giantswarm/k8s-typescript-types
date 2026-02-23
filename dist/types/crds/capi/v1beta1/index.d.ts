@@ -4,5 +4,6 @@
 export * from './Cluster';
 export * from './MachineDeployment';
 export * from './Machine';
+export * from './MachinePool';
 export * from './KubeadmControlPlane';
 //# sourceMappingURL=index.d.ts.map

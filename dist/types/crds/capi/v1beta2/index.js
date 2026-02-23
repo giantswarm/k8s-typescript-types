@@ -20,5 +20,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./Cluster"), exports);
 __exportStar(require("./MachineDeployment"), exports);
 __exportStar(require("./Machine"), exports);
+__exportStar(require("./MachinePool"), exports);
 __exportStar(require("./KubeadmControlPlane"), exports);
 //# sourceMappingURL=index.js.map

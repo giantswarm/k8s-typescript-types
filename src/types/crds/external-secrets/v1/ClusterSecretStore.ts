@@ -250,72 +250,6 @@ export interface ClusterSecretStore {
         };
       };
       /**
-       * Alibaba configures this store to sync secrets using Alibaba Cloud provider
-       */
-      alibaba?: {
-        /**
-         * AlibabaAuth contains a secretRef for credentials.
-         */
-        auth: {
-          /**
-           * AlibabaRRSAAuth authenticates against Alibaba using RRSA.
-           */
-          rrsa?: {
-            oidcProviderArn: string;
-            oidcTokenFilePath: string;
-            roleArn: string;
-            sessionName: string;
-          };
-          /**
-           * AlibabaAuthSecretRef holds secret references for Alibaba credentials.
-           */
-          secretRef?: {
-            /**
-             * The AccessKeyID is used for authentication
-             */
-            accessKeyIDSecretRef: {
-              /**
-               * A key in the referenced Secret.
-               * Some instances of this field may be defaulted, in others it may be required.
-               */
-              key?: string;
-              /**
-               * The name of the Secret resource being referred to.
-               */
-              name?: string;
-              /**
-               * The namespace of the Secret resource being referred to.
-               * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
-               */
-              namespace?: string;
-            };
-            /**
-             * The AccessKeySecret is used for authentication
-             */
-            accessKeySecretSecretRef: {
-              /**
-               * A key in the referenced Secret.
-               * Some instances of this field may be defaulted, in others it may be required.
-               */
-              key?: string;
-              /**
-               * The name of the Secret resource being referred to.
-               */
-              name?: string;
-              /**
-               * The namespace of the Secret resource being referred to.
-               * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
-               */
-              namespace?: string;
-            };
-          };
-        };
-        /**
-         * Alibaba Region to be used for the provider
-         */
-        regionID: string;
-      };
-      /**
        * AWS configures this store to sync secrets using AWS Secret Manager provider
        */
       aws?: {
@@ -1276,44 +1210,6 @@ export interface ClusterSecretStore {
          * If unset, defaults to "https://%s.secretsvaultcloud.%s/v1/%s%s".
          */
         urlTemplate?: string;
-      };
-      /**
-       * Device42 configures this store to sync secrets using the Device42 provider
-       */
-      device42?: {
-        /**
-         * Auth configures how secret-manager authenticates with a Device42 instance.
-         */
-        auth: {
-          /**
-           * Device42SecretRef contains the secret reference for accessing the Device42 instance.
-           */
-          secretRef: {
-            /**
-             * Username / Password is used for authentication.
-             */
-            credentials?: {
-              /**
-               * A key in the referenced Secret.
-               * Some instances of this field may be defaulted, in others it may be required.
-               */
-              key?: string;
-              /**
-               * The name of the Secret resource being referred to.
-               */
-              name?: string;
-              /**
-               * The namespace of the Secret resource being referred to.
-               * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
-               */
-              namespace?: string;
-            };
-          };
-        };
-        /**
-         * URL configures the Device42 instance URL.
-         */
-        host: string;
       };
       /**
        * Doppler configures this store to sync secrets using the Doppler provider
