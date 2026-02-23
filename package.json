@@ -16,7 +16,7 @@
     "generate": "tsx src/generator/index.ts",
     "build": "tsc",
     "clean": "rm -rf dist src/types/crds/*",
-    "regenerate": "yarn generate && yarn build"
+    "regenerate": "yarn clean && yarn generate && yarn build"
   },
   "files": [
     "dist"
