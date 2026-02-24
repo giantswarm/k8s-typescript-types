@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Pinned Flux CD source-controller CRD URLs to v1.7.4 instead of main branch
+
 ## [0.3.0] - 2026-02-23
 
 ### Added
