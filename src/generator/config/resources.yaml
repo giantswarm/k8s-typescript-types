@@ -76,11 +76,11 @@
     - name: Kustomization
       crdURL: https://raw.githubusercontent.com/fluxcd/kustomize-controller/main/config/crd/bases/kustomize.toolkit.fluxcd.io_kustomizations.yaml
     - name: GitRepository
-      crdURL: https://raw.githubusercontent.com/fluxcd/source-controller/main/config/crd/bases/source.toolkit.fluxcd.io_gitrepositories.yaml
+      crdURL: https://raw.githubusercontent.com/fluxcd/source-controller/refs/tags/v1.7.4/config/crd/bases/source.toolkit.fluxcd.io_gitrepositories.yaml
     - name: OCIRepository
-      crdURL: https://raw.githubusercontent.com/fluxcd/source-controller/main/config/crd/bases/source.toolkit.fluxcd.io_ocirepositories.yaml
+      crdURL: https://raw.githubusercontent.com/fluxcd/source-controller/refs/tags/v1.7.4/config/crd/bases/source.toolkit.fluxcd.io_ocirepositories.yaml
     - name: HelmRepository
-      crdURL: https://raw.githubusercontent.com/fluxcd/source-controller/main/config/crd/bases/source.toolkit.fluxcd.io_helmrepositories.yaml
+      crdURL: https://raw.githubusercontent.com/fluxcd/source-controller/refs/tags/v1.7.4/config/crd/bases/source.toolkit.fluxcd.io_helmrepositories.yaml
     - name: ImagePolicy
       crdURL: https://raw.githubusercontent.com/fluxcd/image-reflector-controller/main/config/crd/bases/image.toolkit.fluxcd.io_imagepolicies.yaml
     - name: ImageRepository
