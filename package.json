@@ -25,7 +25,7 @@
     "@types/js-yaml": "^4",
     "@types/lodash": "^4.17.5",
     "@types/node": "^24.9.1",
-    "js-yaml": "^4.1.0",
+    "js-yaml": "^4.2.0",
     "json-schema-to-typescript": "^15.0.2",
     "lodash": "^4.17.21",
     "node-fetch": "^3",
