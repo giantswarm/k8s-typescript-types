@@ -15,30 +15,12 @@ interface ICRDPartial {
   };
 }
 
-/**
- * Partial interface of Kratix Promise
- */
-export interface IPromisePartial {
-  kind: 'Promise';
-  apiVersion: 'platform.kratix.io/v1alpha1';
-  spec: {
-    api: ICRD;
-  };
-}
-
 export interface ICRD extends ICRDPartial {}
-
-export interface IPromise extends IPromisePartial {}
 
 export async function fetchCRD(URL: string): Promise<ICRD> {
   const response = await fetch(URL);
   const data = await response.text();
-  const parsedData = yaml.load(data) as ICRD | IPromise;
-
-  if (parsedData.kind === 'Promise') {
-    return parsedData.spec.api;
-  }
+  const parsedData = yaml.load(data) as ICRD;
 
   return parsedData;
 }
-
