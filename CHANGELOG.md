@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Removed
+
+- Removed the Kratix-derived `AppDeployment`, `GitHubApp`, and `GitHubRepo` types (generated from the `dev-platform-kratix-promises` Promises) as part of the org-wide Kratix removal.
+
 ## [0.5.0] - 2026-03-24
 
 ### Changed

@@ -92,14 +92,8 @@
   resources:
     - name: App
       crdURL: https://raw.githubusercontent.com/giantswarm/apiextensions-application/main/config/crd/application.giantswarm.io_apps.yaml
-    - name: AppDeployment
-      crdURL: https://raw.githubusercontent.com/giantswarm/dev-platform-kratix-promises/main/app-deployment-promise/promise.yaml
     - name: Catalog
       crdURL: https://raw.githubusercontent.com/giantswarm/apiextensions-application/main/config/crd/application.giantswarm.io_catalogs.yaml
-    - name: GitHubApp
-      crdURL: https://raw.githubusercontent.com/giantswarm/dev-platform-kratix-promises/main/github-app-promise/promise.yaml
-    - name: GitHubRepo
-      crdURL: https://raw.githubusercontent.com/giantswarm/dev-platform-kratix-promises/main/github-template-repo-promise/promise.yaml
     - name: Organization
       crdURL: https://raw.githubusercontent.com/giantswarm/organization-operator/main/config/crd/bases/security.giantswarm.io_organizations.yaml
     - name: Release
