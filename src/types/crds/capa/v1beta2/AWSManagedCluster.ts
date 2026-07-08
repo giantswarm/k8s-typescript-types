@@ -34,11 +34,11 @@ export interface AWSManagedCluster {
       /**
        * host is the hostname on which the API server is serving.
        */
-      host: string;
+      host?: string;
       /**
        * port is the port on which the API server is serving.
        */
-      port: number;
+      port?: number;
     };
   };
   /**

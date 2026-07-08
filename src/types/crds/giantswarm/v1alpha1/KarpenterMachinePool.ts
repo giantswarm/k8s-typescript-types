@@ -609,7 +609,6 @@ export interface KarpenterMachinePool {
             key: string;
             /**
              * TimeAdded represents the time at which the taint was added.
-             * It is only written for NoExecute taints.
              */
             timeAdded?: string;
             /**
@@ -633,7 +632,6 @@ export interface KarpenterMachinePool {
             key: string;
             /**
              * TimeAdded represents the time at which the taint was added.
-             * It is only written for NoExecute taints.
              */
             timeAdded?: string;
             /**

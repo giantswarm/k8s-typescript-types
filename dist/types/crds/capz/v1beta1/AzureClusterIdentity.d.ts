@@ -35,7 +35,7 @@ export interface AzureClusterIdentity {
          */
         allowedNamespaces?: {
             /**
-             * A nil or empty list indicates that AzureCluster cannot use the identity from any namespace.
+             * An empty list indicates that AzureCluster cannot use the identity from any namespace.
              */
             list?: string[];
             /**

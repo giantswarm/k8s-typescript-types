@@ -258,6 +258,14 @@ export interface AzureMachinePool {
         };
       };
       /**
+       * DisableVMBootstrapExtension specifies whether the VM bootstrap extension should be disabled on the virtual machine scale set.
+       * Use this setting if you want to disable only the bootstrapping extension and not all extensions.
+       * If unset, CAPZ treats this as true during reconciliation, meaning the bootstrap extension is not installed on new VMSSes.
+       * Set to false to opt back in to the bootstrap extension. Changing this field on an existing AzureMachinePool only takes
+       * effect on the next model-changing update of the underlying VMSS (e.g. image, identity, zones, or SKU change).
+       */
+      disableVMBootstrapExtension?: boolean;
+      /**
        * Image is used to provide details of an image to use during VM creation.
        * If image details are omitted the image will default the Azure Marketplace "capi" offer,
        * which is based on Ubuntu.
@@ -349,6 +357,7 @@ export interface AzureMachinePool {
         };
         /**
          * SharedGallery specifies an image to use from an Azure Shared Image Gallery
+         *
          * Deprecated: use ComputeGallery instead.
          */
         sharedGallery?: {
@@ -778,6 +787,7 @@ export interface AzureMachinePool {
       };
       /**
        * SharedGallery specifies an image to use from an Azure Shared Image Gallery
+       *
        * Deprecated: use ComputeGallery instead.
        */
       sharedGallery?: {

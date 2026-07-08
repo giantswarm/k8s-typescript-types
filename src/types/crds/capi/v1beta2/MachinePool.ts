@@ -471,7 +471,7 @@ export interface MachinePool {
       infrastructureProvisioned?: boolean;
     };
     /**
-     * nodeRefs will point to the corresponding Nodes if it they exist.
+     * nodeRefs will point to the corresponding Nodes if they exist.
      *
      * @maxItems 10000
      */
@@ -546,5 +546,33 @@ export interface MachinePool {
      * upToDateReplicas is the number of up-to-date replicas targeted by this MachinePool. A machine is considered up-to-date when Machine's UpToDate condition is true.
      */
     upToDateReplicas?: number;
+    /**
+     * versions is the aggregated Kubernetes versions in this MachinePool.
+     *
+     * @minItems 1
+     * @maxItems 100
+     */
+    versions?: [
+      {
+        /**
+         * replicas is the number of replicas at this version.
+         */
+        replicas?: number;
+        /**
+         * version is the Kubernetes version.
+         */
+        version: string;
+      },
+      ...{
+        /**
+         * replicas is the number of replicas at this version.
+         */
+        replicas?: number;
+        /**
+         * version is the Kubernetes version.
+         */
+        version: string;
+      }[]
+    ];
   };
 }

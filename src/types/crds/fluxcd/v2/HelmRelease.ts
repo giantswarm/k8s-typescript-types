@@ -190,8 +190,8 @@ export interface HelmRelease {
        */
       name: string;
       /**
-       * Namespace of the referent, defaults to the namespace of the HelmRelease
-       * resource object that contains the reference.
+       * Namespace of the referent, defaults to the namespace of the resource
+       * object that contains the reference.
        */
       namespace?: string;
       /**
@@ -304,7 +304,7 @@ export interface HelmRelease {
       /**
        * Kind of the custom resource under evaluation.
        */
-      kind: string;
+      kind?: string;
     }[];
     /**
      * Install holds the configuration for Helm install actions for this HelmRelease.
@@ -406,7 +406,8 @@ export interface HelmRelease {
       skipCRDs?: boolean;
       /**
        * Strategy defines the install strategy to use for this HelmRelease.
-       * Defaults to 'RemediateOnFailure'.
+       * Defaults to 'RemediateOnFailure', or 'RetryOnFailure' when the
+       * DefaultToRetryOnFailure feature gate is enabled.
        */
       strategy?: {
         /**
@@ -518,6 +519,14 @@ export interface HelmRelease {
      * If not set, it defaults to true.
      */
     persistentClient?: boolean;
+    /**
+     * PostRenderStrategy defines the strategy for sending hooks to post-renderers.
+     * Valid values are 'nohooks' (hooks not sent to post-renderers, Helm 3 behavior),
+     * 'combined' (hooks and templates sent together, Helm 4 default), and 'separate'
+     * (hooks and templates sent in separate streams, Helm 4.2 opt-in).
+     * Defaults to 'combined', or 'nohooks' when the UseHelm3Defaults feature gate is enabled.
+     */
+    postRenderStrategy?: 'nohooks' | 'combined' | 'separate';
     /**
      * PostRenderers holds an array of Helm PostRenderers, which will be applied in order
      * of their definition.
@@ -637,7 +646,10 @@ export interface HelmRelease {
        */
       disableWaitForJobs?: boolean;
       /**
-       * Force forces resource updates through a replacement strategy.
+       * Force forces resource updates through a replacement strategy
+       * that avoids 3-way merge conflicts on client-side apply.
+       * This field is ignored for server-side apply (which always
+       * forces conflicts with other field managers).
        */
       force?: boolean;
       /**
@@ -760,6 +772,15 @@ export interface HelmRelease {
      */
     upgrade?: {
       /**
+       * ChartNameChangeStrategy defines the strategy to use when a Helm chart name changes.
+       * Valid values are 'Reinstall' or 'InPlaceUpdate'. Defaults to 'Reinstall' if omitted.
+       *
+       * Reinstall: Reinstall the Helm release, uninstalling the existing Helm release.
+       *
+       * InPlaceUpdate: Update the Helm release in place.
+       */
+      chartNameChangeStrategy?: 'InPlaceUpdate' | 'Reinstall';
+      /**
        * CleanupOnFail allows deletion of new resources created during the Helm
        * upgrade action when it fails.
        */
@@ -812,7 +833,10 @@ export interface HelmRelease {
        */
       disableWaitForJobs?: boolean;
       /**
-       * Force forces resource updates through a replacement strategy.
+       * Force forces resource updates through a replacement strategy
+       * that avoids 3-way merge conflicts on client-side apply.
+       * This field is ignored for server-side apply (which always
+       * forces conflicts with other field managers).
        */
       force?: boolean;
       /**
@@ -857,7 +881,8 @@ export interface HelmRelease {
       serverSideApply?: 'enabled' | 'disabled' | 'auto';
       /**
        * Strategy defines the upgrade strategy to use for this HelmRelease.
-       * Defaults to 'RemediateOnFailure'.
+       * Defaults to 'RemediateOnFailure', or 'RetryOnFailure' when the
+       * DefaultToRetryOnFailure feature gate is enabled.
        */
       strategy?: {
         /**
@@ -893,6 +918,17 @@ export interface HelmRelease {
        * Kind of the values referent, valid values are ('Secret', 'ConfigMap').
        */
       kind: 'Secret' | 'ConfigMap';
+      /**
+       * Literal marks this ValuesReference as a literal value. When set in
+       * combination with TargetPath, the referenced value is merged at the target
+       * path without interpreting Helm's `--set` syntax (commas, brackets, dots,
+       * equal signs, etc.), mirroring the behavior of `helm --set-literal`. This
+       * is the only safe way to inject arbitrary file content (config files, JSON
+       * blobs, multi-line strings containing special characters) through
+       * `valuesFrom`. Has no effect when TargetPath is empty: in that mode the
+       * referenced value is always YAML-merged at the root.
+       */
+      literal?: boolean;
       /**
        * Name of the values referent. Should reside in the same namespace as the
        * referring resource.
