@@ -100,3 +100,13 @@
       crdURL: https://raw.githubusercontent.com/giantswarm/releases/refs/heads/master/sdk/config/crd/bases/release.giantswarm.io_releases.yaml
     - name: KarpenterMachinePool
       crdURL: https://raw.githubusercontent.com/giantswarm/aws-resolver-rules-operator/main/config/crd/bases/infrastructure.cluster.x-k8s.io_karpentermachinepools.yaml
+
+- group: kagent
+  resources:
+    # kagent CRDs, pinned to the version deployed by the agentic-platform
+    # chart on Giant Swarm management clusters (kagent v0.9.9). Bump this tag
+    # in step with the deployed kagent version. v1alpha2 is the storage version.
+    - name: Agent
+      crdURL: https://raw.githubusercontent.com/kagent-dev/kagent/v0.9.9/go/api/config/crd/bases/kagent.dev_agents.yaml
+    - name: ModelConfig
+      crdURL: https://raw.githubusercontent.com/kagent-dev/kagent/v0.9.9/go/api/config/crd/bases/kagent.dev_modelconfigs.yaml

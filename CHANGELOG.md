@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Added `kagent` types (`Agent` and `ModelConfig`, versions `v1alpha1` and `v1alpha2`), generated from the kagent CRDs pinned to `v0.9.9` — the version deployed by the `agentic-platform` chart on Giant Swarm management clusters. `v1alpha2` is the storage version.
+
 ### Removed
 
 - Removed the Kratix-derived `AppDeployment`, `GitHubApp`, and `GitHubRepo` types (generated from the `dev-platform-kratix-promises` Promises) as part of the org-wide Kratix removal.
