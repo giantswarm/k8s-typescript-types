@@ -4784,6 +4784,7 @@ export interface AWSManagedControlPlane {
       /**
        * AllowedCIDRBlocks is a list of CIDR blocks allowed to access the bastion host.
        * They are set as ingress rules for the Bastion host's Security Group (defaults to 0.0.0.0/0).
+       * If the cluster has IPv6 enabled, defaults to ::/0 and 0.0.0.0/0.
        */
       allowedCIDRBlocks?: string[];
       /**
@@ -4821,11 +4822,11 @@ export interface AWSManagedControlPlane {
       /**
        * host is the hostname on which the API server is serving.
        */
-      host: string;
+      host?: string;
       /**
        * port is the port on which the API server is serving.
        */
-      port: number;
+      port?: number;
     };
     /**
      * EKSClusterName allows you to specify the name of the EKS cluster in
@@ -5143,12 +5144,10 @@ export interface AWSManagedControlPlane {
         /**
          * IPv6CidrBlock is the IPv6 CIDR block to be used when the provider creates a managed VPC.
          * A subnet can have an IPv4 and an IPv6 address.
-         * IPv6 is only supported in managed clusters, this field cannot be set on AWSCluster object.
          */
         ipv6CidrBlock?: string;
         /**
-         * IsIPv6 defines the subnet as an IPv6 subnet. A subnet is IPv6 when it is associated with a VPC that has IPv6 enabled.
-         * IPv6 is only supported in managed clusters, this field cannot be set on AWSCluster object.
+         * IsIPv6 defines the subnet as an IPv6 subnet. A subnet is IPv6 when it is associated with an IPv6 CIDR.
          */
         isIpv6?: boolean;
         /**
@@ -5299,12 +5298,12 @@ export interface AWSManagedControlPlane {
            * The netmask length of the IPv4 CIDR you want to allocate to VPC from
            * an Amazon VPC IP Address Manager (IPAM) pool.
            * Defaults to /16 for IPv4 if not specified.
+           * Defaults to /56 for IPv6 if not specified.
            */
           netmaskLength?: number;
         };
         /**
-         * IPv6 contains ipv6 specific settings for the network. Supported only in managed clusters.
-         * This field cannot be set on AWSCluster object.
+         * IPv6 contains ipv6 specific settings for the network.
          */
         ipv6?: {
           /**
@@ -5333,6 +5332,7 @@ export interface AWSManagedControlPlane {
              * The netmask length of the IPv4 CIDR you want to allocate to VPC from
              * an Amazon VPC IP Address Manager (IPAM) pool.
              * Defaults to /16 for IPv4 if not specified.
+             * Defaults to /56 for IPv6 if not specified.
              */
             netmaskLength?: number;
           };
@@ -5541,7 +5541,8 @@ export interface AWSManagedControlPlane {
        */
       env?: {
         /**
-         * Name of the environment variable. Must be a C_IDENTIFIER.
+         * Name of the environment variable.
+         * May consist of any printable ASCII characters except '='.
          */
         name: string;
         /**
@@ -5594,6 +5595,37 @@ export interface AWSManagedControlPlane {
              * Path of the field to select in the specified API version.
              */
             fieldPath: string;
+          };
+          /**
+           * FileKeyRef selects a key of the env file.
+           * Requires the EnvFiles feature gate to be enabled.
+           */
+          fileKeyRef?: {
+            /**
+             * The key within the env file. An invalid key will prevent the pod from starting.
+             * The keys defined within a source may consist of any printable ASCII characters except '='.
+             * During Alpha stage of the EnvFiles feature gate, the key size is limited to 128 characters.
+             */
+            key: string;
+            /**
+             * Specify whether the file or its key must be defined. If the file or key
+             * does not exist, then the env var is not published.
+             * If optional is set to true and the specified key does not exist,
+             * the environment variable will not be set in the Pod's containers.
+             *
+             * If optional is set to false and the specified key does not exist,
+             * an error will be returned during Pod creation.
+             */
+            optional?: boolean;
+            /**
+             * The path within the volume from which to select the file.
+             * Must be relative and may not contain the '..' path or start with '..'.
+             */
+            path: string;
+            /**
+             * The name of the volume mount containing the env file.
+             */
+            volumeName: string;
           };
           /**
            * Selects a resource of the container: only resources limits and requests
@@ -5710,6 +5742,10 @@ export interface AWSManagedControlPlane {
         type: 'Hostname' | 'ExternalIP' | 'InternalIP' | 'ExternalDNS' | 'InternalDNS';
       }[];
       /**
+       * AssignPrimaryIPv6 specifies whether to enable assigning a primary IPv6 address to the primary network Interface.
+       */
+      assignPrimaryIPv6?: string;
+      /**
        * Availability zone of instance
        */
       availabilityZone?: string;
@@ -5744,6 +5780,12 @@ export interface AWSManagedControlPlane {
          * which is subject to change without notice. The current default is Disabled.
          */
         confidentialCompute?: 'Disabled' | 'AMDEncryptedVirtualizationNestedPaging';
+        /**
+         * NestedVirtualization specifies whether to enable nested virtualization on the instance.
+         * Nested virtualization is supported on C8i, M8i, and R8i instance types.
+         * Valid values are: enabled, disabled
+         */
+        nestedVirtualization?: 'enabled' | 'disabled';
       };
       /**
        * DynamicHostAllocation enables automatic allocation of dedicated hosts.
@@ -5801,6 +5843,13 @@ export interface AWSManagedControlPlane {
          */
         httpEndpoint?: 'enabled' | 'disabled';
         /**
+         * Enables or disables the IPv6 endpoint for the instance metadata service.
+         * This applies only if you enabled the HTTP metadata endpoint.
+         *
+         * Default: disabled
+         */
+        httpProtocolIpv6?: 'enabled' | 'disabled';
+        /**
          * The desired HTTP PUT response hop limit for instance metadata requests. The
          * larger the number, the further instance metadata requests can travel.
          *
@@ -5838,6 +5887,10 @@ export interface AWSManagedControlPlane {
        * The current state of the instance.
        */
       instanceState?: string;
+      /**
+       * The IPv6 address assigned to the instance.
+       */
+      ipv6Address?: string;
       /**
        * MarketType specifies the type of market for the EC2 instance. Valid values include:
        * "OnDemand" (default): The instance runs as a standard OnDemand instance.
@@ -6155,6 +6208,10 @@ export interface AWSManagedControlPlane {
            */
           targetGroup: {
             /**
+             * IPType is the IP address type for the target group.
+             */
+            ipType?: string;
+            /**
              * Name of the TargetGroup. Must be unique over the same group of listeners.
              */
             name: string;
@@ -6216,6 +6273,10 @@ export interface AWSManagedControlPlane {
            */
           protocol: string;
         }[];
+        /**
+         * LoadBalancerIPAddressType specifies the IP address type for the load balancer.
+         */
+        loadBalancerIPAddressType?: 'ipv4' | 'dualstack' | 'dualstack-without-public-ipv4';
         /**
          * LoadBalancerType sets the type for a load balancer. The default type is classic.
          */
@@ -6300,6 +6361,10 @@ export interface AWSManagedControlPlane {
            */
           targetGroup: {
             /**
+             * IPType is the IP address type for the target group.
+             */
+            ipType?: string;
+            /**
              * Name of the TargetGroup. Must be unique over the same group of listeners.
              */
             name: string;
@@ -6361,6 +6426,10 @@ export interface AWSManagedControlPlane {
            */
           protocol: string;
         }[];
+        /**
+         * LoadBalancerIPAddressType specifies the IP address type for the load balancer.
+         */
+        loadBalancerIPAddressType?: 'ipv4' | 'dualstack' | 'dualstack-without-public-ipv4';
         /**
          * LoadBalancerType sets the type for a load balancer. The default type is classic.
          */
@@ -6463,6 +6532,10 @@ export interface AWSManagedControlPlane {
         };
       };
     };
+    /**
+     * ObservedGeneration is the latest generation observed by the controller.
+     */
+    observedGeneration?: number;
     /**
      * OIDCProvider holds the status of the identity provider for this cluster
      */

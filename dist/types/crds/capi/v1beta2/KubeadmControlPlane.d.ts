@@ -1612,11 +1612,49 @@ export interface KubeadmControlPlane {
                      */
                     device: string;
                     /**
+                     * diskLayout specifies an ordered list of partitions, where each item defines the
+                     * percentage of disk space and optional partition type for that partition.
+                     * The sum of all partition percentages must not be greater than 100.
+                     * Mutually exclusive with layout.
+                     *
+                     * @minItems 1
+                     * @maxItems 100
+                     */
+                    diskLayout?: [
+                        {
+                            /**
+                             * partitionType is the partition type (optional).
+                             * Supported values are Linux, LinuxSwap, LinuxRAID, LVM, Fat32, NTFS,
+                             * and LinuxExtended. These are translated to cloud-init partition type codes.
+                             * A full GPT partition GUID is also supported as a passthrough value.
+                             */
+                            partitionType?: string;
+                            /**
+                             * percentage of disk that partition will take (1-100)
+                             */
+                            percentage: number;
+                        },
+                        ...{
+                            /**
+                             * partitionType is the partition type (optional).
+                             * Supported values are Linux, LinuxSwap, LinuxRAID, LVM, Fat32, NTFS,
+                             * and LinuxExtended. These are translated to cloud-init partition type codes.
+                             * A full GPT partition GUID is also supported as a passthrough value.
+                             */
+                            partitionType?: string;
+                            /**
+                             * percentage of disk that partition will take (1-100)
+                             */
+                            percentage: number;
+                        }[]
+                    ];
+                    /**
                      * layout specifies the device layout.
                      * If it is true, a single partition will be created for the entire device.
                      * When layout is false, it means don't partition or ignore existing partitioning.
+                     * Mutually exclusive with diskLayout.
                      */
-                    layout: boolean;
+                    layout?: boolean;
                     /**
                      * overwrite describes whether to skip checks and create the partition if a partition or filesystem is found on the device.
                      * Use with caution. Default is 'false'.
@@ -1646,6 +1684,15 @@ export interface KubeadmControlPlane {
                      * content is the actual content of the file.
                      */
                     content?: string;
+                    /**
+                     * contentFormat specifies how to interpret content after it is resolved (inline or from contentFrom).
+                     * When set to "Template", content is rendered as a Go text/template.
+                     * Available template variables:
+                     *   - .controlPlane.version: the Kubernetes version of the control plane (e.g. "v1.35.0").
+                     *     Only set when the cluster has a control plane reference that exposes spec.version.
+                     * When set to "Raw" or omitted, content is used verbatim.
+                     */
+                    contentFormat?: 'Raw' | 'Template';
                     /**
                      * contentFrom is a referenced source of content to populate the file.
                      */
@@ -1690,6 +1737,15 @@ export interface KubeadmControlPlane {
                      * content is the actual content of the file.
                      */
                     content?: string;
+                    /**
+                     * contentFormat specifies how to interpret content after it is resolved (inline or from contentFrom).
+                     * When set to "Template", content is rendered as a Go text/template.
+                     * Available template variables:
+                     *   - .controlPlane.version: the Kubernetes version of the control plane (e.g. "v1.35.0").
+                     *     Only set when the cluster has a control plane reference that exposes spec.version.
+                     * When set to "Raw" or omitted, content is used verbatim.
+                     */
+                    contentFormat?: 'Raw' | 'Template';
                     /**
                      * contentFrom is a referenced source of content to populate the file.
                      */
@@ -2696,7 +2752,7 @@ export interface KubeadmControlPlane {
                 /**
                  * readinessGates specifies additional conditions to include when evaluating Machine Ready condition;
                  * KubeadmControlPlane will always add readinessGates for the condition it is setting on the Machine:
-                 * APIServerPodHealthy, SchedulerPodHealthy, ControllerManagerPodHealthy, and if etcd is managed by CKP also
+                 * NodeKubeadmLabelsAndTaintsSet, APIServerPodHealthy, SchedulerPodHealthy, ControllerManagerPodHealthy, and if etcd is managed by CKP also
                  * EtcdPodHealthy, EtcdMemberHealthy.
                  *
                  * This field can be used e.g. to instruct the machine controller to include in the computation for Machine's ready
@@ -3114,8 +3170,38 @@ export interface KubeadmControlPlane {
         /**
          * version represents the minimum Kubernetes version for the control plane machines
          * in the cluster.
+         *
+         * Deprecated: This field is deprecated and is going to be removed in a future API version. Please use status.versions instead.
          */
         version?: string;
+        /**
+         * versions is the aggregated Kubernetes versions in this KubeadmControlPlane.
+         *
+         * @minItems 1
+         * @maxItems 100
+         */
+        versions?: [
+            {
+                /**
+                 * replicas is the number of replicas at this version.
+                 */
+                replicas?: number;
+                /**
+                 * version is the Kubernetes version.
+                 */
+                version: string;
+            },
+            ...{
+                /**
+                 * replicas is the number of replicas at this version.
+                 */
+                replicas?: number;
+                /**
+                 * version is the Kubernetes version.
+                 */
+                version: string;
+            }[]
+        ];
     };
 }
 //# sourceMappingURL=KubeadmControlPlane.d.ts.map

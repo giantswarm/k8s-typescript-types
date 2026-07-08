@@ -37,7 +37,7 @@ export interface MachineDeployment {
     deletion?: {
       /**
        * order defines the order in which Machines are deleted when downscaling.
-       * Defaults to "Random".  Valid values are "Random, "Newest", "Oldest"
+       * Defaults to "Random". Valid values are "Random", "Newest", "Oldest"
        */
       order?: 'Random' | 'Newest' | 'Oldest';
     };
@@ -633,5 +633,33 @@ export interface MachineDeployment {
      * upToDateReplicas is the number of up-to-date replicas targeted by this deployment. A machine is considered up-to-date when Machine's UpToDate condition is true.
      */
     upToDateReplicas?: number;
+    /**
+     * versions is the aggregated Kubernetes versions in this MachineDeployment.
+     *
+     * @minItems 1
+     * @maxItems 100
+     */
+    versions?: [
+      {
+        /**
+         * replicas is the number of replicas at this version.
+         */
+        replicas?: number;
+        /**
+         * version is the Kubernetes version.
+         */
+        version: string;
+      },
+      ...{
+        /**
+         * replicas is the number of replicas at this version.
+         */
+        replicas?: number;
+        /**
+         * version is the Kubernetes version.
+         */
+        version: string;
+      }[]
+    ];
   };
 }

@@ -45,6 +45,15 @@ export interface VSphereMachine {
      */
     cloneMode?: string;
     /**
+     * cryptoKeyID is the crypto key id.
+     */
+    cryptoKeyID?: string;
+    /**
+     * cryptoProfile of the storage encryption policy to use with this
+     * Virtual Machine.
+     */
+    cryptoProfile?: string;
+    /**
      * CustomVMXKeys is a dictionary of advanced VMX options that can be set on VM
      * Defaults to empty map
      */
@@ -100,6 +109,13 @@ export interface VSphereMachine {
      */
     folder?: string;
     /**
+     * ftEncryptionMode is the encrypted fault tolerance mode.
+     * Defaults to the eponymous property value in the template from which the
+     * virtual machine is cloned.
+     * Check the compatibility with the ESXi version before setting the value.
+     */
+    ftEncryptionMode?: 'ftEncryptionDisabled' | 'ftEncryptionOpportunistic' | 'ftEncryptionRequired';
+    /**
      * GuestSoftPowerOffTimeout sets the wait timeout for shutdown in the VM guest.
      * The VM will be powered off forcibly after the timeout if the VM is still
      * up and running when the PowerOffMode is set to trySoft.
@@ -123,6 +139,13 @@ export interface VSphereMachine {
      */
     memoryMiB?: number;
     /**
+     * migrateEncryption is the encrypted vMotion mode.
+     * Defaults to the eponymous property value in the template from which the
+     * virtual machine is cloned.
+     * Check the compatibility with the ESXi version before setting the value.
+     */
+    migrateEncryption?: 'disabled' | 'opportunistic' | 'required';
+    /**
      * NamingStrategy allows configuring the naming strategy used when calculating the name of the VSphereVM.
      */
     namingStrategy?: {
@@ -144,6 +167,13 @@ export interface VSphereMachine {
        */
       template?: string;
     };
+    /**
+     * nestedHV controls nested hardware-assisted virtualization.
+     * Defaults to the eponymous property value in the template from which the
+     * virtual machine is cloned.
+     * Check the compatibility with the ESXi version before setting the value.
+     */
+    nestedHV?: boolean;
     /**
      * Network is the network configuration for this machine's VM.
      */

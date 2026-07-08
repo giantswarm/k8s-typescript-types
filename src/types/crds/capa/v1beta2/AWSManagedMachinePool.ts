@@ -128,6 +128,15 @@ export interface AWSManagedMachinePool {
        */
       capacityReservationPreference?: ('' | 'None' | 'CapacityReservationsOnly' | 'Open') & string;
       /**
+       * EnclaveOptions defines the options for Nitro Enclave support on the instance.
+       */
+      enclaveOptions?: {
+        /**
+         * Enabled enables the instance for AWS Nitro Enclaves.
+         */
+        enabled?: boolean;
+      };
+      /**
        * The name or the Amazon Resource Name (ARN) of the instance profile associated
        * with the IAM role for the instance. The instance profile contains the IAM
        * role.
@@ -168,6 +177,13 @@ export interface AWSManagedMachinePool {
          * Default: enabled
          */
         httpEndpoint?: 'enabled' | 'disabled';
+        /**
+         * Enables or disables the IPv6 endpoint for the instance metadata service.
+         * This applies only if you enabled the HTTP metadata endpoint.
+         *
+         * Default: disabled
+         */
+        httpProtocolIpv6?: 'enabled' | 'disabled';
         /**
          * The desired HTTP PUT response hop limit for instance metadata requests. The
          * larger the number, the further instance metadata requests can travel.

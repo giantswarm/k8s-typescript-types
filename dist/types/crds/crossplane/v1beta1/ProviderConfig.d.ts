@@ -321,6 +321,28 @@ export interface ProviderConfig {
             };
         };
         /**
+         * ReconciliationPolicy configures how a managed resource is reconciled.
+         * It currently allows overriding the controller's failure rate limiter
+         * parameters on a per-resource basis via ExponentialFailureRateLimiter.
+         */
+        reconciliationPolicy?: {
+            /**
+             * ExponentialFailureRateLimiter, when set, overrides the parameters of the
+             * exponential failure rate limiter used to schedule retries for the
+             * managed resource that this policy applies to.
+             */
+            exponentialFailureRateLimiter?: {
+                /**
+                 * BaseDelay is the initial delay between retries.
+                 */
+                baseDelay?: string;
+                /**
+                 * MaxDelay is the maximum delay between retries.
+                 */
+                maxDelay?: string;
+            };
+        };
+        /**
          * Whether to enable the request to use path-style addressing, i.e., https://s3.amazonaws.com/BUCKET/KEY.
          */
         s3_use_path_style?: boolean;

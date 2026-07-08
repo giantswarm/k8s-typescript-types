@@ -169,6 +169,8 @@ export interface AzureMachine {
     /**
      * DisableVMBootstrapExtension specifies whether the VM bootstrap extension should be disabled on the virtual machine.
      * Use this setting if you want to disable only the bootstrapping extension and not all extensions.
+     * If unset, CAPZ treats this as true during reconciliation, meaning the bootstrap extension is not installed on new VMs.
+     * Set to false to opt back in to the bootstrap extension.
      */
     disableVMBootstrapExtension?: boolean;
     /**
@@ -286,6 +288,7 @@ export interface AzureMachine {
       };
       /**
        * SharedGallery specifies an image to use from an Azure Shared Image Gallery
+       *
        * Deprecated: use ComputeGallery instead.
        */
       sharedGallery?: {

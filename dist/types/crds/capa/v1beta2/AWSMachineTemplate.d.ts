@@ -107,6 +107,16 @@ export interface AWSMachineTemplate {
                     id?: string;
                 };
                 /**
+                 * AssignPrimaryIPv6 specifies whether to enable assigning a primary IPv6 address to the primary network Interface.
+                 * When set to enabled, the instance will be assigned a primary IPv6 address from the subnet's IPv6 CIDR block.
+                 * This is required when registering instances by ID to IPv6 target groups of dual-stack load balancers.
+                 *
+                 * When not specified, the default value varies based on the subnet that the instance is launched in:
+                 * - disabled if subnet is ipv4 only
+                 * - enabled if subnet is ipv6 only or dual-stack
+                 */
+                assignPrimaryIPv6?: 'enabled' | 'disabled';
+                /**
                  * CapacityReservationID specifies the target Capacity Reservation into which the instance should be launched.
                  */
                 capacityReservationId?: string;
@@ -166,6 +176,12 @@ export interface AWSMachineTemplate {
                      * which is subject to change without notice. The current default is Disabled.
                      */
                     confidentialCompute?: 'Disabled' | 'AMDEncryptedVirtualizationNestedPaging';
+                    /**
+                     * NestedVirtualization specifies whether to enable nested virtualization on the instance.
+                     * Nested virtualization is supported on C8i, M8i, and R8i instance types.
+                     * Valid values are: enabled, disabled
+                     */
+                    nestedVirtualization?: 'enabled' | 'disabled';
                 };
                 /**
                  * DynamicHostAllocation enables automatic allocation of a single dedicated host.
@@ -339,6 +355,13 @@ export interface AWSMachineTemplate {
                      * Default: enabled
                      */
                     httpEndpoint?: 'enabled' | 'disabled';
+                    /**
+                     * Enables or disables the IPv6 endpoint for the instance metadata service.
+                     * This applies only if you enabled the HTTP metadata endpoint.
+                     *
+                     * Default: disabled
+                     */
+                    httpProtocolIpv6?: 'enabled' | 'disabled';
                     /**
                      * The desired HTTP PUT response hop limit for instance metadata requests. The
                      * larger the number, the further instance metadata requests can travel.

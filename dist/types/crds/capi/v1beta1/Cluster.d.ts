@@ -329,6 +329,50 @@ export interface Cluster {
                         type: string;
                     }[];
                     /**
+                     * unhealthyMachineConditions contains a list of the machine conditions that determine
+                     * whether a machine is considered unhealthy.  The conditions are combined in a
+                     * logical OR, i.e. if any of the conditions is met, the machine is unhealthy.
+                     *
+                     * @minItems 1
+                     * @maxItems 100
+                     */
+                    unhealthyMachineConditions?: [
+                        {
+                            /**
+                             * status of the condition, one of True, False, Unknown.
+                             */
+                            status: 'True' | 'False' | 'Unknown';
+                            /**
+                             * timeout is the duration that a Machine must be in a given status for,
+                             * after which the Machine is considered unhealthy.
+                             * For example, with a value of "1h", the Machine must match the status
+                             * for at least 1 hour before being considered unhealthy.
+                             */
+                            timeout: string;
+                            /**
+                             * type of Machine condition
+                             */
+                            type: string;
+                        },
+                        ...{
+                            /**
+                             * status of the condition, one of True, False, Unknown.
+                             */
+                            status: 'True' | 'False' | 'Unknown';
+                            /**
+                             * timeout is the duration that a Machine must be in a given status for,
+                             * after which the Machine is considered unhealthy.
+                             * For example, with a value of "1h", the Machine must match the status
+                             * for at least 1 hour before being considered unhealthy.
+                             */
+                            timeout: string;
+                            /**
+                             * type of Machine condition
+                             */
+                            type: string;
+                        }[]
+                    ];
+                    /**
                      * unhealthyRange specifies the range of unhealthy machines allowed.
                      * Any further remediation is only allowed if the number of machines selected by "selector" as not healthy
                      * is within the range of "unhealthyRange". Takes precedence over maxUnhealthy.
@@ -418,6 +462,85 @@ export interface Cluster {
                  * When specified against a control plane provider that lacks support for this field, this value will be ignored.
                  */
                 replicas?: number;
+                /**
+                 * rollout allows you to configure the behavior of rolling updates to the control plane.
+                 */
+                rollout?: {
+                    /**
+                     * after is a field to indicate a rollout should be performed
+                     * after the specified time even if no changes have been made to the ControlPlane.
+                     * Example: In the YAML the time can be specified in the RFC3339 format.
+                     * To specify the rolloutAfter target as March 9, 2023, at 9 am UTC
+                     * use "2023-03-09T09:00:00Z".
+                     */
+                    after?: string;
+                };
+                /**
+                 * taints are the node taints that Cluster API will manage.
+                 * This list is not necessarily complete: other Kubernetes components may add or remove other taints from nodes,
+                 * e.g. the node controller might add the node.kubernetes.io/not-ready taint.
+                 * Only those taints defined in this list will be added or removed by core Cluster API controllers.
+                 *
+                 * There can be at most 64 taints.
+                 * A pod would have to tolerate all existing taints to run on the corresponding node.
+                 *
+                 * NOTE: This list is implemented as a "map" type, meaning that individual elements can be managed by different owners.
+                 *
+                 * @minItems 1
+                 * @maxItems 64
+                 */
+                taints?: [
+                    {
+                        /**
+                         * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
+                         */
+                        effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
+                        /**
+                         * key is the taint key to be applied to a node.
+                         * Must be a valid qualified name of maximum size 63 characters
+                         * with an optional subdomain prefix of maximum size 253 characters,
+                         * separated by a `/`.
+                         */
+                        key: string;
+                        /**
+                         * propagation defines how this taint should be propagated to nodes.
+                         * Valid values are 'Always' and 'OnInitialization'.
+                         * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
+                         * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
+                         */
+                        propagation: 'Always' | 'OnInitialization';
+                        /**
+                         * value is the taint value corresponding to the taint key.
+                         * It must be a valid label value of maximum size 63 characters.
+                         */
+                        value?: string;
+                    },
+                    ...{
+                        /**
+                         * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
+                         */
+                        effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
+                        /**
+                         * key is the taint key to be applied to a node.
+                         * Must be a valid qualified name of maximum size 63 characters
+                         * with an optional subdomain prefix of maximum size 253 characters,
+                         * separated by a `/`.
+                         */
+                        key: string;
+                        /**
+                         * propagation defines how this taint should be propagated to nodes.
+                         * Valid values are 'Always' and 'OnInitialization'.
+                         * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
+                         * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
+                         */
+                        propagation: 'Always' | 'OnInitialization';
+                        /**
+                         * value is the taint value corresponding to the taint key.
+                         * It must be a valid label value of maximum size 63 characters.
+                         */
+                        value?: string;
+                    }[]
+                ];
                 /**
                  * variables can be used to customize the ControlPlane through patches.
                  */
@@ -629,6 +752,50 @@ export interface Cluster {
                             type: string;
                         }[];
                         /**
+                         * unhealthyMachineConditions contains a list of the machine conditions that determine
+                         * whether a machine is considered unhealthy.  The conditions are combined in a
+                         * logical OR, i.e. if any of the conditions is met, the machine is unhealthy.
+                         *
+                         * @minItems 1
+                         * @maxItems 100
+                         */
+                        unhealthyMachineConditions?: [
+                            {
+                                /**
+                                 * status of the condition, one of True, False, Unknown.
+                                 */
+                                status: 'True' | 'False' | 'Unknown';
+                                /**
+                                 * timeout is the duration that a Machine must be in a given status for,
+                                 * after which the Machine is considered unhealthy.
+                                 * For example, with a value of "1h", the Machine must match the status
+                                 * for at least 1 hour before being considered unhealthy.
+                                 */
+                                timeout: string;
+                                /**
+                                 * type of Machine condition
+                                 */
+                                type: string;
+                            },
+                            ...{
+                                /**
+                                 * status of the condition, one of True, False, Unknown.
+                                 */
+                                status: 'True' | 'False' | 'Unknown';
+                                /**
+                                 * timeout is the duration that a Machine must be in a given status for,
+                                 * after which the Machine is considered unhealthy.
+                                 * For example, with a value of "1h", the Machine must match the status
+                                 * for at least 1 hour before being considered unhealthy.
+                                 */
+                                timeout: string;
+                                /**
+                                 * type of Machine condition
+                                 */
+                                type: string;
+                            }[]
+                        ];
+                        /**
                          * unhealthyRange specifies the range of unhealthy machines allowed.
                          * Any further remediation is only allowed if the number of machines selected by "selector" as not healthy
                          * is within the range of "unhealthyRange". Takes precedence over maxUnhealthy.
@@ -729,6 +896,21 @@ export interface Cluster {
                      */
                     replicas?: number;
                     /**
+                     * rollout allows you to configure the behaviour of rolling updates to the MachineDeployment Machines.
+                     * It allows you to define the strategy used during rolling replacements.
+                     */
+                    rollout?: {
+                        /**
+                         * after is a field to indicate a rollout should be performed
+                         * after the specified time even if no changes have been made to the
+                         * MachineDeployment.
+                         * Example: In the YAML the time can be specified in the RFC3339 format.
+                         * To specify the rolloutAfter target as March 9, 2023, at 9 am UTC
+                         * use "2023-03-09T09:00:00Z".
+                         */
+                        after?: string;
+                    };
+                    /**
                      * strategy is the deployment strategy to use to replace existing machines with
                      * new ones.
                      */
@@ -763,7 +945,7 @@ export interface Cluster {
                         rollingUpdate?: {
                             /**
                              * deletePolicy defines the policy used by the MachineDeployment to identify nodes to delete when downscaling.
-                             * Valid values are "Random, "Newest", "Oldest"
+                             * Valid values are "Random", "Newest", "Oldest"
                              * When no value is supplied, the default DeletePolicy of MachineSet is used
                              */
                             deletePolicy?: 'Random' | 'Newest' | 'Oldest';
@@ -805,6 +987,72 @@ export interface Cluster {
                          */
                         type?: 'RollingUpdate' | 'OnDelete';
                     };
+                    /**
+                     * taints are the node taints that Cluster API will manage.
+                     * This list is not necessarily complete: other Kubernetes components may add or remove other taints from nodes,
+                     * e.g. the node controller might add the node.kubernetes.io/not-ready taint.
+                     * Only those taints defined in this list will be added or removed by core Cluster API controllers.
+                     *
+                     * There can be at most 64 taints.
+                     * A pod would have to tolerate all existing taints to run on the corresponding node.
+                     *
+                     * NOTE: This list is implemented as a "map" type, meaning that individual elements can be managed by different owners.
+                     *
+                     * @minItems 1
+                     * @maxItems 64
+                     */
+                    taints?: [
+                        {
+                            /**
+                             * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
+                             */
+                            effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
+                            /**
+                             * key is the taint key to be applied to a node.
+                             * Must be a valid qualified name of maximum size 63 characters
+                             * with an optional subdomain prefix of maximum size 253 characters,
+                             * separated by a `/`.
+                             */
+                            key: string;
+                            /**
+                             * propagation defines how this taint should be propagated to nodes.
+                             * Valid values are 'Always' and 'OnInitialization'.
+                             * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
+                             * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
+                             */
+                            propagation: 'Always' | 'OnInitialization';
+                            /**
+                             * value is the taint value corresponding to the taint key.
+                             * It must be a valid label value of maximum size 63 characters.
+                             */
+                            value?: string;
+                        },
+                        ...{
+                            /**
+                             * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
+                             */
+                            effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
+                            /**
+                             * key is the taint key to be applied to a node.
+                             * Must be a valid qualified name of maximum size 63 characters
+                             * with an optional subdomain prefix of maximum size 253 characters,
+                             * separated by a `/`.
+                             */
+                            key: string;
+                            /**
+                             * propagation defines how this taint should be propagated to nodes.
+                             * Valid values are 'Always' and 'OnInitialization'.
+                             * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
+                             * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
+                             */
+                            propagation: 'Always' | 'OnInitialization';
+                            /**
+                             * value is the taint value corresponding to the taint key.
+                             * It must be a valid label value of maximum size 63 characters.
+                             */
+                            value?: string;
+                        }[]
+                    ];
                     /**
                      * variables can be used to customize the MachineDeployment through patches.
                      */
@@ -921,6 +1169,72 @@ export interface Cluster {
                      * of this value.
                      */
                     replicas?: number;
+                    /**
+                     * taints are the node taints that Cluster API will manage.
+                     * This list is not necessarily complete: other Kubernetes components may add or remove other taints from nodes,
+                     * e.g. the node controller might add the node.kubernetes.io/not-ready taint.
+                     * Only those taints defined in this list will be added or removed by core Cluster API controllers.
+                     *
+                     * There can be at most 64 taints.
+                     * A pod would have to tolerate all existing taints to run on the corresponding node.
+                     *
+                     * NOTE: This list is implemented as a "map" type, meaning that individual elements can be managed by different owners.
+                     *
+                     * @minItems 1
+                     * @maxItems 64
+                     */
+                    taints?: [
+                        {
+                            /**
+                             * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
+                             */
+                            effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
+                            /**
+                             * key is the taint key to be applied to a node.
+                             * Must be a valid qualified name of maximum size 63 characters
+                             * with an optional subdomain prefix of maximum size 253 characters,
+                             * separated by a `/`.
+                             */
+                            key: string;
+                            /**
+                             * propagation defines how this taint should be propagated to nodes.
+                             * Valid values are 'Always' and 'OnInitialization'.
+                             * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
+                             * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
+                             */
+                            propagation: 'Always' | 'OnInitialization';
+                            /**
+                             * value is the taint value corresponding to the taint key.
+                             * It must be a valid label value of maximum size 63 characters.
+                             */
+                            value?: string;
+                        },
+                        ...{
+                            /**
+                             * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
+                             */
+                            effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
+                            /**
+                             * key is the taint key to be applied to a node.
+                             * Must be a valid qualified name of maximum size 63 characters
+                             * with an optional subdomain prefix of maximum size 253 characters,
+                             * separated by a `/`.
+                             */
+                            key: string;
+                            /**
+                             * propagation defines how this taint should be propagated to nodes.
+                             * Valid values are 'Always' and 'OnInitialization'.
+                             * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
+                             * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
+                             */
+                            propagation: 'Always' | 'OnInitialization';
+                            /**
+                             * value is the taint value corresponding to the taint key.
+                             * It must be a valid label value of maximum size 63 characters.
+                             */
+                            value?: string;
+                        }[]
+                    ];
                     /**
                      * variables can be used to customize the MachinePool through patches.
                      */
@@ -1128,6 +1442,34 @@ export interface Cluster {
                  * upToDateReplicas is the number of up-to-date control plane machines in this cluster. A machine is considered up-to-date when Machine's UpToDate condition is true.
                  */
                 upToDateReplicas?: number;
+                /**
+                 * versions is the aggregated Kubernetes versions in this control plane.
+                 *
+                 * @minItems 1
+                 * @maxItems 100
+                 */
+                versions?: [
+                    {
+                        /**
+                         * replicas is the number of replicas at this version.
+                         */
+                        replicas?: number;
+                        /**
+                         * version is the Kubernetes version.
+                         */
+                        version: string;
+                    },
+                    ...{
+                        /**
+                         * replicas is the number of replicas at this version.
+                         */
+                        replicas?: number;
+                        /**
+                         * version is the Kubernetes version.
+                         */
+                        version: string;
+                    }[]
+                ];
             };
             /**
              * workers groups all the observations about Cluster's Workers current state.
@@ -1154,6 +1496,34 @@ export interface Cluster {
                  * upToDateReplicas is the number of up-to-date worker machines in this cluster. A machine is considered up-to-date when Machine's UpToDate condition is true.
                  */
                 upToDateReplicas?: number;
+                /**
+                 * versions is the aggregated Kubernetes versions in these workers.
+                 *
+                 * @minItems 1
+                 * @maxItems 100
+                 */
+                versions?: [
+                    {
+                        /**
+                         * replicas is the number of replicas at this version.
+                         */
+                        replicas?: number;
+                        /**
+                         * version is the Kubernetes version.
+                         */
+                        version: string;
+                    },
+                    ...{
+                        /**
+                         * replicas is the number of replicas at this version.
+                         */
+                        replicas?: number;
+                        /**
+                         * version is the Kubernetes version.
+                         */
+                        version: string;
+                    }[]
+                ];
             };
         };
     };

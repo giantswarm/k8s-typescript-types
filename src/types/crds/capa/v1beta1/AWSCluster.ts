@@ -72,11 +72,11 @@ export interface AWSCluster {
       /**
        * host is the hostname on which the API server is serving.
        */
-      host: string;
+      host?: string;
       /**
        * port is the port on which the API server is serving.
        */
-      port: number;
+      port?: number;
     };
     /**
      * ControlPlaneLoadBalancer is optional configuration for customizing control plane behavior.
@@ -209,12 +209,10 @@ export interface AWSCluster {
         /**
          * IPv6CidrBlock is the IPv6 CIDR block to be used when the provider creates a managed VPC.
          * A subnet can have an IPv4 and an IPv6 address.
-         * IPv6 is only supported in managed clusters, this field cannot be set on AWSCluster object.
          */
         ipv6CidrBlock?: string;
         /**
-         * IsIPv6 defines the subnet as an IPv6 subnet. A subnet is IPv6 when it is associated with a VPC that has IPv6 enabled.
-         * IPv6 is only supported in managed clusters, this field cannot be set on AWSCluster object.
+         * IsIPv6 defines the subnet as an IPv6 subnet. A subnet is IPv6 when it is associated with an IPv6 CIDR.
          */
         isIpv6?: boolean;
         /**
@@ -270,8 +268,7 @@ export interface AWSCluster {
          */
         internetGatewayId?: string;
         /**
-         * IPv6 contains ipv6 specific settings for the network. Supported only in managed clusters.
-         * This field cannot be set on AWSCluster object.
+         * IPv6 contains ipv6 specific settings for the network.
          */
         ipv6?: {
           /**

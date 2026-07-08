@@ -355,6 +355,13 @@ export interface ClusterSecretStore {
           };
         };
         /**
+         * CustomSessionTags defines additional STS session tags to include when SessionTagsPolicy is Custom.
+         * These are merged with the automatically injected esoNamespace, esoStoreName, and esoStoreKind tags.
+         */
+        customSessionTags?: {
+          [k: string]: string;
+        };
+        /**
          * AWS External ID set on assumed IAM roles
          */
         externalID?: string;
@@ -402,6 +409,14 @@ export interface ClusterSecretStore {
           key: string;
           value: string;
         }[];
+        /**
+         * SessionTagsPolicy controls whether and how STS session tags are added when assuming roles.
+         * None (default): no tags are added.
+         * Simple: automatically adds esoNamespace (from the ExternalSecret), esoStoreName, and esoStoreKind tags.
+         * Custom: adds esoNamespace, esoStoreName, and esoStoreKind plus any tags defined in CustomSessionTags.
+         * Note: the IAM role must have sts:TagSession permission when using Simple or Custom.
+         */
+        sessionTagsPolicy?: 'None' | 'Simple' | 'Custom';
         /**
          * AWS STS assume role transitive session tags. Required when multiple rules are used with the provider
          */
@@ -497,6 +512,7 @@ export interface ClusterSecretStore {
          * Valid values are:
          * - "ServicePrincipal" (default): Using a service principal (tenantId, clientId, clientSecret)
          * - "ManagedIdentity": Using Managed Identity assigned to the pod (see aad-pod-identity)
+         * - "WorkloadIdentity": Using a Kubernetes ServiceAccount federated with Entra ID
          */
         authType?: 'ServicePrincipal' | 'ManagedIdentity' | 'WorkloadIdentity';
         /**
@@ -811,6 +827,106 @@ export interface ClusterSecretStore {
            */
           separator?: string;
           verifyCA: boolean;
+        };
+      };
+      /**
+       * BeyondtrustWorkloadCredentials configures this store to sync secrets using the BeyondTrust Workload Credentials provider.
+       */
+      beyondtrustworkloadcredentials?: {
+        /**
+         * Auth configures how the Operator authenticates with the BeyondTrust Workload Credentials API.
+         * Currently supports API key authentication via Kubernetes secret reference.
+         * For authentication setup, see: https://docs.beyondtrust.com/bt-docs/docs/secrets-api#authentication
+         */
+        auth: {
+          /**
+           * APIKey configures API token authentication for BeyondTrust Workload Credentials.
+           * The token is retrieved from a Kubernetes secret and used as a Bearer token for API requests.
+           */
+          apikey: {
+            /**
+             * Token references the Kubernetes secret containing the BeyondTrust Workload Credentials API token.
+             * The secret should contain the API key used to authenticate with BeyondTrust Workload Credentials.
+             * Create an API token in your BeyondTrust Workload Credentials console and store it in a Kubernetes secret.
+             * For details on creating API tokens, see: https://docs.beyondtrust.com/bt-docs/docs/secrets-api#authentication
+             */
+            token: {
+              /**
+               * A key in the referenced Secret.
+               * Some instances of this field may be defaulted, in others it may be required.
+               */
+              key?: string;
+              /**
+               * The name of the Secret resource being referred to.
+               */
+              name?: string;
+              /**
+               * The namespace of the Secret resource being referred to.
+               * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+               */
+              namespace?: string;
+            };
+          };
+        };
+        /**
+         * CABundle is a base64-encoded CA certificate used to validate the BeyondTrust Workload Credentials API TLS certificate.
+         * Use this when your BeyondTrust instance uses a self-signed certificate or internal CA.
+         * If not set, the system's trusted root certificates are used.
+         */
+        caBundle?: string;
+        /**
+         * CAProvider points to a Secret or ConfigMap containing a PEM-encoded CA certificate.
+         * This is used to validate the BeyondTrust Workload Credentials API TLS certificate.
+         * Use this as an alternative to CABundle when you want to reference an existing Kubernetes resource.
+         */
+        caProvider?: {
+          /**
+           * The key where the CA certificate can be found in the Secret or ConfigMap.
+           */
+          key?: string;
+          /**
+           * The name of the object located at the provider type.
+           */
+          name: string;
+          /**
+           * The namespace the Provider type is in.
+           * Can only be defined when used in a ClusterSecretStore.
+           */
+          namespace?: string;
+          /**
+           * The type of provider to use such as "Secret", or "ConfigMap".
+           */
+          type: 'Secret' | 'ConfigMap';
+        };
+        /**
+         * FolderPath specifies the default folder path for secret retrieval.
+         * Secrets will be fetched from this folder unless overridden in the ExternalSecret spec.
+         * Example: "production/database" or "dev/api-keys"
+         * Leave empty to retrieve secrets from the root folder.
+         * For folder organization, see: https://docs.beyondtrust.com/bt-docs/docs/secrets-api#folders
+         */
+        folderPath?: string;
+        /**
+         * Server configures the BeyondTrust Workload Credentials server connection details.
+         * Includes the API URL and Site ID for your BeyondTrust instance.
+         * For API reference, see: https://docs.beyondtrust.com/bt-docs/docs/secrets-api
+         */
+        server: {
+          /**
+           * APIURL is the base URL of your BeyondTrust Workload Credentials API server.
+           * This should be the full URL to your BeyondTrust instance.
+           * Example: https://api.beyondtrust.io/siie
+           * For more information, see: https://docs.beyondtrust.com/bt-docs/docs/secrets-api#base-url
+           */
+          apiUrl: string;
+          /**
+           * SiteID is your BeyondTrust Workload Credentials site identifier (UUID format).
+           * This identifier is unique to your BeyondTrust Workload Credentials instance.
+           * You can find your Site ID in the BeyondTrust Workload Credentials admin console.
+           * Example: a1b2c3d4-e5f6-4890-abcd-ef1234567890
+           * For more information, see: https://docs.beyondtrust.com/bt-docs/docs/secrets-api
+           */
+          siteId: string;
         };
       };
       /**
@@ -1359,6 +1475,11 @@ export interface ClusterSecretStore {
          * ServerURL is the DVLS instance URL (e.g., https://dvls.example.com).
          */
         serverUrl: string;
+        /**
+         * Vault is the name or UUID of the vault to fetch secrets from.
+         * When omitted, the vault must be specified in the secret key using the legacy format "<vault-id>/<entry-id>".
+         */
+        vault?: string;
       };
       /**
        * Fake configures a store with static key/value pairs
@@ -1542,6 +1663,15 @@ export interface ClusterSecretStore {
              */
             externalTokenEndpoint?: string;
             /**
+             * GCPServiceAccountEmail is the email of the Google Cloud service account to impersonate
+             * after Workload Identity Federation. Use this to grant access through the service account's
+             * IAM bindings (for example roles/secretmanager.secretAccessor). When set, it overrides
+             * service_account_impersonation_url in the external account JSON from credConfig;
+             * when serviceAccountRef is set, it also overrides the "iam.gke.io/gcp-service-account" annotation
+             * on that ServiceAccount.
+             */
+            gcpServiceAccountEmail?: string;
+            /**
              * serviceAccountRef is the reference to the kubernetes ServiceAccount to be used for obtaining the tokens,
              * when Kubernetes is configured as provider in workload identity pool.
              */
@@ -1623,6 +1753,13 @@ export interface ClusterSecretStore {
          * installationID specifies the Github APP installation that will be used to authenticate the client
          */
         installationID: number;
+        /**
+         * orgSecretVisibility controls the visibility of organization secrets pushed via PushSecret.
+         * Valid values are "all" or "private".
+         * When unset, new secrets are created with visibility "all" and existing secrets preserve
+         * whatever visibility they already have in GitHub.
+         */
+        orgSecretVisibility?: 'all' | 'private';
         /**
          * organization will be used to fetch secrets from the Github organization
          */
@@ -2342,6 +2479,11 @@ export interface ClusterSecretStore {
            */
           expandSecretReferences?: boolean;
           /**
+           * OrganizationSlug is the optional slug that identifies the organization that will be used
+           * during authentication. Useful for sub-organization setups
+           */
+          organizationSlug?: string;
+          /**
            * ProjectSlug is the required slug identifier for the project.
            */
           projectSlug: string;
@@ -2380,6 +2522,7 @@ export interface ClusterSecretStore {
           namespace?: string;
         };
         folderID: string;
+        getByTitleFallback?: boolean;
       };
       /**
        * Kubernetes configures this store to sync secrets using a Kubernetes cluster provider
@@ -2537,6 +2680,95 @@ export interface ClusterSecretStore {
            * configures the Kubernetes server Address.
            */
           url?: string;
+        };
+      };
+      /**
+       * NebiusMysterybox configures this store to sync secrets using NebiusMysterybox provider
+       */
+      nebiusmysterybox?: {
+        /**
+         * NebiusMysterybox API endpoint
+         */
+        apiDomain: string;
+        /**
+         * Auth defines parameters to authenticate in MysteryBox
+         */
+        auth: {
+          /**
+           * ServiceAccountCreds references a Kubernetes Secret key that contains a JSON
+           * document with service account credentials used to get an IAM token.
+           *
+           * Expected JSON structure:
+           * {
+           *   "subject-credentials": {
+           *     "alg": "RS256",
+           *     "private-key": "-----BEGIN PRIVATE KEY-----\n<private-key>\n-----END PRIVATE KEY-----\n",
+           *     "kid": "<public-key-id>",
+           *     "iss": "<issuer-service-account-id>",
+           *     "sub": "<subject-service-account-id>"
+           *   }
+           * }
+           */
+          serviceAccountCredsSecretRef?: {
+            /**
+             * A key in the referenced Secret.
+             * Some instances of this field may be defaulted, in others it may be required.
+             */
+            key?: string;
+            /**
+             * The name of the Secret resource being referred to.
+             */
+            name?: string;
+            /**
+             * The namespace of the Secret resource being referred to.
+             * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+             */
+            namespace?: string;
+          };
+          /**
+           * Token authenticates with Nebius Mysterybox by presenting a token.
+           */
+          tokenSecretRef?: {
+            /**
+             * A key in the referenced Secret.
+             * Some instances of this field may be defaulted, in others it may be required.
+             */
+            key?: string;
+            /**
+             * The name of the Secret resource being referred to.
+             */
+            name?: string;
+            /**
+             * The namespace of the Secret resource being referred to.
+             * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+             */
+            namespace?: string;
+          };
+        };
+        /**
+         * The provider for the CA bundle to use to validate NebiusMysterybox server certificate.
+         */
+        caProvider?: {
+          /**
+           * SecretKeySelector is a reference to a specific 'key' within a Secret resource.
+           * In some instances, `key` is a required field.
+           */
+          certSecretRef?: {
+            /**
+             * A key in the referenced Secret.
+             * Some instances of this field may be defaulted, in others it may be required.
+             */
+            key?: string;
+            /**
+             * The name of the Secret resource being referred to.
+             */
+            name?: string;
+            /**
+             * The namespace of the Secret resource being referred to.
+             * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+             */
+            namespace?: string;
+          };
         };
       };
       /**
@@ -2758,6 +2990,201 @@ export interface ClusterSecretStore {
         vault: string;
       };
       /**
+       * OpenBao configures this store to sync secrets using the OpenBao provider.
+       */
+      openBao?: {
+        /**
+         * Auth configures how secret-manager authenticates with the OpenBao server.
+         */
+        auth?: {
+          /**
+           * AppRole authenticates with OpenBao using the [App Role auth mechanism],
+           * with the role and secret stored in a Kubernetes Secret resource.
+           *
+           * [App Role auth mechanism]: https://openbao.org/docs/auth/approle/
+           */
+          appRole?: {
+            /**
+             * Path where the App Role authentication backend is mounted
+             * in OpenBao, e.g: "approle"
+             */
+            path: string;
+            /**
+             * RoleID configured in the App Role authentication backend when setting
+             * up the authentication backend in OpenBao.
+             */
+            roleId?: string;
+            /**
+             * Reference to a key in a Secret that contains the App Role ID used
+             * to authenticate with OpenBao.
+             * The `key` field must be specified and denotes which entry within the Secret
+             * resource is used as the app role id.
+             */
+            roleRef?: {
+              /**
+               * A key in the referenced Secret.
+               * Some instances of this field may be defaulted, in others it may be required.
+               */
+              key?: string;
+              /**
+               * The name of the Secret resource being referred to.
+               */
+              name?: string;
+              /**
+               * The namespace of the Secret resource being referred to.
+               * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+               */
+              namespace?: string;
+            };
+            /**
+             * Reference to a key in a Secret that contains the App Role secret used
+             * to authenticate with OpenBao.
+             * The `key` field must be specified and denotes which entry within the Secret
+             * resource is used as the app role secret.
+             */
+            secretRef: {
+              /**
+               * A key in the referenced Secret.
+               * Some instances of this field may be defaulted, in others it may be required.
+               */
+              key?: string;
+              /**
+               * The name of the Secret resource being referred to.
+               */
+              name?: string;
+              /**
+               * The namespace of the Secret resource being referred to.
+               * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+               */
+              namespace?: string;
+            };
+          };
+          /**
+           * Name of the [OpenBao Namespace] to authenticate to. This can be different
+           * than the namespace your secret is in. Namespaces is a set of features
+           * within OpenBao that allows OpenBao environments to support secure
+           * multi-tenancy. e.g: "ns1". This will default to OpenBao.Namespace field
+           * if set, or empty otherwise
+           *
+           * [OpenBao Namespace]: https://openbao.org/docs/concepts/namespaces/
+           */
+          namespace?: string;
+          /**
+           * TokenSecretRef authenticates with OpenBao by presenting a token.
+           */
+          tokenSecretRef?: {
+            /**
+             * A key in the referenced Secret.
+             * Some instances of this field may be defaulted, in others it may be required.
+             */
+            key?: string;
+            /**
+             * The name of the Secret resource being referred to.
+             */
+            name?: string;
+            /**
+             * The namespace of the Secret resource being referred to.
+             * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+             */
+            namespace?: string;
+          };
+          /**
+           * UserPass authenticates with OpenBao by passing a username/password pair
+           */
+          userPass?: {
+            /**
+             * Path where the UserPassword authentication backend is mounted
+             * in OpenBao, e.g: "userpass"
+             */
+            path: string;
+            /**
+             * SecretRef to a key in a Secret resource containing password for the user
+             * used to authenticate with OpenBao using the [UserPass authentication
+             * method]
+             *
+             * [UserPass authentication method]: https://openbao.org/docs/auth/userpass/
+             */
+            secretRef?: {
+              /**
+               * A key in the referenced Secret.
+               * Some instances of this field may be defaulted, in others it may be required.
+               */
+              key?: string;
+              /**
+               * The name of the Secret resource being referred to.
+               */
+              name?: string;
+              /**
+               * The namespace of the Secret resource being referred to.
+               * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+               */
+              namespace?: string;
+            };
+            /**
+             * Username is a username used to authenticate using the [UserPass
+             * authentication method]
+             *
+             * [UserPass authentication method]: https://openbao.org/docs/auth/userpass/
+             */
+            username: string;
+          };
+        };
+        /**
+         * PEM encoded CA bundle used to validate the OpenBao server certificate. If
+         * this and `caProvider` are not set the system root certificates are used
+         * to validate the TLS connection.
+         */
+        caBundle?: string;
+        /**
+         * The provider for the CA bundle to use to validate OpenBao server
+         * certificate. If this and `caBundle` are not set the system root
+         * certificates are used to validate the TLS connection.
+         */
+        caProvider?: {
+          /**
+           * The key where the CA certificate can be found in the Secret or ConfigMap.
+           */
+          key?: string;
+          /**
+           * The name of the object located at the provider type.
+           */
+          name: string;
+          /**
+           * The namespace the Provider type is in.
+           * Can only be defined when used in a ClusterSecretStore.
+           */
+          namespace?: string;
+          /**
+           * The type of provider to use such as "Secret", or "ConfigMap".
+           */
+          type: 'Secret' | 'ConfigMap';
+        };
+        /**
+         * Name of the [OpenBao Namespace]. Namespaces is a set of features within
+         * OpenBao that allows OpenBao environments to support secure multi-tenancy.
+         * e.g: "ns1".
+         *
+         * [OpenBao Namespace]: https://openbao.org/docs/concepts/namespaces/
+         */
+        namespace?: string;
+        /**
+         * Path is the mount path of the OpenBao KV backend endpoint, e.g:
+         * "secret". The v2 KV secret engine version specific "/data" path suffix
+         * for fetching secrets from OpenBao is optional and will be appended
+         * if not present in specified path.
+         */
+        path?: string;
+        /**
+         * Server is the connection address for the OpenBao server, e.g: `https://openbao.example.com:8200`.
+         */
+        server: string;
+        /**
+         * Version is the OpenBao KV secret engine version. This can be either "v1" or
+         * "v2". Version defaults to "v2".
+         */
+        version?: 'v1' | 'v2';
+      };
+      /**
        * Oracle configures this store to sync secrets using Oracle Vault provider
        */
       oracle?: {
@@ -2865,6 +3292,126 @@ export interface ClusterSecretStore {
         vault: string;
       };
       /**
+       * OVHcloud configures this store to sync secrets using the OVHcloud provider.
+       */
+      ovh?: {
+        /**
+         * Authentication method (mtls or token).
+         */
+        auth: {
+          /**
+           * OvhClientMTLS defines the configuration required to authenticate to OVHcloud's Secret Manager using mTLS.
+           */
+          mtls?: {
+            caBundle?: string;
+            /**
+             * CAProvider provides a custom certificate authority for accessing the provider's store.
+             * The CAProvider points to a Secret or ConfigMap resource that contains a PEM-encoded certificate.
+             */
+            caProvider?: {
+              /**
+               * The key where the CA certificate can be found in the Secret or ConfigMap.
+               */
+              key?: string;
+              /**
+               * The name of the object located at the provider type.
+               */
+              name: string;
+              /**
+               * The namespace the Provider type is in.
+               * Can only be defined when used in a ClusterSecretStore.
+               */
+              namespace?: string;
+              /**
+               * The type of provider to use such as "Secret", or "ConfigMap".
+               */
+              type: 'Secret' | 'ConfigMap';
+            };
+            /**
+             * SecretKeySelector is a reference to a specific 'key' within a Secret resource.
+             * In some instances, `key` is a required field.
+             */
+            certSecretRef: {
+              /**
+               * A key in the referenced Secret.
+               * Some instances of this field may be defaulted, in others it may be required.
+               */
+              key?: string;
+              /**
+               * The name of the Secret resource being referred to.
+               */
+              name?: string;
+              /**
+               * The namespace of the Secret resource being referred to.
+               * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+               */
+              namespace?: string;
+            };
+            /**
+             * SecretKeySelector is a reference to a specific 'key' within a Secret resource.
+             * In some instances, `key` is a required field.
+             */
+            keySecretRef: {
+              /**
+               * A key in the referenced Secret.
+               * Some instances of this field may be defaulted, in others it may be required.
+               */
+              key?: string;
+              /**
+               * The name of the Secret resource being referred to.
+               */
+              name?: string;
+              /**
+               * The namespace of the Secret resource being referred to.
+               * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+               */
+              namespace?: string;
+            };
+          };
+          /**
+           * OvhClientToken defines the configuration required to authenticate to OVHcloud's Secret Manager using a token.
+           */
+          token?: {
+            /**
+             * SecretKeySelector is a reference to a specific 'key' within a Secret resource.
+             * In some instances, `key` is a required field.
+             */
+            tokenSecretRef: {
+              /**
+               * A key in the referenced Secret.
+               * Some instances of this field may be defaulted, in others it may be required.
+               */
+              key?: string;
+              /**
+               * The name of the Secret resource being referred to.
+               */
+              name?: string;
+              /**
+               * The namespace of the Secret resource being referred to.
+               * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+               */
+              namespace?: string;
+            };
+          };
+        };
+        /**
+         * Enables or disables check-and-set (CAS) (default: false).
+         */
+        casRequired?: boolean;
+        /**
+         * Setup a timeout in seconds when requests to the KMS are made (default: 30).
+         */
+        okmsTimeout?: number;
+        /**
+         * specifies the OKMS ID.
+         */
+        okmsid: string;
+        /**
+         * specifies the OKMS server endpoint.
+         */
+        server: string;
+      };
+      /**
        * PassboltProvider provides access to Passbolt secrets manager.
        * See: https://www.passbolt.com.
        */
@@ -2913,6 +3460,34 @@ export interface ClusterSecretStore {
              */
             namespace?: string;
           };
+        };
+        /**
+         * PEM encoded CA bundle used to validate Passbolt server certificate. Only used
+         * if the Host URL is using HTTPS protocol. If not set the system root certificates
+         * are used to validate the TLS connection.
+         */
+        caBundle?: string;
+        /**
+         * The provider for the CA bundle to use to validate Passbolt server certificate.
+         */
+        caProvider?: {
+          /**
+           * The key where the CA certificate can be found in the Secret or ConfigMap.
+           */
+          key?: string;
+          /**
+           * The name of the object located at the provider type.
+           */
+          name: string;
+          /**
+           * The namespace the Provider type is in.
+           * Can only be defined when used in a ClusterSecretStore.
+           */
+          namespace?: string;
+          /**
+           * The type of provider to use such as "Secret", or "ConfigMap".
+           */
+          type: 'Secret' | 'ConfigMap';
         };
         /**
          * Host defines the Passbolt Server to connect to
@@ -3002,8 +3577,10 @@ export interface ClusterSecretStore {
       pulumi?: {
         /**
          * AccessToken is the access tokens to sign in to the Pulumi Cloud Console.
+         *
+         * Deprecated: Use auth.accessToken instead.
          */
-        accessToken: {
+        accessToken?: {
           /**
            * SecretRef is a reference to a secret containing the Pulumi API token.
            */
@@ -3028,6 +3605,70 @@ export interface ClusterSecretStore {
          * APIURL is the URL of the Pulumi API.
          */
         apiUrl?: string;
+        /**
+         * Auth configures how the Operator authenticates with the Pulumi API.
+         * Either auth or the deprecated accessToken field must be specified.
+         */
+        auth?: {
+          /**
+           * AccessToken authenticates using a Pulumi access token stored in a Kubernetes Secret.
+           */
+          accessToken?: {
+            /**
+             * SecretRef is a reference to a secret containing the Pulumi API token.
+             */
+            secretRef?: {
+              /**
+               * A key in the referenced Secret.
+               * Some instances of this field may be defaulted, in others it may be required.
+               */
+              key?: string;
+              /**
+               * The name of the Secret resource being referred to.
+               */
+              name?: string;
+              /**
+               * The namespace of the Secret resource being referred to.
+               * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+               */
+              namespace?: string;
+            };
+          };
+          /**
+           * OIDCConfig authenticates using Kubernetes ServiceAccount tokens via OIDC.
+           */
+          oidcConfig?: {
+            /**
+             * ExpirationSeconds sets the token validity duration for service account and OIDC token.
+             * Defaults to 10 minutes.
+             */
+            expirationSeconds?: number;
+            /**
+             * Organization is the name of the Pulumi organization configured for OIDC authentication.
+             */
+            organization: string;
+            /**
+             * ServiceAccountRef specifies the Kubernetes ServiceAccount to use for authentication.
+             */
+            serviceAccountRef: {
+              /**
+               * Audience specifies the `aud` claim for the service account token
+               * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
+               * then this audiences will be appended to the list
+               */
+              audiences?: string[];
+              /**
+               * The name of the ServiceAccount resource being referred to.
+               */
+              name: string;
+              /**
+               * Namespace of the resource being referred to.
+               * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+               */
+              namespace?: string;
+            };
+          };
+        };
         /**
          * Environment are YAML documents composed of static key-value pairs, programmatic expressions,
          * dynamically retrieved values from supported providers including all major clouds,
@@ -3378,6 +4019,10 @@ export interface ClusterSecretStore {
                */
               namespace?: string;
             };
+            /**
+             * VaultRole specifies the Vault role to use for TLS certificate authentication.
+             */
+            vaultRole?: string;
           };
           /**
            * Gcp authenticates with Vault using Google Cloud Platform authentication method
@@ -3618,6 +4263,7 @@ export interface ClusterSecretStore {
                * Optional audiences field that will be used to request a temporary Kubernetes service
                * account token for the service account referenced by `serviceAccountRef`.
                * Defaults to a single audience `vault` it not specified.
+               *
                * Deprecated: use serviceAccountRef.Audiences instead
                */
               audiences?: string[];
@@ -3625,6 +4271,7 @@ export interface ClusterSecretStore {
                * Optional expiration time in seconds that will be used to request a temporary
                * Kubernetes service account token for the service account referenced by
                * `serviceAccountRef`.
+               *
                * Deprecated: this will be removed in the future.
                * Defaults to 10 minutes.
                */

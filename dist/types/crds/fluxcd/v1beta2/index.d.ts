@@ -4,7 +4,4 @@
 export * from './GitRepository';
 export * from './OCIRepository';
 export * from './HelmRepository';
-export * from './ImagePolicy';
-export * from './ImageRepository';
-export * from './ImageUpdateAutomation';
 //# sourceMappingURL=index.d.ts.map

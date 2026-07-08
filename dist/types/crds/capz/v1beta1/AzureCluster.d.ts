@@ -328,11 +328,11 @@ export interface AzureCluster {
             /**
              * host is the hostname on which the API server is serving.
              */
-            host: string;
+            host?: string;
             /**
              * port is the port on which the API server is serving.
              */
-            port: number;
+            port?: number;
         };
         /**
          * ExtendedLocation is an optional set of ExtendedLocation properties for clusters on Azure public MEC.
@@ -439,6 +439,15 @@ export interface AzureCluster {
              */
             apiServerLB?: {
                 /**
+                 * AvailabilityZones is a list of availability zones for the load balancer.
+                 * When specified for an internal load balancer, the frontend IP configuration
+                 * will be zone-redundant across the specified zones.
+                 * For public load balancers, this should be set on the associated public IP addresses instead.
+                 *
+                 * @maxItems 3
+                 */
+                availabilityZones?: [] | [string] | [string, string] | [string, string, string];
+                /**
                  * BackendPool describes the backend pool of the load balancer.
                  */
                 backendPool?: {
@@ -498,6 +507,15 @@ export interface AzureCluster {
              */
             controlPlaneOutboundLB?: {
                 /**
+                 * AvailabilityZones is a list of availability zones for the load balancer.
+                 * When specified for an internal load balancer, the frontend IP configuration
+                 * will be zone-redundant across the specified zones.
+                 * For public load balancers, this should be set on the associated public IP addresses instead.
+                 *
+                 * @maxItems 3
+                 */
+                availabilityZones?: [] | [string] | [string, string] | [string, string, string];
+                /**
                  * BackendPool describes the backend pool of the load balancer.
                  */
                 backendPool?: {
@@ -555,6 +573,15 @@ export interface AzureCluster {
              * NodeOutboundLB is the configuration for the node outbound load balancer.
              */
             nodeOutboundLB?: {
+                /**
+                 * AvailabilityZones is a list of availability zones for the load balancer.
+                 * When specified for an internal load balancer, the frontend IP configuration
+                 * will be zone-redundant across the specified zones.
+                 * For public load balancers, this should be set on the associated public IP addresses instead.
+                 *
+                 * @maxItems 3
+                 */
+                availabilityZones?: [] | [string] | [string, string] | [string, string, string];
                 /**
                  * BackendPool describes the backend pool of the load balancer.
                  */
