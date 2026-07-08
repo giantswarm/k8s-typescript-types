@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-07-08
+
 ### Added
 
 - Added `kagent` types (`Agent` and `ModelConfig`, versions `v1alpha1` and `v1alpha2`), generated from the kagent CRDs pinned to `v0.9.9` — the version deployed by the `agentic-platform` chart on Giant Swarm management clusters. `v1alpha2` is the storage version.
@@ -52,7 +54,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added initial generator code.
 - Added core and auto generated types.
 
-[Unreleased]: https://github.com/giantswarm/k8s-typescript-types/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/giantswarm/k8s-typescript-types/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/giantswarm/k8s-typescript-types/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/giantswarm/k8s-typescript-types/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/giantswarm/k8s-typescript-types/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/giantswarm/k8s-typescript-types/compare/v0.2.0...v0.3.0
