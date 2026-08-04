@@ -17,6 +17,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * This file was automatically generated, PLEASE DO NOT MODIFY IT BY HAND.
  */
+__exportStar(require("./Kustomization"), exports);
 __exportStar(require("./GitRepository"), exports);
 __exportStar(require("./OCIRepository"), exports);
 __exportStar(require("./HelmRepository"), exports);

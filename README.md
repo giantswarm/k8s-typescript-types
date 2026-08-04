@@ -106,6 +106,31 @@ To add new CRD types:
 
 The generator will automatically discover all versions from the CRD and generate types for each.
 
+Pin `crdURL` to a release tag rather than a branch such as `main`. Upstream
+projects drop deprecated API versions over time, so a `main` URL makes a
+regeneration silently remove types that consumers still depend on.
+
+### Covering several API versions
+
+When no single CRD release serves every API version you need, list one release
+per version under `crdURLs` instead:
+
+```yaml
+- group: my_group
+  resources:
+    - name: MyResource
+      crdURLs:
+        # v1beta1
+        - https://raw.githubusercontent.com/example/repo/refs/tags/v1.0.0/config/crd/my-resource.yaml
+        # v1
+        - https://raw.githubusercontent.com/example/repo/refs/tags/v2.0.0/config/crd/my-resource.yaml
+```
+
+Types are generated for the union of the versions the listed CRDs serve. List
+them oldest first: where several CRDs serve the same version, the last one wins,
+so the newest schema is the one generated. The most complete schema for a given
+version is the newest release that still serves it.
+
 ## Configuration Format
 
 The `resources.yaml` configuration has a simple structure:
@@ -115,4 +140,11 @@ The `resources.yaml` configuration has a simple structure:
   resources:
     - name: {ResourceName}   # PascalCase resource name
       crdURL: {url}          # URL to CRD YAML file
+    - name: {ResourceName}   # Alternatively, several CRD releases for one
+      crdURLs:               # resource, oldest first (last wins per version)
+        - {url}
+        - {url}
 ```
+
+`crdURL` and `crdURLs` are mutually exclusive; each resource must set exactly
+one of them.

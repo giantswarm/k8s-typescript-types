@@ -67,10 +67,10 @@ export interface GitRepository {
      */
     interval: string;
     /**
-     * Provider used for authentication, can be 'azure', 'github', 'generic'.
+     * Provider used for authentication, can be 'aws', 'azure', 'github', 'generic'.
      * When not specified, defaults to 'generic'.
      */
-    provider?: 'generic' | 'azure' | 'github';
+    provider?: 'generic' | 'aws' | 'azure' | 'github';
     /**
      * ProxySecretRef specifies the Secret containing the proxy configuration
      * to use while communicating with the Git server.
@@ -134,7 +134,7 @@ export interface GitRepository {
     };
     /**
      * ServiceAccountName is the name of the Kubernetes ServiceAccount used to
-     * authenticate to the GitRepository. This field is only supported for 'azure' provider.
+     * authenticate to the GitRepository. This field is only supported for 'azure' and 'aws' providers.
      */
     serviceAccountName?: string;
     /**
@@ -171,7 +171,8 @@ export interface GitRepository {
       mode?: 'head' | 'HEAD' | 'Tag' | 'TagAndHEAD';
       /**
        * SecretRef specifies the Secret containing the public keys of trusted Git
-       * authors.
+       * authors. PGP public keys must be stored under keys with the .asc suffix,
+       * and SSH public keys must be stored under keys with the .sshpub suffix.
        */
       secretRef: {
         /**

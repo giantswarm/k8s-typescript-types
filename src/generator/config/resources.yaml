@@ -71,22 +71,79 @@
 
 - group: fluxcd
   resources:
+    # Flux keeps serving deprecated API versions for a while and then drops
+    # them, so no single CRD release covers every version our clusters may
+    # serve. Each resource therefore lists one CRD release per API version we
+    # support: the newest release that still serves that version, which is the
+    # most complete schema for it. Sources are listed oldest first, so that a
+    # version served by several of them resolves to the newest.
+    #
+    # The oldest entry is bounded by the Flux release flux-app deploys on Giant
+    # Swarm management clusters (currently 2.6.4), the newest by the latest Flux
+    # release (currently 2.9.3). When either moves, re-check which release last
+    # serves each version and drop versions no cluster serves any more.
     - name: HelmRelease
-      crdURL: https://raw.githubusercontent.com/fluxcd/helm-controller/main/config/crd/bases/helm.toolkit.fluxcd.io_helmreleases.yaml
+      crdURLs:
+        # v2beta1 (also serves v2, v2beta2)
+        - https://raw.githubusercontent.com/fluxcd/helm-controller/refs/tags/v1.3.0/config/crd/bases/helm.toolkit.fluxcd.io_helmreleases.yaml
+        # v2beta2
+        - https://raw.githubusercontent.com/fluxcd/helm-controller/refs/tags/v1.4.5/config/crd/bases/helm.toolkit.fluxcd.io_helmreleases.yaml
+        # v2
+        - https://raw.githubusercontent.com/fluxcd/helm-controller/refs/tags/v1.6.3/config/crd/bases/helm.toolkit.fluxcd.io_helmreleases.yaml
     - name: Kustomization
-      crdURL: https://raw.githubusercontent.com/fluxcd/kustomize-controller/main/config/crd/bases/kustomize.toolkit.fluxcd.io_kustomizations.yaml
+      crdURLs:
+        # v1beta1 (also serves v1, v1beta2)
+        - https://raw.githubusercontent.com/fluxcd/kustomize-controller/refs/tags/v1.6.1/config/crd/bases/kustomize.toolkit.fluxcd.io_kustomizations.yaml
+        # v1beta2
+        - https://raw.githubusercontent.com/fluxcd/kustomize-controller/refs/tags/v1.7.3/config/crd/bases/kustomize.toolkit.fluxcd.io_kustomizations.yaml
+        # v1
+        - https://raw.githubusercontent.com/fluxcd/kustomize-controller/refs/tags/v1.9.4/config/crd/bases/kustomize.toolkit.fluxcd.io_kustomizations.yaml
     - name: GitRepository
-      crdURL: https://raw.githubusercontent.com/fluxcd/source-controller/refs/tags/v1.7.4/config/crd/bases/source.toolkit.fluxcd.io_gitrepositories.yaml
+      crdURLs:
+        # v1beta1 (also serves v1, v1beta2)
+        - https://raw.githubusercontent.com/fluxcd/source-controller/refs/tags/v1.6.2/config/crd/bases/source.toolkit.fluxcd.io_gitrepositories.yaml
+        # v1beta2
+        - https://raw.githubusercontent.com/fluxcd/source-controller/refs/tags/v1.7.4/config/crd/bases/source.toolkit.fluxcd.io_gitrepositories.yaml
+        # v1
+        - https://raw.githubusercontent.com/fluxcd/source-controller/refs/tags/v1.9.3/config/crd/bases/source.toolkit.fluxcd.io_gitrepositories.yaml
     - name: OCIRepository
-      crdURL: https://raw.githubusercontent.com/fluxcd/source-controller/refs/tags/v1.7.4/config/crd/bases/source.toolkit.fluxcd.io_ocirepositories.yaml
+      crdURLs:
+        # v1beta2
+        - https://raw.githubusercontent.com/fluxcd/source-controller/refs/tags/v1.7.4/config/crd/bases/source.toolkit.fluxcd.io_ocirepositories.yaml
+        # v1
+        - https://raw.githubusercontent.com/fluxcd/source-controller/refs/tags/v1.9.3/config/crd/bases/source.toolkit.fluxcd.io_ocirepositories.yaml
     - name: HelmRepository
-      crdURL: https://raw.githubusercontent.com/fluxcd/source-controller/refs/tags/v1.7.4/config/crd/bases/source.toolkit.fluxcd.io_helmrepositories.yaml
+      crdURLs:
+        # v1beta1 (also serves v1, v1beta2)
+        - https://raw.githubusercontent.com/fluxcd/source-controller/refs/tags/v1.6.2/config/crd/bases/source.toolkit.fluxcd.io_helmrepositories.yaml
+        # v1beta2
+        - https://raw.githubusercontent.com/fluxcd/source-controller/refs/tags/v1.7.4/config/crd/bases/source.toolkit.fluxcd.io_helmrepositories.yaml
+        # v1
+        - https://raw.githubusercontent.com/fluxcd/source-controller/refs/tags/v1.9.3/config/crd/bases/source.toolkit.fluxcd.io_helmrepositories.yaml
     - name: ImagePolicy
-      crdURL: https://raw.githubusercontent.com/fluxcd/image-reflector-controller/refs/tags/v1.1.0/config/crd/bases/image.toolkit.fluxcd.io_imagepolicies.yaml
+      crdURLs:
+        # v1beta1 (also serves v1beta2)
+        - https://raw.githubusercontent.com/fluxcd/image-reflector-controller/refs/tags/v0.35.2/config/crd/bases/image.toolkit.fluxcd.io_imagepolicies.yaml
+        # v1beta2
+        - https://raw.githubusercontent.com/fluxcd/image-reflector-controller/refs/tags/v1.1.2/config/crd/bases/image.toolkit.fluxcd.io_imagepolicies.yaml
+        # v1
+        - https://raw.githubusercontent.com/fluxcd/image-reflector-controller/refs/tags/v1.2.3/config/crd/bases/image.toolkit.fluxcd.io_imagepolicies.yaml
     - name: ImageRepository
-      crdURL: https://raw.githubusercontent.com/fluxcd/image-reflector-controller/refs/tags/v1.1.0/config/crd/bases/image.toolkit.fluxcd.io_imagerepositories.yaml
+      crdURLs:
+        # v1beta1 (also serves v1beta2)
+        - https://raw.githubusercontent.com/fluxcd/image-reflector-controller/refs/tags/v0.35.2/config/crd/bases/image.toolkit.fluxcd.io_imagerepositories.yaml
+        # v1beta2
+        - https://raw.githubusercontent.com/fluxcd/image-reflector-controller/refs/tags/v1.1.2/config/crd/bases/image.toolkit.fluxcd.io_imagerepositories.yaml
+        # v1
+        - https://raw.githubusercontent.com/fluxcd/image-reflector-controller/refs/tags/v1.2.3/config/crd/bases/image.toolkit.fluxcd.io_imagerepositories.yaml
     - name: ImageUpdateAutomation
-      crdURL: https://raw.githubusercontent.com/fluxcd/image-automation-controller/refs/tags/v1.1.0/config/crd/bases/image.toolkit.fluxcd.io_imageupdateautomations.yaml
+      crdURLs:
+        # v1beta1 (also serves v1beta2)
+        - https://raw.githubusercontent.com/fluxcd/image-automation-controller/refs/tags/v0.41.2/config/crd/bases/image.toolkit.fluxcd.io_imageupdateautomations.yaml
+        # v1beta2
+        - https://raw.githubusercontent.com/fluxcd/image-automation-controller/refs/tags/v1.1.4/config/crd/bases/image.toolkit.fluxcd.io_imageupdateautomations.yaml
+        # v1
+        - https://raw.githubusercontent.com/fluxcd/image-automation-controller/refs/tags/v1.2.3/config/crd/bases/image.toolkit.fluxcd.io_imageupdateautomations.yaml
 
 - group: giantswarm
   resources:

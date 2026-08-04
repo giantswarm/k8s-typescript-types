@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Resources can now be generated from several CRD releases at once, via a new
+  `crdURLs` list in the generator config (the existing single `crdURL` keeps
+  working). Types are generated for the union of the API versions the listed
+  CRDs serve; where several serve the same version, the last one listed wins.
+- Flux types for the API versions that current releases no longer serve, so the
+  library covers both the versions our clusters run today and the ones they will
+  run after a Flux upgrade: `fluxcd.v1beta1` (`GitRepository`, `HelmRepository`,
+  `Kustomization`, `ImagePolicy`, `ImageRepository`, `ImageUpdateAutomation`),
+  `fluxcd.v2beta1` and `fluxcd.v2beta2` (`HelmRelease`), and
+  `fluxcd.v1beta2.Kustomization`.
+
+### Changed
+
+- Every Flux CRD URL is now pinned, with one source per API version: the newest
+  release that still serves it. `HelmRelease` and `Kustomization` were the last
+  two tracking a controller's `main` branch, which is how 0.6.1 lost the
+  `v1beta2` image types.
+- The `fluxcd.v1` types for `GitRepository`, `OCIRepository`, `ImageRepository`
+  and `ImageUpdateAutomation` now come from the newest controller releases
+  (Flux 2.9.3), adding fields such as `GitRepository.spec.serviceAccountName`.
+
+### Fixed
+
+- A CRD URL that answers with a 404, or with something that is not a
+  CustomResourceDefinition, is now reported as an error instead of silently
+  dropping the resource from the generated types.
+
 ## [0.6.3] - 2026-08-04
 
 ### Fixed
