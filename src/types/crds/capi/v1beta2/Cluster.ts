@@ -725,7 +725,7 @@ export interface Cluster {
               nodeVolumeDetachTimeoutSeconds?: number;
               /**
                * order defines the order in which Machines are deleted when downscaling.
-               * Defaults to "Random". Valid values are "Random", "Newest", "Oldest"
+               * Defaults to "Random".  Valid values are "Random, "Newest", "Oldest"
                */
               order?: 'Random' | 'Newest' | 'Oldest';
             };
@@ -1249,7 +1249,7 @@ export interface Cluster {
               nodeVolumeDetachTimeoutSeconds?: number;
               /**
                * order defines the order in which Machines are deleted when downscaling.
-               * Defaults to "Random". Valid values are "Random", "Newest", "Oldest"
+               * Defaults to "Random".  Valid values are "Random, "Newest", "Oldest"
                */
               order?: 'Random' | 'Newest' | 'Oldest';
             };
@@ -2222,34 +2222,6 @@ export interface Cluster {
        * upToDateReplicas is the number of up-to-date control plane machines in this cluster. A machine is considered up-to-date when Machine's UpToDate condition is true.
        */
       upToDateReplicas?: number;
-      /**
-       * versions is the aggregated Kubernetes versions in this control plane.
-       *
-       * @minItems 1
-       * @maxItems 100
-       */
-      versions?: [
-        {
-          /**
-           * replicas is the number of replicas at this version.
-           */
-          replicas?: number;
-          /**
-           * version is the Kubernetes version.
-           */
-          version: string;
-        },
-        ...{
-          /**
-           * replicas is the number of replicas at this version.
-           */
-          replicas?: number;
-          /**
-           * version is the Kubernetes version.
-           */
-          version: string;
-        }[]
-      ];
     };
     /**
      * deprecated groups all the status fields that are deprecated and will be removed when all the nested field are removed.
@@ -2410,34 +2382,6 @@ export interface Cluster {
        * upToDateReplicas is the number of up-to-date worker machines in this cluster. A machine is considered up-to-date when Machine's UpToDate condition is true.
        */
       upToDateReplicas?: number;
-      /**
-       * versions is the aggregated Kubernetes versions in cluster workers.
-       *
-       * @minItems 1
-       * @maxItems 100
-       */
-      versions?: [
-        {
-          /**
-           * replicas is the number of replicas at this version.
-           */
-          replicas?: number;
-          /**
-           * version is the Kubernetes version.
-           */
-          version: string;
-        },
-        ...{
-          /**
-           * replicas is the number of replicas at this version.
-           */
-          replicas?: number;
-          /**
-           * version is the Kubernetes version.
-           */
-          version: string;
-        }[]
-      ];
     };
   };
 }

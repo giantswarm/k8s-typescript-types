@@ -946,7 +946,7 @@ export interface Cluster {
             rollingUpdate?: {
               /**
                * deletePolicy defines the policy used by the MachineDeployment to identify nodes to delete when downscaling.
-               * Valid values are "Random", "Newest", "Oldest"
+               * Valid values are "Random, "Newest", "Oldest"
                * When no value is supplied, the default DeletePolicy of MachineSet is used
                */
               deletePolicy?: 'Random' | 'Newest' | 'Oldest';
@@ -1443,34 +1443,6 @@ export interface Cluster {
          * upToDateReplicas is the number of up-to-date control plane machines in this cluster. A machine is considered up-to-date when Machine's UpToDate condition is true.
          */
         upToDateReplicas?: number;
-        /**
-         * versions is the aggregated Kubernetes versions in this control plane.
-         *
-         * @minItems 1
-         * @maxItems 100
-         */
-        versions?: [
-          {
-            /**
-             * replicas is the number of replicas at this version.
-             */
-            replicas?: number;
-            /**
-             * version is the Kubernetes version.
-             */
-            version: string;
-          },
-          ...{
-            /**
-             * replicas is the number of replicas at this version.
-             */
-            replicas?: number;
-            /**
-             * version is the Kubernetes version.
-             */
-            version: string;
-          }[]
-        ];
       };
       /**
        * workers groups all the observations about Cluster's Workers current state.
@@ -1497,34 +1469,6 @@ export interface Cluster {
          * upToDateReplicas is the number of up-to-date worker machines in this cluster. A machine is considered up-to-date when Machine's UpToDate condition is true.
          */
         upToDateReplicas?: number;
-        /**
-         * versions is the aggregated Kubernetes versions in these workers.
-         *
-         * @minItems 1
-         * @maxItems 100
-         */
-        versions?: [
-          {
-            /**
-             * replicas is the number of replicas at this version.
-             */
-            replicas?: number;
-            /**
-             * version is the Kubernetes version.
-             */
-            version: string;
-          },
-          ...{
-            /**
-             * replicas is the number of replicas at this version.
-             */
-            replicas?: number;
-            /**
-             * version is the Kubernetes version.
-             */
-            version: string;
-          }[]
-        ];
       };
     };
   };

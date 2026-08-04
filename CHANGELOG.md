@@ -35,6 +35,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A CRD URL that answers with a 404, or with something that is not a
   CustomResourceDefinition, is now reported as an error instead of silently
   dropping the resource from the generated types.
+- Pinned the `capi` CRD URLs to cluster-api `v1.13.4`. They pointed at
+  `main`, where the CRDs have since moved to `core/config/crd/bases/`
+  ([cluster-api#13894](https://github.com/kubernetes-sigs/cluster-api/pull/13894)),
+  so all five URLs answered with a 404 and a regeneration would have dropped the
+  `Cluster`, `Machine`, `MachineDeployment` and `MachinePool` types. No release
+  shipped without them, because nothing has regenerated since 0.6.1.
 
 ## [0.6.3] - 2026-08-04
 

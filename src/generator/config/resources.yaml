@@ -1,15 +1,19 @@
 - group: capi
   resources:
+    # Pinned to a cluster-api release tag: on `main` the CRDs have moved to
+    # `core/config/crd/bases/`, so these URLs 404 there and a regeneration
+    # would drop the types. v1.13.4 serves v1beta1 and v1beta2; releases before
+    # v1.13 also still serve v1alpha3 and v1alpha4, which we do not need.
     - name: Cluster
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api/main/config/crd/bases/cluster.x-k8s.io_clusters.yaml
+      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api/refs/tags/v1.13.4/config/crd/bases/cluster.x-k8s.io_clusters.yaml
     - name: MachineDeployment
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api/main/config/crd/bases/cluster.x-k8s.io_machinedeployments.yaml
+      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api/refs/tags/v1.13.4/config/crd/bases/cluster.x-k8s.io_machinedeployments.yaml
     - name: Machine
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api/main/config/crd/bases/cluster.x-k8s.io_machines.yaml
+      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api/refs/tags/v1.13.4/config/crd/bases/cluster.x-k8s.io_machines.yaml
     - name: MachinePool
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api/main/config/crd/bases/cluster.x-k8s.io_machinepools.yaml
+      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api/refs/tags/v1.13.4/config/crd/bases/cluster.x-k8s.io_machinepools.yaml
     - name: KubeadmControlPlane
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api/main/controlplane/kubeadm/config/crd/bases/controlplane.cluster.x-k8s.io_kubeadmcontrolplanes.yaml
+      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api/refs/tags/v1.13.4/controlplane/kubeadm/config/crd/bases/controlplane.cluster.x-k8s.io_kubeadmcontrolplanes.yaml
 
 - group: capa
   resources:
