@@ -346,18 +346,6 @@ export interface Machine {
              * Only present when the Machine has a deletionTimestamp and waiting for volume detachments had been started.
              */
             waitForNodeVolumeDetachStartTime?: string;
-            /**
-             * waitForPreDrainHookStartTime is the time when waiting for pre-drain hooks started
-             * and is used to determine if the pre-drain hooks are taking too long.
-             * Only present when the Machine has a deletionTimestamp and waiting for pre-drain hooks had been started.
-             */
-            waitForPreDrainHookStartTime?: string;
-            /**
-             * waitForPreTerminateHookStartTime is the time when waiting for pre-terminate hooks started
-             * and is used to determine if the pre-terminate hooks are taking too long.
-             * Only present when the Machine has a deletionTimestamp and waiting for pre-terminate hooks had been started.
-             */
-            waitForPreTerminateHookStartTime?: string;
         };
         /**
          * deprecated groups all the status fields that are deprecated and will be removed when all the nested field are removed.

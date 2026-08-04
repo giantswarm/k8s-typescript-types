@@ -1686,15 +1686,6 @@ export interface KubeadmControlPlane {
            */
           content?: string;
           /**
-           * contentFormat specifies how to interpret content after it is resolved (inline or from contentFrom).
-           * When set to "Template", content is rendered as a Go text/template.
-           * Available template variables:
-           *   - .controlPlane.version: the Kubernetes version of the control plane (e.g. "v1.35.0").
-           *     Only set when the cluster has a control plane reference that exposes spec.version.
-           * When set to "Raw" or omitted, content is used verbatim.
-           */
-          contentFormat?: 'Raw' | 'Template';
-          /**
            * contentFrom is a referenced source of content to populate the file.
            */
           contentFrom?: {
@@ -1738,15 +1729,6 @@ export interface KubeadmControlPlane {
            * content is the actual content of the file.
            */
           content?: string;
-          /**
-           * contentFormat specifies how to interpret content after it is resolved (inline or from contentFrom).
-           * When set to "Template", content is rendered as a Go text/template.
-           * Available template variables:
-           *   - .controlPlane.version: the Kubernetes version of the control plane (e.g. "v1.35.0").
-           *     Only set when the cluster has a control plane reference that exposes spec.version.
-           * When set to "Raw" or omitted, content is used verbatim.
-           */
-          contentFormat?: 'Raw' | 'Template';
           /**
            * contentFrom is a referenced source of content to populate the file.
            */
@@ -3171,37 +3153,7 @@ export interface KubeadmControlPlane {
     /**
      * version represents the minimum Kubernetes version for the control plane machines
      * in the cluster.
-     *
-     * Deprecated: This field is deprecated and is going to be removed in a future API version. Please use status.versions instead.
      */
     version?: string;
-    /**
-     * versions is the aggregated Kubernetes versions in this KubeadmControlPlane.
-     *
-     * @minItems 1
-     * @maxItems 100
-     */
-    versions?: [
-      {
-        /**
-         * replicas is the number of replicas at this version.
-         */
-        replicas?: number;
-        /**
-         * version is the Kubernetes version.
-         */
-        version: string;
-      },
-      ...{
-        /**
-         * replicas is the number of replicas at this version.
-         */
-        replicas?: number;
-        /**
-         * version is the Kubernetes version.
-         */
-        version: string;
-      }[]
-    ];
   };
 }

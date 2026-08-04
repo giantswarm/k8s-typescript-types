@@ -407,7 +407,7 @@ export interface MachinePool {
          */
         infrastructureReady?: boolean;
         /**
-         * nodeRefs will point to the corresponding Nodes if they exist.
+         * nodeRefs will point to the corresponding Nodes if it they exist.
          *
          * @maxItems 10000
          */
@@ -536,34 +536,6 @@ export interface MachinePool {
              */
             upToDateReplicas?: number;
         };
-        /**
-         * versions is the aggregated Kubernetes versions in this MachinePool.
-         *
-         * @minItems 1
-         * @maxItems 100
-         */
-        versions?: [
-            {
-                /**
-                 * replicas is the number of replicas at this version.
-                 */
-                replicas?: number;
-                /**
-                 * version is the Kubernetes version.
-                 */
-                version: string;
-            },
-            ...{
-                /**
-                 * replicas is the number of replicas at this version.
-                 */
-                replicas?: number;
-                /**
-                 * version is the Kubernetes version.
-                 */
-                version: string;
-            }[]
-        ];
     };
 }
 //# sourceMappingURL=MachinePool.d.ts.map
