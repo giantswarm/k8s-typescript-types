@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Restored the `image.toolkit.fluxcd.io/v1beta2` types for `ImagePolicy`,
+  `ImageRepository` and `ImageUpdateAutomation`, which 0.6.1 dropped. Their CRD
+  URLs pointed at the controllers' `main` branch, where `v1beta2` has already
+  been removed, while the Flux versions in use still serve it. The three URLs
+  are now pinned to `v1.1.0`, the last release serving both `v1beta2` and `v1`.
+
 ## [0.6.2] - 2026-07-28
 
 ### Changed
