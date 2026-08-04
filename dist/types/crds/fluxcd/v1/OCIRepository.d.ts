@@ -190,6 +190,18 @@ export interface OCIRepository {
                  */
                 name: string;
             };
+            /**
+             * TrustedRootSecretRef specifies the Kubernetes Secret containing a
+             * Sigstore trusted_root.json file. This enables verification against
+             * self-hosted Sigstore infrastructure (custom Fulcio CA, self-hosted
+             * Rekor instance). The Secret must contain a key named "trusted_root.json".
+             */
+            trustedRootSecretRef?: {
+                /**
+                 * Name of the referent.
+                 */
+                name: string;
+            };
         };
     };
     /**

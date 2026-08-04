@@ -1,6 +1,11 @@
 import { error, log } from './utils';
 import { fetchCRD, ICRD } from './getCRD';
-import { getResourcesList, IGroupInfo, IResourceInfo } from './getResourcesList';
+import {
+  getResourceURLs,
+  getResourcesList,
+  IGroupInfo,
+  IResourceInfo,
+} from './getResourcesList';
 import { getTypesForResource } from './getTypes';
 import {
   writeResourceTypes,
@@ -22,18 +27,26 @@ interface IVersionResources {
 async function fetchCRDs(group: IGroupInfo): Promise<IResourceWithCRD[]> {
   log(`  Fetching CRDs...`, false);
 
+  // A resource may be configured with several CRD URLs, in which case types
+  // are generated for the union of the versions they serve. Keep them in
+  // configured order, so a version served by more than one CRD ends up
+  // resolving to the last of them.
+  const sources = group.resources.flatMap(resource =>
+    getResourceURLs(resource).map(url => ({ resource, url })),
+  );
+
   const responses = await Promise.allSettled(
-    group.resources.map(r => fetchCRD(r.crdURL)),
+    sources.map(source => fetchCRD(source.url)),
   );
 
   const resourcesWithCRDs: IResourceWithCRD[] = [];
   for (let i = 0; i < responses.length; i++) {
-    const resource = group.resources[i];
+    const { resource, url } = sources[i];
     const response = responses[i];
 
     if (response.status === 'rejected') {
       error(
-        `Could not fetch CRD for resource ${resource.name}: ${response.reason}`,
+        `Could not fetch CRD for resource ${resource.name} from ${url}: ${response.reason}`,
       );
       continue;
     }
@@ -49,10 +62,13 @@ async function fetchCRDs(group: IGroupInfo): Promise<IResourceWithCRD[]> {
 function organizeByVersion(
   resourcesWithCRDs: IResourceWithCRD[],
 ): IVersionResources[] {
-  const versionMap = new Map<string, IResourceWithCRD[]>();
+  // version name -> resource name -> CRD to generate that version from.
+  // Keyed by resource name so that a resource configured with several CRD URLs
+  // contributes each version once, taking the last CRD that serves it.
+  const versionMap = new Map<string, Map<string, IResourceWithCRD>>();
 
   for (const resourceWithCRD of resourcesWithCRDs) {
-    const { crd } = resourceWithCRD;
+    const { resource, crd } = resourceWithCRD;
 
     // Extract all versions from the CRD
     const versions = crd.spec?.versions || [];
@@ -61,16 +77,16 @@ function organizeByVersion(
       const versionName = version.name;
 
       if (!versionMap.has(versionName)) {
-        versionMap.set(versionName, []);
+        versionMap.set(versionName, new Map());
       }
 
-      versionMap.get(versionName)!.push(resourceWithCRD);
+      versionMap.get(versionName)!.set(resource.name, resourceWithCRD);
     }
   }
 
   return Array.from(versionMap.entries()).map(([versionName, resources]) => ({
     versionName,
-    resources,
+    resources: Array.from(resources.values()),
   }));
 }
 
