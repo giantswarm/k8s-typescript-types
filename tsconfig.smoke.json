@@ -1,0 +1,15 @@
+{
+  // Consumer smoke: type-checks src/smoke/ against the built dist/
+  // declarations, resolved the way a consumer of the package resolves them.
+  // Run by `yarn smoke` (and therefore `yarn build`) after `tsc` has produced
+  // dist/. Nothing is emitted.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "rootDir": "./src",
+    "paths": {
+      "@giantswarm/k8s-types": ["./dist/types/index.d.ts"]
+    }
+  },
+  "include": ["src/smoke"]
+}
