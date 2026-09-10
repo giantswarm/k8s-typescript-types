@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `kagent.v1alpha3` types for the kagent API v2 the Agent Platform 4.x releases
+  run: `AgentTemplate`, `Harness`, `RemoteMCPServer`, `ModelProviderConfig` and
+  `ModelConfig`, spec and status, generated from the Giant Swarm kagent line
+  (`giantswarm/kagent-upstream`) at its pinned commit `0ac52403` (upstream
+  kagent `main` `4a91c273` plus the line's carried patches). `ModelConfig`
+  keeps its `v1alpha1`/`v1alpha2` types from kagent v0.9.9 next to the new
+  version through the `crdURLs` union; `Agent` stays at `v1alpha1`/`v1alpha2`.
+- A consumer smoke (`yarn smoke`, run by `yarn build`): `src/smoke/` is
+  type-checked against the built `dist/` declarations the way a consumer
+  imports them, and asserts the shapes the Dev Portal reads
+  (`AgentTemplate['status']['harnesses'][number]['conditions']`,
+  `RemoteMCPServer['spec']['headersFrom']`, the `v1alpha2` types).
+
+### Changed
+
+- The README's install instructions now show how the package is actually
+  consumed: from this repository's git tags
+  (`github:giantswarm/k8s-typescript-types#v0.8.0`), not from npm.
+
 ## [0.7.1] - 2026-08-31
 
 ### Changed
