@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-09-10
+
 ### Added
 
 - `kagent.v1alpha3` types for the kagent API v2 the Agent Platform 4.x releases
@@ -140,7 +142,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added initial generator code.
 - Added core and auto generated types.
 
-[Unreleased]: https://github.com/giantswarm/k8s-typescript-types/compare/v0.7.1...HEAD
+[Unreleased]: https://github.com/giantswarm/k8s-typescript-types/compare/v0.8.0...HEAD
+[0.8.0]: https://github.com/giantswarm/k8s-typescript-types/compare/v0.7.1...v0.8.0
 [0.7.1]: https://github.com/giantswarm/k8s-typescript-types/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/giantswarm/k8s-typescript-types/compare/v0.6.3...v0.7.0
 [0.6.3]: https://github.com/giantswarm/k8s-typescript-types/compare/v0.6.2...v0.6.3
