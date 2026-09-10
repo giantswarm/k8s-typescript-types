@@ -14,7 +14,8 @@
   ],
   "scripts": {
     "generate": "tsx src/generator/index.ts",
-    "build": "tsc",
+    "build": "tsc && yarn smoke",
+    "smoke": "tsc -p tsconfig.smoke.json",
     "clean": "rm -rf dist src/types/crds/*",
     "regenerate": "yarn clean && yarn generate && yarn build"
   },

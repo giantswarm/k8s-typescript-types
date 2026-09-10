@@ -4,14 +4,23 @@ TypeScript type definitions for Kubernetes core objects and custom resource defi
 
 ## Installation
 
+The package is not published on npm. It is consumed straight from this
+repository's release tags; `dist/` is committed, so nothing is built on install.
+
 ```bash
-yarn add @giantswarm/k8s-types
+yarn add @giantswarm/k8s-types@github:giantswarm/k8s-typescript-types#v0.8.0
 ```
 
-Or with npm:
-```bash
-npm install @giantswarm/k8s-types
+Or pin the tag in `package.json` directly:
+
+```json
+"dependencies": {
+  "@giantswarm/k8s-types": "github:giantswarm/k8s-typescript-types#v0.8.0"
+}
 ```
+
+Move the tag to pick up a new release; see the [CHANGELOG](CHANGELOG.md) for
+what each one adds.
 
 ## Usage
 
@@ -68,13 +77,19 @@ This will:
 2. Fetch CRD definitions from remote URLs
 3. Auto-discover all available versions
 4. Generate TypeScript interfaces
-5. Create organized output in `src/crds/`
+5. Create organized output in `src/types/crds/`
 
 ### Build
 
 ```bash
 yarn build
 ```
+
+This compiles `src/types` into `dist/` and then runs the consumer smoke
+(`yarn smoke`): `src/smoke/` is type-checked against the built `dist/`
+declarations exactly as a consumer would import them, so a regeneration that
+drops or reshapes a type consumers depend on fails the build instead of
+shipping. Nothing under `src/smoke/` is emitted.
 
 ### Clean Generated Types
 
