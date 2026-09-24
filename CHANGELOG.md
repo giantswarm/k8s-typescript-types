@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Update @types/node to v24.13.4 (giantswarm/k8s-typescript-types#90)
+
 ## [0.8.0] - 2026-09-10
 
 ### Added
