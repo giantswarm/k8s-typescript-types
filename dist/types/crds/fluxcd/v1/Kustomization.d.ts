@@ -32,6 +32,8 @@ export interface Kustomization {
          * to the built resources. The allowed values are 'originAnnotations' to
          * annotate resources with their source origin, and 'transformerAnnotations'
          * to annotate resources with the transformers that produced them.
+         *
+         * Items: BuildMetadataOption defines the supported buildMetadata options.
          */
         buildMetadata?: ('originAnnotations' | 'transformerAnnotations')[];
         /**
@@ -97,6 +99,9 @@ export interface Kustomization {
          * DependsOn may contain a DependencyReference slice
          * with references to Kustomization resources that must be ready before this
          * Kustomization can be reconciled.
+         *
+         * Items: DependencyReference contains enough information to locate the referenced Kubernetes resource object
+         * and optional CEL expression to assess its readiness.
          */
         dependsOn?: {
             /**
@@ -126,6 +131,8 @@ export interface Kustomization {
          * HealthCheckExprs is a list of healthcheck expressions for evaluating the
          * health of custom resources using Common Expression Language (CEL).
          * The expressions are evaluated only when Wait or HealthChecks are specified.
+         *
+         * Items: CustomHealthCheck defines the health check for custom resources.
          */
         healthCheckExprs?: {
             /**
@@ -154,6 +161,9 @@ export interface Kustomization {
         }[];
         /**
          * A list of resources to be included in the health assessment.
+         *
+         * Items: NamespacedObjectKindReference contains enough information to locate the typed referenced Kubernetes resource object
+         * in any namespace.
          */
         healthChecks?: {
             /**
@@ -178,6 +188,9 @@ export interface Kustomization {
          * during drift detection. These rules are applied to the resources managed
          * by the Kustomization and are used to exclude specific JSON pointer paths
          * from the drift detection and apply process.
+         *
+         * Items: IgnoreRule defines a rule to selectively disregard specific changes during
+         * the drift detection process.
          */
         ignore?: {
             /**
@@ -243,6 +256,8 @@ export interface Kustomization {
          * Images is a list of (image name, new name, new tag or digest)
          * for changing image names, tags or digests. This can also be achieved with a
          * patch, but this operator is simpler to specify.
+         *
+         * Items: Image contains an image name, a new name, a new tag or digest, which will replace the original name and tag.
          */
         images?: {
             /**
@@ -348,6 +363,9 @@ export interface Kustomization {
         /**
          * Strategic merge and JSON patches, defined as inline YAML objects,
          * capable of targeting objects based on kind, label and annotation selectors.
+         *
+         * Items: Patch contains an inline StrategicMerge or JSON6902 patch, and the target the patch should
+         * be applied to.
          */
         patches?: {
             /**
@@ -427,6 +445,9 @@ export interface Kustomization {
              * The ConfigMap and the Secret data keys represent the var names, and they
              * must match the vars declared in the manifests for the substitution to
              * happen.
+             *
+             * Items: SubstituteReference contains a reference to a resource containing
+             * the variables name and value.
              */
             substituteFrom?: {
                 /**
@@ -518,6 +539,9 @@ export interface Kustomization {
      * KustomizationStatus defines the observed state of a kustomization.
      */
     status?: {
+        /**
+         * Items: Condition contains details for one aspect of the current state of this API Resource.
+         */
         conditions?: {
             /**
              * lastTransitionTime is the last time the condition transitioned from one status to another.
@@ -555,6 +579,9 @@ export interface Kustomization {
         /**
          * History contains a set of snapshots of the last reconciliation attempts
          * tracking the revision, the state and the duration of each attempt.
+         *
+         * Items: Snapshot represents a point-in-time record of a group of resources reconciliation,
+         * including timing information, status, and a unique digest identifier.
          */
         history?: {
             /**
@@ -595,6 +622,8 @@ export interface Kustomization {
         inventory?: {
             /**
              * Entries of Kubernetes resource object references.
+             *
+             * Items: ResourceRef contains the information necessary to locate a resource within a cluster.
              */
             entries: {
                 /**

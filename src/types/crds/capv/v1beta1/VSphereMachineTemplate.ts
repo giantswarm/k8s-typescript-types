@@ -96,6 +96,8 @@ export interface VSphereMachineTemplate {
          * DataDisks are additional disks to add to the VM that are not part of the VM's OVA template.
          *
          * @maxItems 29
+         *
+         * Items: VSphereDisk is an additional disk to add to the VM that is not part of the VM OVA template.
          */
         dataDisks?: {
           /**
@@ -213,12 +215,18 @@ export interface VSphereMachineTemplate {
           /**
            * Devices is the list of network devices used by the virtual machine.
            *
+           *
+           * Items: NetworkDeviceSpec defines the network configuration for a virtual machine's
+           * network device.
            */
           devices: {
             /**
              * AddressesFromPools is a list of IPAddressPools that should be assigned
              * to IPAddressClaims. The machine's cloud-init metadata will be populated
              * with IPAddresses fulfilled by an IPAM provider.
+             *
+             * Items: TypedLocalObjectReference contains enough information to let you locate the
+             * typed referenced object inside the same namespace.
              */
             addressesFromPools?: {
               /**
@@ -408,6 +416,8 @@ export interface VSphereMachineTemplate {
             networkName: string;
             /**
              * Routes is a list of optional, static routes applied to the device.
+             *
+             * Items: NetworkRouteSpec defines a static network route.
              */
             routes?: {
               /**
@@ -445,6 +455,8 @@ export interface VSphereMachineTemplate {
           /**
            * Routes is a list of optional, static routes applied to the virtual
            * machine.
+           *
+           * Items: NetworkRouteSpec defines a static network route.
            */
           routes?: {
             /**
@@ -481,6 +493,8 @@ export interface VSphereMachineTemplate {
         os?: string;
         /**
          * PciDevices is the list of pci devices used by the virtual machine.
+         *
+         * Items: PCIDeviceSpec defines virtual machine's PCI configuration.
          */
         pciDevices?: {
           /**

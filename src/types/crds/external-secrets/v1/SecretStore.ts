@@ -29,6 +29,9 @@ export interface SecretStore {
   spec?: {
     /**
      * Used to constrain a ClusterSecretStore to specific namespaces. Relevant only to ClusterSecretStore.
+     *
+     * Items: ClusterSecretStoreCondition describes a condition by which to choose namespaces to process ExternalSecrets in
+     * for a ClusterSecretStore instance.
      */
     conditions?: {
       /**
@@ -41,6 +44,9 @@ export interface SecretStore {
       namespaceSelector?: {
         /**
          * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+         *
+         * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+         * relates the key and values.
          */
         matchExpressions?: {
           /**
@@ -139,8 +145,8 @@ export interface SecretStore {
             serviceAccountRef?: {
               /**
                * Audience specifies the `aud` claim for the service account token
-               * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
-               * then this audiences will be appended to the list
+               * Some providers automatically extend the audience field based on well-known annotations for workload
+               * identity (e.g. IRSA or GCP Workload Identity)
                */
               audiences?: string[];
               /**
@@ -219,6 +225,29 @@ export interface SecretStore {
               namespace?: string;
             };
           };
+          /**
+           * ServiceAccountRef specifies a Kubernetes ServiceAccount used for azure_ad
+           * authentication on AKS Workload Identity. The operator obtains a federated
+           * identity token from this ServiceAccount via the TokenRequest API instead
+           * of using the ESO controller pod identity. Ignored for other access types.
+           */
+          serviceAccountRef?: {
+            /**
+             * Audience specifies the `aud` claim for the service account token
+             * Some providers automatically extend the audience field based on well-known annotations for workload
+             * identity (e.g. IRSA or GCP Workload Identity)
+             */
+            audiences?: string[];
+            /**
+             * The name of the ServiceAccount resource being referred to.
+             */
+            name: string;
+            /**
+             * Namespace of the resource being referred to.
+             * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+             */
+            namespace?: string;
+          };
         };
         /**
          * PEM/base64 encoded CA bundle used to validate Akeyless Gateway certificate. Only used
@@ -248,6 +277,11 @@ export interface SecretStore {
            */
           type: 'Secret' | 'ConfigMap';
         };
+        /**
+         * IgnoreCache bypasses the Gateway cache for secret reads when true.
+         * Only relevant when akeylessGWApiURL points to an Akeyless Gateway.
+         */
+        ignoreCache?: boolean;
       };
       /**
        * AWS configures this store to sync secrets using AWS Secret Manager provider
@@ -273,8 +307,8 @@ export interface SecretStore {
             serviceAccountRef?: {
               /**
                * Audience specifies the `aud` claim for the service account token
-               * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
-               * then this audiences will be appended to the list
+               * Some providers automatically extend the audience field based on well-known annotations for workload
+               * identity (e.g. IRSA or GCP Workload Identity)
                */
               audiences?: string[];
               /**
@@ -401,9 +435,12 @@ export interface SecretStore {
         /**
          * Service defines which service should be used to fetch the secrets
          */
-        service: 'SecretsManager' | 'ParameterStore';
+        service: 'SecretsManager' | 'ParameterStore' | 'CertificateManager';
         /**
          * AWS STS assume role session tags
+         *
+         * Items: Tag is a key-value pair that can be attached to an AWS resource.
+         * see: https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html
          */
         sessionTags?: {
           key: string;
@@ -562,8 +599,8 @@ export interface SecretStore {
         serviceAccountRef?: {
           /**
            * Audience specifies the `aud` claim for the service account token
-           * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
-           * then this audiences will be appended to the list
+           * Some providers automatically extend the audience field based on well-known annotations for workload
+           * identity (e.g. IRSA or GCP Workload Identity)
            */
           audiences?: string[];
           /**
@@ -599,9 +636,35 @@ export interface SecretStore {
          */
         auth: {
           /**
-           * BarbicanProviderPasswordRef defines a reference to a secret containing password for the Barbican provider.
+           * ID of the application credential used for authentication.
            */
-          password: {
+          applicationCredentialID?: {
+            /**
+             * SecretKeySelector is a reference to a specific 'key' within a Secret resource.
+             * In some instances, `key` is a required field.
+             */
+            secretRef?: {
+              /**
+               * A key in the referenced Secret.
+               * Some instances of this field may be defaulted, in others it may be required.
+               */
+              key?: string;
+              /**
+               * The name of the Secret resource being referred to.
+               */
+              name?: string;
+              /**
+               * The namespace of the Secret resource being referred to.
+               * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+               */
+              namespace?: string;
+            };
+            value?: string;
+          };
+          /**
+           * BarbicanProviderAppCredSecretRef defines a reference to an Application Credential Secret.
+           */
+          applicationCredentialSecret?: {
             /**
              * SecretKeySelector is a reference to a specific 'key' within a Secret resource.
              * In some instances, `key` is a required field.
@@ -624,9 +687,41 @@ export interface SecretStore {
             };
           };
           /**
-           * BarbicanProviderUsernameRef defines a reference to a secret containing username for the Barbican provider.
+           * AuthType selects how Barbican authenticates.
+           * - "password": use username and password.
+           * - "applicationCredential": use application credential ID and secret.
+           * Defaults to "password".
            */
-          username: {
+          authType?: 'password' | 'applicationCredential';
+          /**
+           * BarbicanProviderPasswordRef defines a reference to a secret containing password for the Barbican provider.
+           */
+          password?: {
+            /**
+             * SecretKeySelector is a reference to a specific 'key' within a Secret resource.
+             * In some instances, `key` is a required field.
+             */
+            secretRef: {
+              /**
+               * A key in the referenced Secret.
+               * Some instances of this field may be defaulted, in others it may be required.
+               */
+              key?: string;
+              /**
+               * The name of the Secret resource being referred to.
+               */
+              name?: string;
+              /**
+               * The namespace of the Secret resource being referred to.
+               * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+               */
+              namespace?: string;
+            };
+          };
+          /**
+           * Username / Password authentication fields.
+           */
+          username?: {
             /**
              * SecretKeySelector is a reference to a specific 'key' within a Secret resource.
              * In some instances, `key` is a required field.
@@ -1159,6 +1254,63 @@ export interface SecretStore {
             };
           };
           /**
+           * Cert enables certificate-based authentication using a client certificate and key.
+           */
+          cert?: {
+            /**
+             * Account is the Conjur organization account name.
+             */
+            account: string;
+            /**
+             * ClientCertRef is a reference to a specific 'key' containing the client certificate
+             * within a Secret resource. The certificate must be PEM-encoded.
+             */
+            clientCertRef: {
+              /**
+               * A key in the referenced Secret.
+               * Some instances of this field may be defaulted, in others it may be required.
+               */
+              key?: string;
+              /**
+               * The name of the Secret resource being referred to.
+               */
+              name?: string;
+              /**
+               * The namespace of the Secret resource being referred to.
+               * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+               */
+              namespace?: string;
+            };
+            /**
+             * ClientKeyRef is a reference to a specific 'key' containing the private RSA client key
+             * within a Secret resource. The key must be PEM-encoded.
+             */
+            clientKeyRef: {
+              /**
+               * A key in the referenced Secret.
+               * Some instances of this field may be defaulted, in others it may be required.
+               */
+              key?: string;
+              /**
+               * The name of the Secret resource being referred to.
+               */
+              name?: string;
+              /**
+               * The namespace of the Secret resource being referred to.
+               * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+               */
+              namespace?: string;
+            };
+            /**
+             * Optional HostID for cert authentication (can be omitted when using 'spiffe' mode).
+             */
+            hostId?: string;
+            /**
+             * The conjur authn cert webservice id
+             */
+            serviceID: string;
+          };
+          /**
            * Jwt enables JWT authentication using Kubernetes service account tokens.
            */
           jwt?: {
@@ -1198,8 +1350,8 @@ export interface SecretStore {
             serviceAccountRef?: {
               /**
                * Audience specifies the `aud` claim for the service account token
-               * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
-               * then this audiences will be appended to the list
+               * Some providers automatically extend the audience field based on well-known annotations for workload
+               * identity (e.g. IRSA or GCP Workload Identity)
                */
               audiences?: string[];
               /**
@@ -1250,6 +1402,219 @@ export interface SecretStore {
          * URL is the endpoint of the Conjur instance.
          */
         url: string;
+      };
+      /**
+       * CRD configures this store to sync secrets from arbitrary Kubernetes resources,
+       * including both custom resources (CRDs) and core API resources. Resources are
+       * selected by API group, version and kind, where group can be "" (empty string)
+       * for core resources such as ConfigMap. Reading the core v1 Secret is
+       * intentionally blocked — use the Kubernetes provider for that.
+       */
+      crd?: {
+        /**
+         * Auth configures authentication to the Kubernetes API, same as the
+         * Kubernetes provider. Required when Server.URL is set (unless using AuthRef).
+         */
+        auth?: {
+          /**
+           * has both clientCert and clientKey as secretKeySelector
+           */
+          cert?: {
+            /**
+             * SecretKeySelector is a reference to a specific 'key' within a Secret resource.
+             * In some instances, `key` is a required field.
+             */
+            clientCert: {
+              /**
+               * A key in the referenced Secret.
+               * Some instances of this field may be defaulted, in others it may be required.
+               */
+              key?: string;
+              /**
+               * The name of the Secret resource being referred to.
+               */
+              name?: string;
+              /**
+               * The namespace of the Secret resource being referred to.
+               * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+               */
+              namespace?: string;
+            };
+            /**
+             * SecretKeySelector is a reference to a specific 'key' within a Secret resource.
+             * In some instances, `key` is a required field.
+             */
+            clientKey: {
+              /**
+               * A key in the referenced Secret.
+               * Some instances of this field may be defaulted, in others it may be required.
+               */
+              key?: string;
+              /**
+               * The name of the Secret resource being referred to.
+               */
+              name?: string;
+              /**
+               * The namespace of the Secret resource being referred to.
+               * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+               */
+              namespace?: string;
+            };
+          };
+          /**
+           * points to a service account that should be used for authentication
+           */
+          serviceAccount?: {
+            /**
+             * Audience specifies the `aud` claim for the service account token
+             * Some providers automatically extend the audience field based on well-known annotations for workload
+             * identity (e.g. IRSA or GCP Workload Identity)
+             */
+            audiences?: string[];
+            /**
+             * The name of the ServiceAccount resource being referred to.
+             */
+            name: string;
+            /**
+             * Namespace of the resource being referred to.
+             * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+             */
+            namespace?: string;
+          };
+          /**
+           * use static token to authenticate with
+           */
+          token?: {
+            /**
+             * SecretKeySelector is a reference to a specific 'key' within a Secret resource.
+             * In some instances, `key` is a required field.
+             */
+            bearerToken: {
+              /**
+               * A key in the referenced Secret.
+               * Some instances of this field may be defaulted, in others it may be required.
+               */
+              key?: string;
+              /**
+               * The name of the Secret resource being referred to.
+               */
+              name?: string;
+              /**
+               * The namespace of the Secret resource being referred to.
+               * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+               */
+              namespace?: string;
+            };
+          };
+        };
+        /**
+         * AuthRef references a Secret containing a kubeconfig. Same semantics as the
+         * Kubernetes provider.
+         */
+        authRef?: {
+          /**
+           * A key in the referenced Secret.
+           * Some instances of this field may be defaulted, in others it may be required.
+           */
+          key?: string;
+          /**
+           * The name of the Secret resource being referred to.
+           */
+          name?: string;
+          /**
+           * The namespace of the Secret resource being referred to.
+           * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+           */
+          namespace?: string;
+        };
+        /**
+         * Resource identifies the CRD by its API group, version and kind.
+         */
+        resource: {
+          /**
+           * Group is the API group of the resource. Use "" (empty string) for core
+           * Kubernetes resources such as ConfigMap; use e.g. "config.example.io"
+           * for a CRD. The field is required to be present in the manifest — write
+           * `group: ""` explicitly for core resources so typos fail at admission
+           * time rather than later at discovery.
+           */
+          group: string;
+          /**
+           * Kind is the Kubernetes resource kind (e.g. "MyCustomResource").
+           */
+          kind: string;
+          /**
+           * Version is the API version of the resource (e.g. "v1alpha1").
+           */
+          version: string;
+        };
+        /**
+         * Server configures the Kubernetes API address and TLS trust, same as the
+         * Kubernetes provider. When omitted, the URL defaults to the in-cluster API.
+         */
+        server?: {
+          /**
+           * CABundle is a base64-encoded CA certificate
+           */
+          caBundle?: string;
+          /**
+           * see: https://external-secrets.io/latest/spec/#external-secrets.io/v1alpha1.CAProvider
+           */
+          caProvider?: {
+            /**
+             * The key where the CA certificate can be found in the Secret or ConfigMap.
+             */
+            key?: string;
+            /**
+             * The name of the object located at the provider type.
+             */
+            name: string;
+            /**
+             * The namespace the Provider type is in.
+             * Can only be defined when used in a ClusterSecretStore.
+             */
+            namespace?: string;
+            /**
+             * The type of provider to use such as "Secret", or "ConfigMap".
+             */
+            type: 'Secret' | 'ConfigMap';
+          };
+          /**
+           * configures the Kubernetes server Address.
+           */
+          url?: string;
+        };
+        /**
+         * Whitelist optionally restricts which object names and requested properties
+         * are allowed to be read.
+         */
+        whitelist?: {
+          /**
+           * Rules is a list of allow rules. If rules are set, at least one rule must
+           * match for a request to be allowed.
+           *
+           * Items: CRDProviderWhitelistRule defines a single allow rule for CRD reads.
+           */
+          rules?: {
+            /**
+             * Name is an optional regular expression matched against the bare object name.
+             * For both SecretStore and ClusterSecretStore this is always the object name
+             * without any namespace prefix (e.g. "my-db-spec", not "prod/my-db-spec").
+             */
+            name?: string;
+            /**
+             * Namespace is an optional regular expression matched against the namespace of
+             * the object. Applies only when a ClusterSecretStore is used; it is ignored
+             * for SecretStore (where the namespace is fixed to the store namespace).
+             */
+            namespace?: string;
+            /**
+             * Properties is an optional list of regular expressions matched against
+             * requested property keys (for example: "spec.secretValue").
+             */
+            properties?: string[];
+          }[];
+        };
       };
       /**
        * Delinea DevOps Secrets Vault
@@ -1354,8 +1719,8 @@ export interface SecretStore {
             serviceAccountRef: {
               /**
                * Audience specifies the `aud` claim for the service account token
-               * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
-               * then this audiences will be appended to the list
+               * Some providers automatically extend the audience field based on well-known annotations for workload
+               * identity (e.g. IRSA or GCP Workload Identity)
                */
               audiences?: string[];
               /**
@@ -1485,6 +1850,9 @@ export interface SecretStore {
        * Fake configures a store with static key/value pairs
        */
       fake?: {
+        /**
+         * Items: FakeProviderData defines a key-value pair with optional version for the fake provider.
+         */
         data: {
           key: string;
           value: string;
@@ -1585,8 +1953,8 @@ export interface SecretStore {
             serviceAccountRef: {
               /**
                * Audience specifies the `aud` claim for the service account token
-               * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
-               * then this audiences will be appended to the list
+               * Some providers automatically extend the audience field based on well-known annotations for workload
+               * identity (e.g. IRSA or GCP Workload Identity)
                */
               audiences?: string[];
               /**
@@ -1678,8 +2046,8 @@ export interface SecretStore {
             serviceAccountRef?: {
               /**
                * Audience specifies the `aud` claim for the service account token
-               * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
-               * then this audiences will be appended to the list
+               * Some providers automatically extend the audience field based on well-known annotations for workload
+               * identity (e.g. IRSA or GCP Workload Identity)
                */
               audiences?: string[];
               /**
@@ -1712,7 +2080,7 @@ export interface SecretStore {
         secretVersionSelectionPolicy?: string;
       };
       /**
-       * Github configures this store to push GitHub Actions secrets using the GitHub API provider.
+       * Github configures this store to push GitHub Actions or Dependabot secrets using the GitHub API provider.
        * Note: This provider only supports write operations (PushSecret) and cannot fetch secrets from GitHub
        */
       github?: {
@@ -1768,6 +2136,11 @@ export interface SecretStore {
          * repository will be used to fetch secrets from the Github repository within an organization
          */
         repository?: string;
+        /**
+         * secretType specifies which GitHub secret service to use.
+         * Defaults to Actions for backwards compatibility.
+         */
+        secretType?: 'Actions' | 'Dependabot';
         /**
          * Upload URL for enterprise instances. Default to URL.
          */
@@ -2521,7 +2894,7 @@ export interface SecretStore {
            */
           namespace?: string;
         };
-        folderID: string;
+        folderID?: string;
         getByTitleFallback?: boolean;
       };
       /**
@@ -2540,7 +2913,7 @@ export interface SecretStore {
              * SecretKeySelector is a reference to a specific 'key' within a Secret resource.
              * In some instances, `key` is a required field.
              */
-            clientCert?: {
+            clientCert: {
               /**
                * A key in the referenced Secret.
                * Some instances of this field may be defaulted, in others it may be required.
@@ -2560,7 +2933,7 @@ export interface SecretStore {
              * SecretKeySelector is a reference to a specific 'key' within a Secret resource.
              * In some instances, `key` is a required field.
              */
-            clientKey?: {
+            clientKey: {
               /**
                * A key in the referenced Secret.
                * Some instances of this field may be defaulted, in others it may be required.
@@ -2583,8 +2956,8 @@ export interface SecretStore {
           serviceAccount?: {
             /**
              * Audience specifies the `aud` claim for the service account token
-             * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
-             * then this audiences will be appended to the list
+             * Some providers automatically extend the audience field based on well-known annotations for workload
+             * identity (e.g. IRSA or GCP Workload Identity)
              */
             audiences?: string[];
             /**
@@ -2605,7 +2978,7 @@ export interface SecretStore {
              * SecretKeySelector is a reference to a specific 'key' within a Secret resource.
              * In some instances, `key` is a required field.
              */
-            bearerToken?: {
+            bearerToken: {
               /**
                * A key in the referenced Secret.
                * Some instances of this field may be defaulted, in others it may be required.
@@ -2655,7 +3028,7 @@ export interface SecretStore {
            */
           caBundle?: string;
           /**
-           * see: https://external-secrets.io/v0.4.1/spec/#external-secrets.io/v1alpha1.CAProvider
+           * see: https://external-secrets.io/latest/spec/#external-secrets.io/v1alpha1.CAProvider
            */
           caProvider?: {
             /**
@@ -2743,6 +3116,38 @@ export interface SecretStore {
              * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
              */
             namespace?: string;
+          };
+          /**
+           * WorkloadIdentity defines configuration for workload identity authentication to Nebius IAM.
+           */
+          workloadIdentity?: {
+            /**
+             * IAMServiceAccountID is the Nebius IAM service account identifier that the
+             * federated Kubernetes service account should impersonate during token exchange.
+             */
+            iamServiceAccountID: string;
+            /**
+             * ServiceAccountRef references a Kubernetes ServiceAccount used to request a
+             * temporary JWT via the TokenRequest API. The JWT is then exchanged for a
+             * Nebius IAM token using workload federation.
+             */
+            serviceAccountRef: {
+              /**
+               * Audience specifies the `aud` claim for the service account token
+               * Some providers automatically extend the audience field based on well-known annotations for workload
+               * identity (e.g. IRSA or GCP Workload Identity)
+               */
+              audiences?: string[];
+              /**
+               * The name of the ServiceAccount resource being referred to.
+               */
+              name: string;
+              /**
+               * Namespace of the resource being referred to.
+               * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+               */
+              namespace?: string;
+            };
           };
         };
         /**
@@ -2971,6 +3376,12 @@ export interface SecretStore {
           ttl?: string;
         };
         /**
+         * Environment defines the 1Password Environment ID to read variables from.
+         * Environments are read-only: PushSecret, DeleteSecret, and SecretExists return an error when set.
+         * Mutually exclusive with Vault.
+         */
+        environment?: string;
+        /**
          * IntegrationInfo specifies the name and version of the integration built using the 1Password Go SDK.
          * If you don't know which name and version to use, use `DefaultIntegrationName` and `DefaultIntegrationVersion`, respectively.
          */
@@ -2986,8 +3397,9 @@ export interface SecretStore {
         };
         /**
          * Vault defines the vault's name or uuid to access. Do NOT add op:// prefix. This will be done automatically.
+         * Mutually exclusive with Environment.
          */
-        vault: string;
+        vault?: string;
       };
       /**
        * OpenBao configures this store to sync secrets using the OpenBao provider.
@@ -3054,6 +3466,68 @@ export interface SecretStore {
               name?: string;
               /**
                * The namespace of the Secret resource being referred to.
+               * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+               */
+              namespace?: string;
+            };
+          };
+          /**
+           * Kubernetes authenticates with OpenBao by passing a ServiceAccount
+           * token to the [Kubernetes auth mechanism].
+           *
+           * [Kubernetes auth mechanism]: https://openbao.org/docs/auth/kubernetes/
+           */
+          kubernetes?: {
+            /**
+             * Path where the Kubernetes authentication backend is mounted in OpenBao, e.g:
+             * "kubernetes"
+             */
+            path: string;
+            /**
+             * A required field containing the OpenBao Role to assume. A Role binds a
+             * Kubernetes ServiceAccount with a set of OpenBao policies.
+             */
+            role: string;
+            /**
+             * Optional secret field containing a Kubernetes ServiceAccount JWT used
+             * for authenticating with OpenBao. If a name is specified without a key,
+             * `token` is the default.
+             */
+            secretRef?: {
+              /**
+               * A key in the referenced Secret.
+               * Some instances of this field may be defaulted, in others it may be required.
+               */
+              key?: string;
+              /**
+               * The name of the Secret resource being referred to.
+               */
+              name?: string;
+              /**
+               * The namespace of the Secret resource being referred to.
+               * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+               */
+              namespace?: string;
+            };
+            /**
+             * Optional service account field containing the name of a Kubernetes ServiceAccount.
+             * If the service account is specified, a token will be requested from the Kubernetes
+             * TokenRequest API for authenticating with OpenBao.
+             * Any configured audiences will be passed to the TokenRequest as-is.
+             */
+            serviceAccountRef?: {
+              /**
+               * Audience specifies the `aud` claim for the service account token
+               * Some providers automatically extend the audience field based on well-known annotations for workload
+               * identity (e.g. IRSA or GCP Workload Identity)
+               */
+              audiences?: string[];
+              /**
+               * The name of the ServiceAccount resource being referred to.
+               */
+              name: string;
+              /**
+               * Namespace of the resource being referred to.
                * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
                */
               namespace?: string;
@@ -3272,8 +3746,8 @@ export interface SecretStore {
         serviceAccountRef?: {
           /**
            * Audience specifies the `aud` claim for the service account token
-           * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
-           * then this audiences will be appended to the list
+           * Some providers automatically extend the audience field based on well-known annotations for workload
+           * identity (e.g. IRSA or GCP Workload Identity)
            */
           audiences?: string[];
           /**
@@ -3653,8 +4127,8 @@ export interface SecretStore {
             serviceAccountRef: {
               /**
                * Audience specifies the `aud` claim for the service account token
-               * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
-               * then this audiences will be appended to the list
+               * Some providers automatically extend the audience field based on well-known annotations for workload
+               * identity (e.g. IRSA or GCP Workload Identity)
                */
               audiences?: string[];
               /**
@@ -3793,13 +4267,19 @@ export interface SecretStore {
           type: 'Secret' | 'ConfigMap';
         };
         /**
+         * DisableSiteIDValidation permits a missing site ID for new secrets.
+         * The provider sends 0 if no site ID is set.
+         */
+        disableSiteIDValidation?: boolean;
+        /**
          * Domain is the secret server domain.
          */
         domain?: string;
         /**
          * Password is the secret server account password.
+         * Required unless Token is set.
          */
-        password: {
+        password?: {
           /**
            * SecretRef references a key in a secret that will be used as value.
            */
@@ -3830,9 +4310,46 @@ export interface SecretStore {
          */
         serverURL: string;
         /**
-         * Username is the secret server account username.
+         * SiteID is the ID of the Secret Server site for new secrets.
+         * PushSecret metadata can override this value for one secret.
+         * The provider uses 1 if this field is not set.
          */
-        username: {
+        siteId?: number;
+        /**
+         * Token is an access token used to authenticate to the secret server,
+         * as an alternative to Username and Password. When set, Username and
+         * Password are not required and are ignored.
+         */
+        token?: {
+          /**
+           * SecretRef references a key in a secret that will be used as value.
+           */
+          secretRef?: {
+            /**
+             * A key in the referenced Secret.
+             * Some instances of this field may be defaulted, in others it may be required.
+             */
+            key?: string;
+            /**
+             * The name of the Secret resource being referred to.
+             */
+            name?: string;
+            /**
+             * The namespace of the Secret resource being referred to.
+             * Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.
+             */
+            namespace?: string;
+          };
+          /**
+           * Value can be specified directly to set a value without using a secret.
+           */
+          value?: string;
+        };
+        /**
+         * Username is the secret server account username.
+         * Required unless Token is set.
+         */
+        username?: {
           /**
            * SecretRef references a key in a secret that will be used as value.
            */
@@ -4075,8 +4592,8 @@ export interface SecretStore {
             serviceAccountRef?: {
               /**
                * Audience specifies the `aud` claim for the service account token
-               * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
-               * then this audiences will be appended to the list
+               * Some providers automatically extend the audience field based on well-known annotations for workload
+               * identity (e.g. IRSA or GCP Workload Identity)
                */
               audiences?: string[];
               /**
@@ -4114,8 +4631,8 @@ export interface SecretStore {
               serviceAccountRef: {
                 /**
                  * Audience specifies the `aud` claim for the service account token
-                 * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
-                 * then this audiences will be appended to the list
+                 * Some providers automatically extend the audience field based on well-known annotations for workload
+                 * identity (e.g. IRSA or GCP Workload Identity)
                  */
                 audiences?: string[];
                 /**
@@ -4149,8 +4666,8 @@ export interface SecretStore {
               serviceAccountRef?: {
                 /**
                  * Audience specifies the `aud` claim for the service account token
-                 * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
-                 * then this audiences will be appended to the list
+                 * Some providers automatically extend the audience field based on well-known annotations for workload
+                 * identity (e.g. IRSA or GCP Workload Identity)
                  */
                 audiences?: string[];
                 /**
@@ -4282,8 +4799,8 @@ export interface SecretStore {
               serviceAccountRef: {
                 /**
                  * Audience specifies the `aud` claim for the service account token
-                 * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
-                 * then this audiences will be appended to the list
+                 * Some providers automatically extend the audience field based on well-known annotations for workload
+                 * identity (e.g. IRSA or GCP Workload Identity)
                  */
                 audiences?: string[];
                 /**
@@ -4374,8 +4891,8 @@ export interface SecretStore {
             serviceAccountRef?: {
               /**
                * Audience specifies the `aud` claim for the service account token
-               * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
-               * then this audiences will be appended to the list
+               * Some providers automatically extend the audience field based on well-known annotations for workload
+               * identity (e.g. IRSA or GCP Workload Identity)
                */
               audiences?: string[];
               /**
@@ -4811,6 +5328,8 @@ export interface SecretStore {
         /**
          * Secrets to fill in templates
          * These secrets will be passed to the templating function as key value pairs under the given name
+         *
+         * Items: WebhookSecret defines a secret that will be passed to the webhook request.
          */
         secrets?: {
           /**
@@ -5000,9 +5519,11 @@ export interface SecretStore {
       };
     };
     /**
-     * Used to configure store refresh interval in seconds. Empty or 0 will default to the controller config.
+     * Used to configure store refresh interval. Accepts either an integer number
+     * of seconds (legacy) or a Go duration string such as "1h" or "5m". Empty or
+     * 0 will default to the controller config.
      */
-    refreshInterval?: number;
+    refreshInterval?: number | string;
     /**
      * Used to configure HTTP retries on failures.
      */
@@ -5019,6 +5540,9 @@ export interface SecretStore {
      * SecretStoreCapabilities defines the possible operations a SecretStore can do.
      */
     capabilities?: string;
+    /**
+     * Items: SecretStoreStatusCondition contains condition information for a SecretStore.
+     */
     conditions?: {
       lastTransitionTime?: string;
       message?: string;

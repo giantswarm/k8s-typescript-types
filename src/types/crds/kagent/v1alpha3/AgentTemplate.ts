@@ -43,6 +43,8 @@ export interface AgentTemplate {
     };
     /**
      * @maxItems 20
+     *
+     * Items: PluginBundle selects Agent Skills from one immutable Agent Plugins package.
      */
     plugins?:
       | []
@@ -10384,6 +10386,8 @@ export interface AgentTemplate {
        * DataSources are same-namespace ConfigMaps available to include("source/key").
        *
        * @maxItems 20
+       *
+       * Items: AgentTemplatePromptSource makes a same-namespace ConfigMap available to a prompt template.
        */
       dataSources?:
         | []
@@ -11900,6 +11904,8 @@ export interface AgentTemplate {
     };
     /**
      * @maxItems 50
+     *
+     * Items: AgentTemplateSkill identifies one standalone skill and its immutable source.
      */
     skills?: {
       name: string;
@@ -11955,6 +11961,8 @@ export interface AgentTemplate {
     };
     /**
      * @maxItems 50
+     *
+     * Items: ToolBinding selects exactly one MCP or AgentTemplate-backed tool source.
      */
     tools?: {
       /**
@@ -12032,10 +12040,14 @@ export interface AgentTemplate {
   status?: {
     /**
      * Harnesses has at most one entry for each admitting Harness.
+     *
+     * Items: AgentTemplateHarnessStatus reports runtime revision state for one admitting Harness.
      */
     harnesses?: {
       /**
        * @maxItems 4
+       *
+       * Items: Condition contains details for one aspect of the current state of this API Resource.
        */
       conditions?:
         | []

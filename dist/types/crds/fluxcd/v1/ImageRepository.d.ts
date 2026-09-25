@@ -35,6 +35,9 @@ export interface ImageRepository {
             /**
              * NamespaceSelectors is the list of namespace selectors to which this ACL applies.
              * Items in this list are evaluated using a logical OR operation.
+             *
+             * Items: NamespaceSelector selects the namespaces to which this ACL applies.
+             * An empty map of MatchLabels matches all namespaces in a cluster.
              */
             namespaceSelectors: {
                 /**
@@ -143,6 +146,9 @@ export interface ImageRepository {
          * rather than `alpine`.
          */
         canonicalImageName?: string;
+        /**
+         * Items: Condition contains details for one aspect of the current state of this API Resource.
+         */
         conditions?: {
             /**
              * lastTransitionTime is the last time the condition transitioned from one status to another.

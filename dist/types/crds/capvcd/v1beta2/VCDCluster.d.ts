@@ -90,6 +90,8 @@ export interface VCDCluster {
     status?: {
         /**
          * Conditions defines current service state of the VCDCluster.
+         *
+         * Items: Condition defines an observation of a Cluster API resource operational state.
          */
         conditions?: {
             /**
@@ -181,6 +183,8 @@ export interface VCDCluster {
         vcdResourceMap?: {
             /**
              * VCDResources stores the latest ID and name of VCD resources for specific resource types.
+             *
+             * Items: VCDResource restores the data structure for some VCD Resources
              */
             ovdcs?: {
                 id: string;

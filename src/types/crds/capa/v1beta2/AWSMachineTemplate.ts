@@ -64,12 +64,18 @@ export interface AWSMachineTemplate {
          * instance. These security groups would be set in addition to any security groups defined
          * at the cluster level or in the actuator. It is possible to specify either IDs of Filters. Using Filters
          * will cause additional requests to AWS API and if tags change the attached security groups might change too.
+         *
+         * Items: AWSResourceReference is a reference to a specific AWS resource by ID or filters.
+         * Only one of ID or Filters may be specified. Specifying more than one will result in
+         * a validation error.
          */
         additionalSecurityGroups?: {
           /**
            * Filters is a set of key/value pairs used to identify a resource
            * They are applied according to the rules defined by the AWS API:
            * https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Using_Filtering.html
+           *
+           * Items: Filter is a filter used to identify an AWS resource.
            */
           filters?: {
             /**
@@ -127,7 +133,7 @@ export interface AWSMachineTemplate {
          * "None": The instance may not make use of any Capacity Reservations. This is to conserve open reservations for desired workloads
          * "CapacityReservationsOnly": The instance will only run if matched or targeted to a Capacity Reservation. Note that this is incompatible with a MarketType of `Spot`
          */
-        capacityReservationPreference?: ('' | 'None' | 'CapacityReservationsOnly' | 'Open') & string;
+        capacityReservationPreference?: '' | 'None' | 'CapacityReservationsOnly' | 'Open';
         /**
          * CloudInit defines options related to the bootstrapping systems where
          * CloudInit is used.
@@ -276,6 +282,8 @@ export interface AWSMachineTemplate {
              * An IP address prefix and domain name can also include a literal port number (1.2.3.4:80).
              *
              * @maxItems 64
+             *
+             * Items: IgnitionNoProxy defines the list of domains to not proxy for Ignition.
              */
             noProxy?: string[];
           };
@@ -307,6 +315,8 @@ export interface AWSMachineTemplate {
              * Supported schemes are http, https, tftp, s3, arn, gs, and `data` (RFC 2397) URL scheme.
              *
              * @maxItems 64
+             *
+             * Items: IgnitionCASource defines the source of the certificate authority to use for Ignition.
              */
             certificateAuthorities?: string[];
           };
@@ -424,6 +434,8 @@ export interface AWSMachineTemplate {
         networkInterfaces?: [] | [string] | [string, string];
         /**
          * Configuration options for the non root storage volumes.
+         *
+         * Items: Volume encapsulates the configuration options for the storage device.
          */
         nonRootVolumes?: {
           /**
@@ -562,6 +574,8 @@ export interface AWSMachineTemplate {
            * Filters is a set of key/value pairs used to identify a resource
            * They are applied according to the rules defined by the AWS API:
            * https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Using_Filtering.html
+           *
+           * Items: Filter is a filter used to identify an AWS resource.
            */
           filters?: {
             /**
@@ -609,6 +623,8 @@ export interface AWSMachineTemplate {
     };
     /**
      * Conditions defines current service state of the AWSMachineTemplate.
+     *
+     * Items: Condition defines an observation of a Cluster API resource operational state.
      */
     conditions?: {
       /**

@@ -46,6 +46,8 @@ export interface AWSManagedCluster {
     status?: {
         /**
          * Conditions defines current service state of the AWSManagedCluster.
+         *
+         * Items: Condition defines an observation of a Cluster API resource operational state.
          */
         conditions?: {
             /**

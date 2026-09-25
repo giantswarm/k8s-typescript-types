@@ -61,12 +61,18 @@ export interface AWSManagedMachinePool {
              * AdditionalSecurityGroups is an array of references to security groups that should be applied to the
              * instances. These security groups would be set in addition to any security groups defined
              * at the cluster level or in the actuator.
+             *
+             * Items: AWSResourceReference is a reference to a specific AWS resource by ID or filters.
+             * Only one of ID or Filters may be specified. Specifying more than one will result in
+             * a validation error.
              */
             additionalSecurityGroups?: {
                 /**
                  * Filters is a set of key/value pairs used to identify a resource
                  * They are applied according to the rules defined by the AWS API:
                  * https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Using_Filtering.html
+                 *
+                 * Items: Filter is a filter used to identify an AWS resource.
                  */
                 filters?: {
                     /**
@@ -106,7 +112,7 @@ export interface AWSManagedMachinePool {
              * "None": The instance may not make use of any Capacity Reservations. This is to conserve open reservations for desired workloads
              * "CapacityReservationsOnly": The instance will only run if matched or targeted to a Capacity Reservation
              */
-            capacityReservationPreference?: ('' | 'None' | 'CapacityReservationsOnly' | 'Open') & string;
+            capacityReservationPreference?: '' | 'None' | 'CapacityReservationsOnly' | 'Open';
             /**
              * EnclaveOptions defines the options for Nitro Enclave support on the instance.
              */
@@ -217,6 +223,8 @@ export interface AWSManagedMachinePool {
             name?: string;
             /**
              * Configuration options for the non root storage volumes.
+             *
+             * Items: Volume encapsulates the configuration options for the storage device.
              */
             nonRootVolumes?: {
                 /**
@@ -354,6 +362,8 @@ export interface AWSManagedMachinePool {
         };
         /**
          * AWSLifecycleHooks specifies lifecycle hooks for the managed node group.
+         *
+         * Items: AWSLifecycleHook describes an AWS lifecycle hook
          */
         lifecycleHooks?: {
             /**
@@ -474,6 +484,8 @@ export interface AWSManagedMachinePool {
         subnetIDs?: string[];
         /**
          * Taints specifies the taints to apply to the nodes of the machine pool
+         *
+         * Items: Taint defines the specs for a Kubernetes taint.
          */
         taints?: {
             /**
@@ -512,6 +524,8 @@ export interface AWSManagedMachinePool {
     status?: {
         /**
          * Conditions defines current service state of the managed machine pool
+         *
+         * Items: Condition defines an observation of a Cluster API resource operational state.
          */
         conditions?: {
             /**

@@ -65,6 +65,8 @@ export interface AzureMachine {
     capacityReservationGroupID?: string;
     /**
      * DataDisk specifies the parameters that are used to add one or more data disks to the machine
+     *
+     * Items: DataDisk specifies the parameters that are used to add one or more data disks to the machine.
      */
     dataDisks?: {
       /**
@@ -343,6 +345,8 @@ export interface AzureMachine {
      * If left unspecified, the VM will get a single network interface with a
      * single IPConfig in the subnet specified in the cluster's node subnet field.
      * The primary interface will be the first networkInterface specified (index 0) in the list.
+     *
+     * Items: NetworkInterface defines a network interface.
      */
     networkInterfaces?: {
       /**
@@ -522,6 +526,9 @@ export interface AzureMachine {
      * The lifecycle of a user-assigned identity is managed separately from the lifecycle of
      * the AzureMachine.
      * See https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/how-to-manage-ua-identity-cli
+     *
+     * Items: UserAssignedIdentity defines the user-assigned identities provided
+     * by the user to be assigned to Azure resources.
      */
     userAssignedIdentities?: {
       /**
@@ -531,7 +538,18 @@ export interface AzureMachine {
       providerID: string;
     }[];
     /**
+     * VirtualMachineScaleSetID specifies the VMSS Flex resource id that the virtual machine should be
+     * created in.
+     * The field input must be a valid Azure resource ID for a Virtual Machine Scale Set resource, for example
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmssName}'.
+     * The referenced Virtual Machine Scale Set must already exist and use Flexible orchestration mode.
+     * It is optional but may not be changed once set.
+     */
+    virtualMachineScaleSetID?: string;
+    /**
      * VMExtensions specifies a list of extensions to be added to the virtual machine.
+     *
+     * Items: VMExtension specifies the parameters for a custom VM extension.
      */
     vmExtensions?: {
       /**
@@ -567,6 +585,8 @@ export interface AzureMachine {
   status?: {
     /**
      * Addresses contains the Azure instance associated addresses.
+     *
+     * Items: NodeAddress contains information for the node's address.
      */
     addresses?: {
       /**
@@ -580,6 +600,8 @@ export interface AzureMachine {
     }[];
     /**
      * Conditions defines current service state of the AzureMachine.
+     *
+     * Items: Condition defines an observation of a Cluster API resource operational state.
      */
     conditions?: {
       /**
@@ -657,6 +679,8 @@ export interface AzureMachine {
     /**
      * LongRunningOperationStates saves the states for Azure long-running operations so they can be continued on the
      * next reconciliation loop.
+     *
+     * Items: Future contains the data needed for an Azure long-running operation to continue across reconcile loops.
      */
     longRunningOperationStates?: {
       /**

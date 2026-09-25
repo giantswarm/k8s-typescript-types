@@ -161,6 +161,8 @@ export interface AzureMachinePool {
             };
             /**
              * DataDisks specifies the list of data disks to be created for a Virtual Machine
+             *
+             * Items: DataDisk specifies the parameters that are used to add one or more data disks to the machine.
              */
             dataDisks?: {
                 /**
@@ -411,6 +413,8 @@ export interface AzureMachinePool {
              * If left unspecified, the VM will get a single network interface with a
              * single IPConfig in the subnet specified in the cluster's node subnet field.
              * The primary interface will be the first networkInterface specified (index 0) in the list.
+             *
+             * Items: NetworkInterface defines a network interface.
              */
             networkInterfaces?: {
                 /**
@@ -564,6 +568,8 @@ export interface AzureMachinePool {
             terminateNotificationTimeout?: number;
             /**
              * VMExtensions specifies a list of extensions to be added to the scale set.
+             *
+             * Items: VMExtension specifies the parameters for a custom VM extension.
              */
             vmExtensions?: {
                 /**
@@ -602,6 +608,9 @@ export interface AzureMachinePool {
          * The lifecycle of a user-assigned identity is managed separately from the lifecycle of
          * the AzureMachinePool.
          * See https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/how-to-manage-ua-identity-cli
+         *
+         * Items: UserAssignedIdentity defines the user-assigned identities provided
+         * by the user to be assigned to Azure resources.
          */
         userAssignedIdentities?: {
             /**
@@ -621,6 +630,8 @@ export interface AzureMachinePool {
     status?: {
         /**
          * Conditions defines current service state of the AzureMachinePool.
+         *
+         * Items: Condition defines an observation of a Cluster API resource operational state.
          */
         conditions?: {
             /**
@@ -842,6 +853,8 @@ export interface AzureMachinePool {
         infrastructureMachineKind?: string;
         /**
          * Instances is the VM instance status for each VM in the VMSS
+         *
+         * Items: AzureMachinePoolInstanceStatus provides status information for each instance in the VMSS.
          */
         instances?: {
             /**
@@ -872,8 +885,17 @@ export interface AzureMachinePool {
             version?: string;
         }[];
         /**
+         * LastReconciledReplicas is the desired replica count that was most recently reconciled onto the
+         * VMSS. It is used to tell an explicit scale-down (the desired count dropped below this value)
+         * apart from a rollout, where the desired count is unchanged and the extra instances come from
+         * surge capacity. Those two states are otherwise indistinguishable from the instance list alone.
+         */
+        lastReconciledReplicas?: number;
+        /**
          * LongRunningOperationStates saves the state for Azure long-running operations so they can be continued on the
          * next reconciliation loop.
+         *
+         * Items: Future contains the data needed for an Azure long-running operation to continue across reconcile loops.
          */
         longRunningOperationStates?: {
             /**

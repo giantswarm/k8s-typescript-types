@@ -98,6 +98,8 @@ export interface VSphereMachineTemplate {
          * dataDisks are additional disks to add to the VM that are not part of the VM's OVA template.
          *
          * @maxItems 29
+         *
+         * Items: VSphereDisk is an additional disk to add to the VM that is not part of the VM OVA template.
          */
         dataDisks?: {
           /**
@@ -212,6 +214,9 @@ export interface VSphereMachineTemplate {
            *
            *
            * @maxItems 128
+           *
+           * Items: NetworkDeviceSpec defines the network configuration for a virtual machine's
+           * network device.
            */
           devices: {
             /**
@@ -220,6 +225,8 @@ export interface VSphereMachineTemplate {
              * with IPAddresses fulfilled by an IPAM provider.
              *
              * @maxItems 128
+             *
+             * Items: IPPoolReference is a reference to an IPPool.
              */
             addressesFromPools?: {
               /**
@@ -416,6 +423,8 @@ export interface VSphereMachineTemplate {
              * routes is a list of optional, static routes applied to the device.
              *
              * @maxItems 512
+             *
+             * Items: NetworkRouteSpec defines a static network route.
              */
             routes?: {
               /**
@@ -450,6 +459,8 @@ export interface VSphereMachineTemplate {
            * machine.
            *
            * @maxItems 512
+           *
+           * Items: NetworkRouteSpec defines a static network route.
            */
           routes?: {
             /**
@@ -489,6 +500,8 @@ export interface VSphereMachineTemplate {
          * pciDevices is the list of pci devices used by the virtual machine.
          *
          * @maxItems 128
+         *
+         * Items: PCIDeviceSpec defines virtual machine's PCI configuration.
          */
         pciDevices?: {
           /**

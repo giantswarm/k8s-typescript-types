@@ -39,7 +39,7 @@ export interface AWSClusterRoleIdentity {
       /**
        * An nil or empty list indicates that AWSClusters cannot use the identity from any namespace.
        */
-      list?: string[];
+      list?: string[] | null;
       /**
        * An empty selector indicates that AWSClusters cannot use this
        * AWSClusterIdentity from any namespace.
@@ -47,6 +47,9 @@ export interface AWSClusterRoleIdentity {
       selector?: {
         /**
          * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+         *
+         * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+         * relates the key and values.
          */
         matchExpressions?: {
           /**
@@ -75,7 +78,7 @@ export interface AWSClusterRoleIdentity {
           [k: string]: string;
         };
       };
-    };
+    } | null;
     /**
      * The duration, in seconds, of the role session before it is renewed.
      */

@@ -247,6 +247,8 @@ export interface MachinePool {
                  * This helps to improve readability of conditions bubbling up to the Machine's owner resource / to the Cluster).
                  *
                  * @maxItems 32
+                 *
+                 * Items: MachineReadinessGate contains the type of a Machine condition to be used as a readiness gate.
                  */
                 readinessGates?: {
                     /**
@@ -277,6 +279,8 @@ export interface MachinePool {
                  *
                  * @minItems 1
                  * @maxItems 64
+                 *
+                 * Items: MachineTaint defines a taint equivalent to corev1.Taint, but additionally having a propagation field.
                  */
                 taints?: [
                     {
@@ -352,6 +356,8 @@ export interface MachinePool {
         bootstrapReady?: boolean;
         /**
          * conditions define the current service state of the MachinePool.
+         *
+         * Items: Condition defines an observation of a Cluster API resource operational state.
          */
         conditions?: {
             /**
@@ -410,6 +416,8 @@ export interface MachinePool {
          * nodeRefs will point to the corresponding Nodes if it they exist.
          *
          * @maxItems 10000
+         *
+         * Items: ObjectReference contains enough information to let you inspect or modify the referred object.
          */
         nodeRefs?: {
             /**
@@ -492,6 +500,8 @@ export interface MachinePool {
              * ScalingUp, ScalingDown, Remediating, Deleting, Paused.
              *
              * @maxItems 32
+             *
+             * Items: Condition contains details for one aspect of the current state of this API Resource.
              */
             conditions?: {
                 /**

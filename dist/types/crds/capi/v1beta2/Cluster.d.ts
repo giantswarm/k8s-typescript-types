@@ -34,6 +34,8 @@ export interface Cluster {
          *
          * @minItems 1
          * @maxItems 32
+         *
+         * Items: ClusterAvailabilityGate contains the type of a Cluster condition to be used as availability gate.
          */
         availabilityGates?: [
             {
@@ -264,6 +266,10 @@ export interface Cluster {
                          *
                          * @minItems 1
                          * @maxItems 100
+                         *
+                         * Items: UnhealthyMachineCondition represents a Machine condition type and value with a timeout
+                         * specified as a duration.  When the named condition has been in the given
+                         * status for at least the timeout value, a machine is considered unhealthy.
                          */
                         unhealthyMachineConditions?: [
                             {
@@ -308,6 +314,10 @@ export interface Cluster {
                          *
                          * @minItems 1
                          * @maxItems 100
+                         *
+                         * Items: UnhealthyNodeCondition represents a Node condition type and value with a timeout
+                         * specified as a duration.  When the named condition has been in the given
+                         * status for at least the timeout value, a node is considered unhealthy.
                          */
                         unhealthyNodeConditions?: [
                             {
@@ -461,6 +471,8 @@ export interface Cluster {
                  *
                  * @minItems 1
                  * @maxItems 32
+                 *
+                 * Items: MachineReadinessGate contains the type of a Machine condition to be used as a readiness gate.
                  */
                 readinessGates?: [
                     {
@@ -529,6 +541,8 @@ export interface Cluster {
                  *
                  * @minItems 1
                  * @maxItems 64
+                 *
+                 * Items: MachineTaint defines a taint equivalent to corev1.Taint, but additionally having a propagation field.
                  */
                 taints?: [
                     {
@@ -591,6 +605,9 @@ export interface Cluster {
                      *
                      * @minItems 1
                      * @maxItems 1000
+                     *
+                     * Items: ClusterVariable can be used to customize the Cluster through patches. Each ClusterVariable is associated with a
+                     * Variable definition in the ClusterClass `status` variables.
                      */
                     overrides?: [
                         {
@@ -639,6 +656,9 @@ export interface Cluster {
              *
              * @minItems 1
              * @maxItems 1000
+             *
+             * Items: ClusterVariable can be used to customize the Cluster through patches. Each ClusterVariable is associated with a
+             * Variable definition in the ClusterClass `status` variables.
              */
             variables?: [
                 {
@@ -692,6 +712,9 @@ export interface Cluster {
                  *
                  * @minItems 1
                  * @maxItems 2000
+                 *
+                 * Items: MachineDeploymentTopology specifies the different parameters for a set of worker nodes in the topology.
+                 * This set of nodes is managed by a MachineDeployment object whose lifecycle is managed by the Cluster controller.
                  */
                 machineDeployments?: [
                     {
@@ -775,6 +798,10 @@ export interface Cluster {
                                  *
                                  * @minItems 1
                                  * @maxItems 100
+                                 *
+                                 * Items: UnhealthyMachineCondition represents a Machine condition type and value with a timeout
+                                 * specified as a duration.  When the named condition has been in the given
+                                 * status for at least the timeout value, a machine is considered unhealthy.
                                  */
                                 unhealthyMachineConditions?: [
                                     {
@@ -819,6 +846,10 @@ export interface Cluster {
                                  *
                                  * @minItems 1
                                  * @maxItems 100
+                                 *
+                                 * Items: UnhealthyNodeCondition represents a Node condition type and value with a timeout
+                                 * specified as a duration.  When the named condition has been in the given
+                                 * status for at least the timeout value, a node is considered unhealthy.
                                  */
                                 unhealthyNodeConditions?: [
                                     {
@@ -998,6 +1029,8 @@ export interface Cluster {
                          *
                          * @minItems 1
                          * @maxItems 32
+                         *
+                         * Items: MachineReadinessGate contains the type of a Machine condition to be used as a readiness gate.
                          */
                         readinessGates?: [
                             {
@@ -1115,6 +1148,8 @@ export interface Cluster {
                          *
                          * @minItems 1
                          * @maxItems 64
+                         *
+                         * Items: MachineTaint defines a taint equivalent to corev1.Taint, but additionally having a propagation field.
                          */
                         taints?: [
                             {
@@ -1177,6 +1212,9 @@ export interface Cluster {
                              *
                              * @minItems 1
                              * @maxItems 1000
+                             *
+                             * Items: ClusterVariable can be used to customize the Cluster through patches. Each ClusterVariable is associated with a
+                             * Variable definition in the ClusterClass `status` variables.
                              */
                             overrides?: [
                                 {
@@ -1299,6 +1337,10 @@ export interface Cluster {
                                  *
                                  * @minItems 1
                                  * @maxItems 100
+                                 *
+                                 * Items: UnhealthyMachineCondition represents a Machine condition type and value with a timeout
+                                 * specified as a duration.  When the named condition has been in the given
+                                 * status for at least the timeout value, a machine is considered unhealthy.
                                  */
                                 unhealthyMachineConditions?: [
                                     {
@@ -1343,6 +1385,10 @@ export interface Cluster {
                                  *
                                  * @minItems 1
                                  * @maxItems 100
+                                 *
+                                 * Items: UnhealthyNodeCondition represents a Node condition type and value with a timeout
+                                 * specified as a duration.  When the named condition has been in the given
+                                 * status for at least the timeout value, a node is considered unhealthy.
                                  */
                                 unhealthyNodeConditions?: [
                                     {
@@ -1522,6 +1568,8 @@ export interface Cluster {
                          *
                          * @minItems 1
                          * @maxItems 32
+                         *
+                         * Items: MachineReadinessGate contains the type of a Machine condition to be used as a readiness gate.
                          */
                         readinessGates?: [
                             {
@@ -1639,6 +1687,8 @@ export interface Cluster {
                          *
                          * @minItems 1
                          * @maxItems 64
+                         *
+                         * Items: MachineTaint defines a taint equivalent to corev1.Taint, but additionally having a propagation field.
                          */
                         taints?: [
                             {
@@ -1701,6 +1751,9 @@ export interface Cluster {
                              *
                              * @minItems 1
                              * @maxItems 1000
+                             *
+                             * Items: ClusterVariable can be used to customize the Cluster through patches. Each ClusterVariable is associated with a
+                             * Variable definition in the ClusterClass `status` variables.
                              */
                             overrides?: [
                                 {
@@ -1748,6 +1801,9 @@ export interface Cluster {
                  *
                  * @minItems 1
                  * @maxItems 2000
+                 *
+                 * Items: MachinePoolTopology specifies the different parameters for a pool of worker nodes in the topology.
+                 * This pool of nodes is managed by a MachinePool object whose lifecycle is managed by the Cluster controller.
                  */
                 machinePools?: [
                     {
@@ -1845,6 +1901,8 @@ export interface Cluster {
                          *
                          * @minItems 1
                          * @maxItems 64
+                         *
+                         * Items: MachineTaint defines a taint equivalent to corev1.Taint, but additionally having a propagation field.
                          */
                         taints?: [
                             {
@@ -1907,6 +1965,9 @@ export interface Cluster {
                              *
                              * @minItems 1
                              * @maxItems 1000
+                             *
+                             * Items: ClusterVariable can be used to customize the Cluster through patches. Each ClusterVariable is associated with a
+                             * Variable definition in the ClusterClass `status` variables.
                              */
                             overrides?: [
                                 {
@@ -2043,6 +2104,8 @@ export interface Cluster {
                          *
                          * @minItems 1
                          * @maxItems 64
+                         *
+                         * Items: MachineTaint defines a taint equivalent to corev1.Taint, but additionally having a propagation field.
                          */
                         taints?: [
                             {
@@ -2105,6 +2168,9 @@ export interface Cluster {
                              *
                              * @minItems 1
                              * @maxItems 1000
+                             *
+                             * Items: ClusterVariable can be used to customize the Cluster through patches. Each ClusterVariable is associated with a
+                             * Variable definition in the ClusterClass `status` variables.
                              */
                             overrides?: [
                                 {
@@ -2161,6 +2227,8 @@ export interface Cluster {
          * Additionally, a TopologyReconciled condition will be added in case the Cluster is referencing a ClusterClass / defining a managed Topology.
          *
          * @maxItems 32
+         *
+         * Items: Condition contains details for one aspect of the current state of this API Resource.
          */
         conditions?: {
             /**
@@ -2234,6 +2302,10 @@ export interface Cluster {
                  * conditions defines current service state of the cluster.
                  *
                  * Deprecated: This field is deprecated and is going to be removed when support for v1beta1 will be dropped. Please see https://github.com/kubernetes-sigs/cluster-api/blob/main/docs/proposals/20240916-improve-status-in-CAPI-resources.md for more details.
+                 *
+                 * Items: Condition defines an observation of a Cluster API resource operational state.
+                 *
+                 * Deprecated: This type is deprecated and is going to be removed when support for v1beta1 will be dropped. Please see https://github.com/kubernetes-sigs/cluster-api/blob/main/docs/proposals/20240916-improve-status-in-CAPI-resources.md for more details.
                  */
                 conditions?: {
                     /**
@@ -2292,6 +2364,9 @@ export interface Cluster {
          *
          * @minItems 1
          * @maxItems 100
+         *
+         * Items: FailureDomain is the Schema for Cluster API failure domains.
+         * It allows controllers to understand how many failure domains a cluster can optionally span across.
          */
         failureDomains?: [
             {

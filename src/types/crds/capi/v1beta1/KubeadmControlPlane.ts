@@ -66,6 +66,8 @@ export interface KubeadmControlPlane {
            * This option takes effect only on Kubernetes >=1.31.0.
            *
            * @maxItems 100
+           *
+           * Items: EnvVar represents an environment variable present in a Container.
            */
           extraEnvs?: {
             /**
@@ -200,6 +202,9 @@ export interface KubeadmControlPlane {
            * extraVolumes is an extra set of host volumes, mounted to the control plane component.
            *
            * @maxItems 100
+           *
+           * Items: HostPathMount contains elements describing volumes that are mounted from the
+           * host.
            */
           extraVolumes?: {
             /**
@@ -288,6 +293,8 @@ export interface KubeadmControlPlane {
            * This option takes effect only on Kubernetes >=1.31.0.
            *
            * @maxItems 100
+           *
+           * Items: EnvVar represents an environment variable present in a Container.
            */
           extraEnvs?: {
             /**
@@ -422,6 +429,9 @@ export interface KubeadmControlPlane {
            * extraVolumes is an extra set of host volumes, mounted to the control plane component.
            *
            * @maxItems 100
+           *
+           * Items: HostPathMount contains elements describing volumes that are mounted from the
+           * host.
            */
           extraVolumes?: {
             /**
@@ -527,6 +537,8 @@ export interface KubeadmControlPlane {
              * This option takes effect only on Kubernetes >=1.31.0.
              *
              * @maxItems 100
+             *
+             * Items: EnvVar represents an environment variable present in a Container.
              */
             extraEnvs?: {
               /**
@@ -752,6 +764,8 @@ export interface KubeadmControlPlane {
            * This option takes effect only on Kubernetes >=1.31.0.
            *
            * @maxItems 100
+           *
+           * Items: EnvVar represents an environment variable present in a Container.
            */
           extraEnvs?: {
             /**
@@ -886,6 +900,9 @@ export interface KubeadmControlPlane {
            * extraVolumes is an extra set of host volumes, mounted to the control plane component.
            *
            * @maxItems 100
+           *
+           * Items: HostPathMount contains elements describing volumes that are mounted from the
+           * host.
            */
           extraVolumes?: {
             /**
@@ -920,6 +937,8 @@ export interface KubeadmControlPlane {
          * filesystems specifies the list of file systems to setup.
          *
          * @maxItems 100
+         *
+         * Items: Filesystem defines the file systems to be created.
          */
         filesystems?: {
           /**
@@ -959,6 +978,8 @@ export interface KubeadmControlPlane {
          * partitions specifies the list of the partitions to setup.
          *
          * @maxItems 100
+         *
+         * Items: Partition defines how to create and layout a partition.
          */
         partitions?: {
           /**
@@ -972,6 +993,8 @@ export interface KubeadmControlPlane {
            *
            * @minItems 1
            * @maxItems 100
+           *
+           * Items: PartitionSpec defines the size and optional type for a partition.
            */
           diskLayout?: [
             {
@@ -1024,6 +1047,8 @@ export interface KubeadmControlPlane {
        * files specifies extra files to be passed to user_data upon creation.
        *
        * @maxItems 200
+       *
+       * Items: File defines the input for generating write_files in cloud-init.
        */
       files?: {
         /**
@@ -1110,6 +1135,8 @@ export interface KubeadmControlPlane {
          * This information IS NOT uploaded to the kubeadm cluster configmap, partly because of its sensitive nature
          *
          * @maxItems 100
+         *
+         * Items: BootstrapToken describes one bootstrap token, stored as a Secret in the cluster.
          */
         bootstrapTokens?: {
           /**
@@ -1224,6 +1251,9 @@ export interface KubeadmControlPlane {
            * empty slice, i.e. `taints: []` in the YAML file. This field is solely used for Node registration.
            *
            * @maxItems 100
+           *
+           * Items: The node this Taint is attached to has the "effect" on
+           * any pod that does not tolerate the Taint.
            */
           taints?: {
             /**
@@ -1449,6 +1479,9 @@ export interface KubeadmControlPlane {
                    * to pass argument to the plugin.
                    *
                    * @maxItems 100
+                   *
+                   * Items: KubeConfigAuthExecEnv is used for setting environment variables when executing an exec-based
+                   * credential plugin.
                    */
                   env?: {
                     /**
@@ -1545,6 +1578,9 @@ export interface KubeadmControlPlane {
            * empty slice, i.e. `taints: []` in the YAML file. This field is solely used for Node registration.
            *
            * @maxItems 100
+           *
+           * Items: The node this Taint is attached to has the "effect" on
+           * any pod that does not tolerate the Taint.
            */
           taints?: {
             /**
@@ -1652,6 +1688,8 @@ export interface KubeadmControlPlane {
        * users specifies extra users to add
        *
        * @maxItems 100
+       *
+       * Items: User defines the input for a generated user in cloud-init.
        */
       users?: {
         /**
@@ -1847,6 +1885,8 @@ export interface KubeadmControlPlane {
        * NOTE: This field is considered only for computing v1beta2 conditions.
        *
        * @maxItems 32
+       *
+       * Items: MachineReadinessGate contains the type of a Machine condition to be used as a readiness gate.
        */
       readinessGates?: {
         /**
@@ -1877,6 +1917,8 @@ export interface KubeadmControlPlane {
        *
        * @minItems 1
        * @maxItems 64
+       *
+       * Items: MachineTaint defines a taint equivalent to corev1.Taint, but additionally having a propagation field.
        */
       taints?: [
         {
@@ -2046,6 +2088,8 @@ export interface KubeadmControlPlane {
   status?: {
     /**
      * conditions defines current service state of the KubeadmControlPlane.
+     *
+     * Items: Condition defines an observation of a Cluster API resource operational state.
      */
     conditions?: {
       /**
@@ -2181,6 +2225,8 @@ export interface KubeadmControlPlane {
        * ScalingUp, ScalingDown, Remediating, Deleting, Paused.
        *
        * @maxItems 32
+       *
+       * Items: Condition contains details for one aspect of the current state of this API Resource.
        */
       conditions?: {
         /**

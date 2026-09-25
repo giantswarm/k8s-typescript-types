@@ -38,6 +38,9 @@ export interface VSphereClusterIdentity {
             selector?: {
                 /**
                  * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                 *
+                 * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+                 * relates the key and values.
                  */
                 matchExpressions?: {
                     /**
@@ -81,6 +84,8 @@ export interface VSphereClusterIdentity {
          * Known condition types are Available and Paused.
          *
          * @maxItems 32
+         *
+         * Items: Condition contains details for one aspect of the current state of this API Resource.
          */
         conditions?: {
             /**
@@ -128,6 +133,10 @@ export interface VSphereClusterIdentity {
                  * conditions defines current service state of the VSphereClusterIdentity.
                  *
                  * Deprecated: This field is deprecated and is going to be removed when support for v1beta1 will be dropped. Please see https://github.com/kubernetes-sigs/cluster-api/blob/main/docs/proposals/20240916-improve-status-in-CAPI-resources.md for more details.
+                 *
+                 * Items: Condition defines an observation of a Cluster API resource operational state.
+                 *
+                 * Deprecated: This type is deprecated and is going to be removed when support for v1beta1 will be dropped. Please see https://github.com/kubernetes-sigs/cluster-api/blob/main/docs/proposals/20240916-improve-status-in-CAPI-resources.md for more details.
                  */
                 conditions?: {
                     /**

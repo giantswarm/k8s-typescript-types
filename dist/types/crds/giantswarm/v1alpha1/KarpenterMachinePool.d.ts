@@ -44,6 +44,9 @@ export interface KarpenterMachinePool {
              *
              * @minItems 1
              * @maxItems 30
+             *
+             * Items: AMISelectorTerm defines selection logic for an ami used by Karpenter to launch nodes.
+             * If multiple fields are used for selection, the requirements are ANDed.
              */
             amiSelectorTerms: [
                 {
@@ -404,6 +407,9 @@ export interface KarpenterMachinePool {
              * SecurityGroupSelectorTerms is a list of security group selector terms. The terms are ORed.
              *
              * @maxItems 30
+             *
+             * Items: SecurityGroupSelectorTerm defines selection logic for a security group used by Karpenter to launch nodes.
+             * If multiple fields are used for selection, the requirements are ANDed.
              */
             securityGroupSelectorTerms: {
                 /**
@@ -427,6 +433,9 @@ export interface KarpenterMachinePool {
              * SubnetSelectorTerms is a list of subnet selector terms. The terms are ORed.
              *
              * @maxItems 30
+             *
+             * Items: SubnetSelectorTerm defines selection logic for a subnet used by Karpenter to launch nodes.
+             * If multiple fields are used for selection, the requirements are ANDed.
              */
             subnetSelectorTerms: {
                 /**
@@ -469,6 +478,9 @@ export interface KarpenterMachinePool {
                  * this will default to one budget with a value to 10%.
                  *
                  * @maxItems 50
+                 *
+                 * Items: Budget defines when Karpenter will restrict the
+                 * number of Node Claims that can be terminating simultaneously.
                  */
                 budgets?: {
                     /**
@@ -494,6 +506,8 @@ export interface KarpenterMachinePool {
                      * Reasons is a list of disruption methods that this budget applies to. If Reasons is not set, this budget applies to all methods.
                      * Otherwise, this will apply to each reason defined.
                      * allowed reasons are Underutilized, Empty, and Drifted.
+                     *
+                     * Items: DisruptionReason defines valid reasons for disruption budgets.
                      */
                     reasons?: ('Underutilized' | 'Empty' | 'Drifted')[];
                     /**
@@ -564,6 +578,9 @@ export interface KarpenterMachinePool {
                      * Requirements are layered with GetLabels and applied to every node.
                      *
                      * @maxItems 100
+                     *
+                     * Items: A node selector requirement with min values is a selector that contains values, a key, an operator that relates the key and values
+                     * and minValues that represent the requirement to have at least that many values.
                      */
                     requirements: {
                         /**
@@ -594,6 +611,9 @@ export interface KarpenterMachinePool {
                      * within a short period of time, typically by a DaemonSet that tolerates the taint. These are commonly used by
                      * daemonsets to allow initialization and enforce startup ordering.  StartupTaints are ignored for provisioning
                      * purposes in that pods are not required to tolerate a StartupTaint in order to have nodes provisioned for them.
+                     *
+                     * Items: The node this Taint is attached to has the "effect" on
+                     * any pod that does not tolerate the Taint.
                      */
                     startupTaints?: {
                         /**
@@ -617,6 +637,9 @@ export interface KarpenterMachinePool {
                     }[];
                     /**
                      * Taints will be applied to the NodeClaim's node.
+                     *
+                     * Items: The node this Taint is attached to has the "effect" on
+                     * any pod that does not tolerate the Taint.
                      */
                     taints?: {
                         /**
@@ -676,6 +699,8 @@ export interface KarpenterMachinePool {
     status?: {
         /**
          * Conditions defines current service state of the KarpenterMachinePool.
+         *
+         * Items: Condition defines an observation of a Cluster API resource operational state.
          */
         conditions?: {
             /**

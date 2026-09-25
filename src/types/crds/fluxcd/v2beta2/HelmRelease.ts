@@ -174,6 +174,9 @@ export interface HelmRelease {
      * DependsOn may contain a meta.NamespacedObjectReference slice with
      * references to HelmRelease resources that must be ready before this HelmRelease
      * can be reconciled.
+     *
+     * Items: NamespacedObjectReference contains enough information to locate the referenced Kubernetes resource object in any
+     * namespace.
      */
     dependsOn?: {
       /**
@@ -194,6 +197,9 @@ export interface HelmRelease {
       /**
        * Ignore contains a list of rules for specifying which changes to ignore
        * during diffing.
+       *
+       * Items: IgnoreRule defines a rule to selectively disregard specific changes during
+       * the drift detection process.
        */
       ignore?: {
         /**
@@ -440,6 +446,8 @@ export interface HelmRelease {
     /**
      * PostRenderers holds an array of Helm PostRenderers, which will be applied in order
      * of their definition.
+     *
+     * Items: PostRenderer contains a Helm PostRenderer specification.
      */
     postRenderers?: {
       /**
@@ -450,6 +458,8 @@ export interface HelmRelease {
          * Images is a list of (image name, new name, new tag or digest)
          * for changing image names, tags or digests. This can also be achieved with a
          * patch, but this operator is simpler to specify.
+         *
+         * Items: Image contains an image name, a new name, a new tag or digest, which will replace the original name and tag.
          */
         images?: {
           /**
@@ -473,6 +483,9 @@ export interface HelmRelease {
         /**
          * Strategic merge and JSON patches, defined as inline YAML objects,
          * capable of targeting objects based on kind, label and annotation selectors.
+         *
+         * Items: Patch contains an inline StrategicMerge or JSON6902 patch, and the target the patch should
+         * be applied to.
          */
         patches?: {
           /**
@@ -529,10 +542,15 @@ export interface HelmRelease {
          * JSON 6902 patches, defined as inline YAML objects.
          *
          * Deprecated: use Patches instead.
+         *
+         * Items: JSON6902Patch contains a JSON6902 patch and the target the patch should be applied to.
          */
         patchesJson6902?: {
           /**
            * Patch contains the JSON6902 patch document with an array of operation objects.
+           *
+           * Items: JSON6902 is a JSON6902 operation object.
+           * https://datatracker.ietf.org/doc/html/rfc6902#section-4
            */
           patch: {
             /**
@@ -688,6 +706,8 @@ export interface HelmRelease {
       enable?: boolean;
       /**
        * Filters is a list of tests to run or exclude from running.
+       *
+       * Items: Filter holds the configuration for individual Helm test filters.
        */
       filters?: {
         /**
@@ -845,6 +865,9 @@ export interface HelmRelease {
     /**
      * ValuesFrom holds references to resources containing Helm values for this HelmRelease,
      * and information about how they should be merged.
+     *
+     * Items: ValuesReference contains a reference to a resource containing Helm values,
+     * and optionally the key they can be found at.
      */
     valuesFrom?: {
       /**
@@ -881,6 +904,8 @@ export interface HelmRelease {
   status?: {
     /**
      * Conditions holds the conditions for the HelmRelease.
+     *
+     * Items: Condition contains details for one aspect of the current state of this API Resource.
      */
     conditions?: {
       /**
@@ -929,6 +954,9 @@ export interface HelmRelease {
     /**
      * History holds the history of Helm releases performed for this HelmRelease
      * up to the last successfully completed release.
+     *
+     * Items: Snapshot captures a point-in-time copy of the status information for a Helm release,
+     * as managed by the controller.
      */
     history?: {
       /**

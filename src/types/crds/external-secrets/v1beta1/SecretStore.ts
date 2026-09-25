@@ -29,6 +29,9 @@ export interface SecretStore {
   spec?: {
     /**
      * Used to constrain a ClusterSecretStore to specific namespaces. Relevant only to ClusterSecretStore.
+     *
+     * Items: ClusterSecretStoreCondition describes a condition by which to choose namespaces to process ExternalSecrets in
+     * for a ClusterSecretStore instance.
      */
     conditions?: {
       /**
@@ -41,6 +44,9 @@ export interface SecretStore {
       namespaceSelector?: {
         /**
          * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+         *
+         * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+         * relates the key and values.
          */
         matchExpressions?: {
           /**
@@ -139,8 +145,8 @@ export interface SecretStore {
             serviceAccountRef?: {
               /**
                * Audience specifies the `aud` claim for the service account token
-               * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
-               * then this audiences will be appended to the list
+               * Some providers automatically extend the audience field based on well-known annotations for workload
+               * identity (e.g. IRSA or GCP Workload Identity)
                */
               audiences?: string[];
               /**
@@ -339,8 +345,8 @@ export interface SecretStore {
             serviceAccountRef?: {
               /**
                * Audience specifies the `aud` claim for the service account token
-               * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
-               * then this audiences will be appended to the list
+               * Some providers automatically extend the audience field based on well-known annotations for workload
+               * identity (e.g. IRSA or GCP Workload Identity)
                */
               audiences?: string[];
               /**
@@ -463,6 +469,8 @@ export interface SecretStore {
         service: 'SecretsManager' | 'ParameterStore';
         /**
          * AWS STS assume role session tags
+         *
+         * Items: Tag defines a tag key and value for AWS resources.
          */
         sessionTags?: {
           key: string;
@@ -583,8 +591,8 @@ export interface SecretStore {
         serviceAccountRef?: {
           /**
            * Audience specifies the `aud` claim for the service account token
-           * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
-           * then this audiences will be appended to the list
+           * Some providers automatically extend the audience field based on well-known annotations for workload
+           * identity (e.g. IRSA or GCP Workload Identity)
            */
           audiences?: string[];
           /**
@@ -1049,8 +1057,8 @@ export interface SecretStore {
             serviceAccountRef?: {
               /**
                * Audience specifies the `aud` claim for the service account token
-               * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
-               * then this audiences will be appended to the list
+               * Some providers automatically extend the audience field based on well-known annotations for workload
+               * identity (e.g. IRSA or GCP Workload Identity)
                */
               audiences?: string[];
               /**
@@ -1272,6 +1280,9 @@ export interface SecretStore {
        * Fake configures a store with static key/value pairs
        */
       fake?: {
+        /**
+         * Items: FakeProviderData defines a key-value pair for the fake provider used in testing.
+         */
         data: {
           key: string;
           value: string;
@@ -1368,8 +1379,8 @@ export interface SecretStore {
             serviceAccountRef: {
               /**
                * Audience specifies the `aud` claim for the service account token
-               * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
-               * then this audiences will be appended to the list
+               * Some providers automatically extend the audience field based on well-known annotations for workload
+               * identity (e.g. IRSA or GCP Workload Identity)
                */
               audiences?: string[];
               /**
@@ -1753,8 +1764,8 @@ export interface SecretStore {
           serviceAccount?: {
             /**
              * Audience specifies the `aud` claim for the service account token
-             * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
-             * then this audiences will be appended to the list
+             * Some providers automatically extend the audience field based on well-known annotations for workload
+             * identity (e.g. IRSA or GCP Workload Identity)
              */
             audiences?: string[];
             /**
@@ -2045,8 +2056,8 @@ export interface SecretStore {
         serviceAccountRef?: {
           /**
            * Audience specifies the `aud` claim for the service account token
-           * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
-           * then this audiences will be appended to the list
+           * Some providers automatically extend the audience field based on well-known annotations for workload
+           * identity (e.g. IRSA or GCP Workload Identity)
            */
           audiences?: string[];
           /**
@@ -2558,8 +2569,8 @@ export interface SecretStore {
               serviceAccountRef?: {
                 /**
                  * Audience specifies the `aud` claim for the service account token
-                 * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
-                 * then this audiences will be appended to the list
+                 * Some providers automatically extend the audience field based on well-known annotations for workload
+                 * identity (e.g. IRSA or GCP Workload Identity)
                  */
                 audiences?: string[];
                 /**
@@ -2691,8 +2702,8 @@ export interface SecretStore {
               serviceAccountRef: {
                 /**
                  * Audience specifies the `aud` claim for the service account token
-                 * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
-                 * then this audiences will be appended to the list
+                 * Some providers automatically extend the audience field based on well-known annotations for workload
+                 * identity (e.g. IRSA or GCP Workload Identity)
                  */
                 audiences?: string[];
                 /**
@@ -2783,8 +2794,8 @@ export interface SecretStore {
             serviceAccountRef?: {
               /**
                * Audience specifies the `aud` claim for the service account token
-               * If the service account uses a well-known annotation for e.g. IRSA or GCP Workload Identity
-               * then this audiences will be appended to the list
+               * Some providers automatically extend the audience field based on well-known annotations for workload
+               * identity (e.g. IRSA or GCP Workload Identity)
                */
               audiences?: string[];
               /**
@@ -3130,6 +3141,8 @@ export interface SecretStore {
         /**
          * Secrets to fill in templates
          * These secrets will be passed to the templating function as key value pairs under the given name
+         *
+         * Items: WebhookSecret defines a secret to be used in webhook templates.
          */
         secrets?: {
           /**
@@ -3308,6 +3321,9 @@ export interface SecretStore {
      * SecretStoreCapabilities defines the possible operations a SecretStore can do.
      */
     capabilities?: string;
+    /**
+     * Items: SecretStoreStatusCondition defines the observed condition of the SecretStore.
+     */
     conditions?: {
       lastTransitionTime?: string;
       message?: string;

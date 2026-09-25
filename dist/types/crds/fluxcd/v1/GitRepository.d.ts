@@ -36,6 +36,9 @@ export interface GitRepository {
         /**
          * Include specifies a list of GitRepository resources which Artifacts
          * should be included in the Artifact produced for this GitRepository.
+         *
+         * Items: GitRepositoryInclude specifies a local reference to a GitRepository which
+         * Artifact (sub-)contents must be included, and where they should be placed.
          */
         include?: {
             /**
@@ -228,6 +231,8 @@ export interface GitRepository {
         };
         /**
          * Conditions holds the conditions for the GitRepository.
+         *
+         * Items: Condition contains details for one aspect of the current state of this API Resource.
          */
         conditions?: {
             /**
@@ -266,6 +271,8 @@ export interface GitRepository {
         /**
          * IncludedArtifacts contains a list of the last successfully included
          * Artifacts as instructed by GitRepositorySpec.Include.
+         *
+         * Items: Artifact represents the output of a Source reconciliation.
          */
         includedArtifacts?: {
             /**
@@ -324,6 +331,9 @@ export interface GitRepository {
         /**
          * ObservedInclude is the observed list of GitRepository resources used to
          * produce the current Artifact.
+         *
+         * Items: GitRepositoryInclude specifies a local reference to a GitRepository which
+         * Artifact (sub-)contents must be included, and where they should be placed.
          */
         observedInclude?: {
             /**

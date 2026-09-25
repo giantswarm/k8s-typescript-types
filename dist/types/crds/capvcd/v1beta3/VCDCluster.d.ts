@@ -65,6 +65,8 @@ export interface VCDCluster {
             zoneTopology?: string;
             /**
              * Zones defines the list of zones that this cluster should be deployed to.
+             *
+             * Items: Zone is an Availability Zone in VCD
              */
             zones?: {
                 /**
@@ -131,6 +133,8 @@ export interface VCDCluster {
     status?: {
         /**
          * Conditions defines current service state of the VCDCluster.
+         *
+         * Items: Condition defines an observation of a Cluster API resource operational state.
          */
         conditions?: {
             /**
@@ -215,6 +219,8 @@ export interface VCDCluster {
             zoneTopology?: string;
             /**
              * Zones defines the list of zones this cluster is configured with for a Mult-AZ deployment.
+             *
+             * Items: Zone is an Availability Zone in VCD
              */
             zones?: {
                 /**
@@ -279,6 +285,8 @@ export interface VCDCluster {
         vcdResourceMap?: {
             /**
              * VCDResources stores the latest ID and name of VCD resources for specific resource types.
+             *
+             * Items: VCDResource restores the data structure for some VCD Resources
              */
             ovdcs?: {
                 id: string;

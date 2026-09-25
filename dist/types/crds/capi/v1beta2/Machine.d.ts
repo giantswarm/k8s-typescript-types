@@ -151,6 +151,8 @@ export interface Machine {
          *
          * @minItems 1
          * @maxItems 32
+         *
+         * Items: MachineReadinessGate contains the type of a Machine condition to be used as a readiness gate.
          */
         readinessGates?: [
             {
@@ -199,6 +201,8 @@ export interface Machine {
          *
          * @minItems 1
          * @maxItems 64
+         *
+         * Items: MachineTaint defines a taint equivalent to corev1.Taint, but additionally having a propagation field.
          */
         taints?: [
             {
@@ -267,6 +271,8 @@ export interface Machine {
          * This field is copied from the infrastructure provider reference.
          *
          * @maxItems 256
+         *
+         * Items: MachineAddress contains information for the node's address.
          */
         addresses?: {
             /**
@@ -292,6 +298,8 @@ export interface Machine {
          * APIServerPodHealthy, ControllerManagerPodHealthy, SchedulerPodHealthy, EtcdPodHealthy, EtcdMemberHealthy, NodeKubeadmLabelsAndTaintsSet.
          *
          * @maxItems 32
+         *
+         * Items: Condition contains details for one aspect of the current state of this API Resource.
          */
         conditions?: {
             /**
@@ -361,6 +369,10 @@ export interface Machine {
                  * conditions defines current service state of the Machine.
                  *
                  * Deprecated: This field is deprecated and is going to be removed when support for v1beta1 will be dropped. Please see https://github.com/kubernetes-sigs/cluster-api/blob/main/docs/proposals/20240916-improve-status-in-CAPI-resources.md for more details.
+                 *
+                 * Items: Condition defines an observation of a Cluster API resource operational state.
+                 *
+                 * Deprecated: This type is deprecated and is going to be removed when support for v1beta1 will be dropped. Please see https://github.com/kubernetes-sigs/cluster-api/blob/main/docs/proposals/20240916-improve-status-in-CAPI-resources.md for more details.
                  */
                 conditions?: {
                     /**

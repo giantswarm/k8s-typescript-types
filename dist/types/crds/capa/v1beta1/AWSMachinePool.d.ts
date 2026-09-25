@@ -45,12 +45,18 @@ export interface AWSMachinePool {
              * AdditionalSecurityGroups is an array of references to security groups that should be applied to the
              * instances. These security groups would be set in addition to any security groups defined
              * at the cluster level or in the actuator.
+             *
+             * Items: AWSResourceReference is a reference to a specific AWS resource by ID or filters.
+             * Only one of ID or Filters may be specified. Specifying more than one will result in
+             * a validation error.
              */
             additionalSecurityGroups?: {
                 /**
                  * Filters is a set of key/value pairs used to identify a resource
                  * They are applied according to the rules defined by the AWS API:
                  * https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Using_Filtering.html
+                 *
+                 * Items: Filter is a filter used to identify an AWS resource.
                  */
                 filters?: {
                     /**
@@ -212,6 +218,10 @@ export interface AWSMachinePool {
                  */
                 spotAllocationStrategy?: 'lowest-price' | 'capacity-optimized';
             };
+            /**
+             * Items: Overrides are used to override the instance type specified by the launch template with multiple
+             * instance types that can be used to launch On-Demand Instances and Spot Instances.
+             */
             overrides?: {
                 instanceType: string;
             }[];
@@ -249,12 +259,18 @@ export interface AWSMachinePool {
         };
         /**
          * Subnets is an array of subnet configurations
+         *
+         * Items: AWSResourceReference is a reference to a specific AWS resource by ID or filters.
+         * Only one of ID or Filters may be specified. Specifying more than one will result in
+         * a validation error.
          */
         subnets?: {
             /**
              * Filters is a set of key/value pairs used to identify a resource
              * They are applied according to the rules defined by the AWS API:
              * https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Using_Filtering.html
+             *
+             * Items: Filter is a filter used to identify an AWS resource.
              */
             filters?: {
                 /**
@@ -282,6 +298,8 @@ export interface AWSMachinePool {
         asgStatus?: string;
         /**
          * Conditions defines current service state of the AWSMachinePool.
+         *
+         * Items: Condition defines an observation of a Cluster API resource operational state.
          */
         conditions?: {
             /**
@@ -358,6 +376,8 @@ export interface AWSMachinePool {
         failureReason?: string;
         /**
          * Instances contains the status for each instance in the pool
+         *
+         * Items: AWSMachinePoolInstanceStatus defines the status of the AWSMachinePoolInstance.
          */
         instances?: {
             /**

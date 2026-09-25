@@ -31,6 +31,9 @@ export interface VSphereCluster {
          * for each of the objects responsible for creation of VM objects belonging to the cluster.
          *
          * @maxItems 512
+         *
+         * Items: ClusterModule holds the anti affinity construct `ClusterModule` identifier
+         * in use by the VMs owned by the object referred by the TargetObjectName field.
          */
         clusterModules?: {
             /**
@@ -78,6 +81,9 @@ export interface VSphereCluster {
         failureDomainSelector?: {
             /**
              * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+             *
+             * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+             * relates the key and values.
              */
             matchExpressions?: {
                 /**
@@ -138,6 +144,8 @@ export interface VSphereCluster {
          * Known condition types are Ready, FailureDomainsReady, VCenterAvailable, ClusterModulesReady and Paused.
          *
          * @maxItems 32
+         *
+         * Items: Condition contains details for one aspect of the current state of this API Resource.
          */
         conditions?: {
             /**
@@ -185,6 +193,10 @@ export interface VSphereCluster {
                  * conditions defines current service state of the VSphereCluster.
                  *
                  * Deprecated: This field is deprecated and is going to be removed when support for v1beta1 will be dropped. Please see https://github.com/kubernetes-sigs/cluster-api/blob/main/docs/proposals/20240916-improve-status-in-CAPI-resources.md for more details.
+                 *
+                 * Items: Condition defines an observation of a Cluster API resource operational state.
+                 *
+                 * Deprecated: This type is deprecated and is going to be removed when support for v1beta1 will be dropped. Please see https://github.com/kubernetes-sigs/cluster-api/blob/main/docs/proposals/20240916-improve-status-in-CAPI-resources.md for more details.
                  */
                 conditions?: {
                     /**
@@ -228,6 +240,9 @@ export interface VSphereCluster {
          *
          * @minItems 1
          * @maxItems 100
+         *
+         * Items: FailureDomain is the Schema for Cluster API failure domains.
+         * It allows controllers to understand how many failure domains a cluster can optionally span across.
          */
         failureDomains?: [
             {

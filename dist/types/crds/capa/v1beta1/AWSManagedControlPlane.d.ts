@@ -35,6 +35,8 @@ export interface AWSManagedControlPlane {
         };
         /**
          * Addons defines the EKS addons to enable with the EKS cluster.
+         *
+         * Items: Addon represents a EKS addon.
          */
         addons?: {
             /**
@@ -166,6 +168,8 @@ export interface AWSManagedControlPlane {
         iamAuthenticatorConfig?: {
             /**
              * RoleMappings is a list of role mappings
+             *
+             * Items: RoleMapping represents a mapping from a IAM role to Kubernetes users and groups.
              */
             mapRoles?: {
                 /**
@@ -183,6 +187,8 @@ export interface AWSManagedControlPlane {
             }[];
             /**
              * UserMappings is a list of user mappings
+             *
+             * Items: UserMapping represents a mapping from an IAM user to Kubernetes users and groups.
              */
             mapUsers?: {
                 /**
@@ -286,6 +292,8 @@ export interface AWSManagedControlPlane {
         network?: {
             /**
              * AdditionalControlPlaneIngressRules is an optional set of ingress rules to add to the control plane
+             *
+             * Items: IngressRule defines an AWS ingress rule for security groups.
              */
             additionalControlPlaneIngressRules?: {
                 /**
@@ -319,6 +327,8 @@ export interface AWSManagedControlPlane {
                 /**
                  * The security group role to allow access from. Cannot be specified with CidrBlocks.
                  * The field will be combined with source security group IDs if specified.
+                 *
+                 * Items: SecurityGroupRole defines the unique role of a security group.
                  */
                 sourceSecurityGroupRoles?: ('bastion' | 'node' | 'controlplane' | 'apiserver-lb' | 'lb' | 'node-eks-additional')[];
                 /**
@@ -328,6 +338,8 @@ export interface AWSManagedControlPlane {
             }[];
             /**
              * AdditionalNodeIngressRules is an optional set of ingress rules to add to every node
+             *
+             * Items: IngressRule defines an AWS ingress rule for security groups.
              */
             additionalNodeIngressRules?: {
                 /**
@@ -361,6 +373,8 @@ export interface AWSManagedControlPlane {
                 /**
                  * The security group role to allow access from. Cannot be specified with CidrBlocks.
                  * The field will be combined with source security group IDs if specified.
+                 *
+                 * Items: SecurityGroupRole defines the unique role of a security group.
                  */
                 sourceSecurityGroupRoles?: ('bastion' | 'node' | 'controlplane' | 'apiserver-lb' | 'lb' | 'node-eks-additional')[];
                 /**
@@ -375,6 +389,8 @@ export interface AWSManagedControlPlane {
                 /**
                  * CNIIngressRules specify rules to apply to control plane and worker node security groups.
                  * The source for the rule will be set to control plane and worker security group IDs.
+                 *
+                 * Items: CNIIngressRule defines an AWS ingress rule for CNI requirements.
                  */
                 cniIngressRules?: {
                     description: string;
@@ -400,6 +416,8 @@ export interface AWSManagedControlPlane {
             };
             /**
              * Subnets configuration.
+             *
+             * Items: SubnetSpec configures an AWS Subnet.
              */
             subnets?: {
                 /**
@@ -633,6 +651,8 @@ export interface AWSManagedControlPlane {
                  * SecondaryCidrBlocks are additional CIDR blocks to be associated when the provider creates a managed VPC.
                  * Defaults to none. Mutually exclusive with IPAMPool. This makes sense to use if, for example, you want to use
                  * a separate IP range for pods (e.g. Cilium ENI mode).
+                 *
+                 * Items: VpcCidrBlock defines the CIDR block and settings to associate with the managed VPC. Currently, only IPv4 is supported.
                  */
                 secondaryCidrBlocks?: {
                     /**
@@ -770,6 +790,8 @@ export interface AWSManagedControlPlane {
         vpcCni?: {
             /**
              * Env defines a list of environment variables to apply to the `aws-node` DaemonSet
+             *
+             * Items: EnvVar represents an environment variable present in a Container.
              */
             env?: {
                 /**
@@ -908,6 +930,8 @@ export interface AWSManagedControlPlane {
     status?: {
         /**
          * Addons holds the current status of the EKS addons
+         *
+         * Items: AddonState represents the state of an addon.
          */
         addons?: {
             /**
@@ -920,6 +944,8 @@ export interface AWSManagedControlPlane {
             createdAt?: string;
             /**
              * Issues is a list of issue associated with the addon
+             *
+             * Items: AddonIssue represents an issue with an addon.
              */
             issues?: {
                 /**
@@ -962,6 +988,8 @@ export interface AWSManagedControlPlane {
         bastion?: {
             /**
              * Addresses contains the AWS instance associated addresses.
+             *
+             * Items: MachineAddress contains information for the node's address.
              */
             addresses?: {
                 /**
@@ -991,7 +1019,7 @@ export interface AWSManagedControlPlane {
              * "None": The instance may not make use of any Capacity Reservations. This is to conserve open reservations for desired workloads
              * "CapacityReservationsOnly": The instance will only run if matched or targeted to a Capacity Reservation. Note that this is incompatible with a MarketType of `Spot`
              */
-            capacityReservationPreference?: ('' | 'None' | 'CapacityReservationsOnly' | 'Open') & string;
+            capacityReservationPreference?: '' | 'None' | 'CapacityReservationsOnly' | 'Open';
             /**
              * CPUOptions defines CPU-related settings for the instance, including the confidential computing policy.
              * When omitted, this means no opinion and the AWS platform is left to choose a reasonable default.
@@ -1142,6 +1170,8 @@ export interface AWSManagedControlPlane {
             networkInterfaces?: string[];
             /**
              * Configuration options for the non root storage volumes.
+             *
+             * Items: Volume encapsulates the configuration options for the storage device.
              */
             nonRootVolumes?: {
                 /**
@@ -1298,6 +1328,8 @@ export interface AWSManagedControlPlane {
         };
         /**
          * Conditions specifies the cpnditions for the managed control plane
+         *
+         * Items: Condition defines an observation of a Cluster API resource operational state.
          */
         conditions?: {
             /**
@@ -1427,6 +1459,8 @@ export interface AWSManagedControlPlane {
                 };
                 /**
                  * ELBListeners is an array of listeners associated with the load balancer. There must be at least one.
+                 *
+                 * Items: Listener defines an AWS network load balancer listener.
                  */
                 elbListeners?: {
                     port: number;
@@ -1492,6 +1526,8 @@ export interface AWSManagedControlPlane {
                 };
                 /**
                  * ClassicELBListeners is an array of classic elb listeners associated with the load balancer. There must be at least one.
+                 *
+                 * Items: ClassicELBListener defines an AWS classic load balancer listener.
                  */
                 listeners?: {
                     instancePort: number;
@@ -1580,6 +1616,8 @@ export interface AWSManagedControlPlane {
                 };
                 /**
                  * ELBListeners is an array of listeners associated with the load balancer. There must be at least one.
+                 *
+                 * Items: Listener defines an AWS network load balancer listener.
                  */
                 elbListeners?: {
                     port: number;
@@ -1645,6 +1683,8 @@ export interface AWSManagedControlPlane {
                 };
                 /**
                  * ClassicELBListeners is an array of classic elb listeners associated with the load balancer. There must be at least one.
+                 *
+                 * Items: ClassicELBListener defines an AWS classic load balancer listener.
                  */
                 listeners?: {
                     instancePort: number;
@@ -1704,6 +1744,8 @@ export interface AWSManagedControlPlane {
                     id: string;
                     /**
                      * IngressRules is the inbound rules associated with the security group.
+                     *
+                     * Items: IngressRule defines an AWS ingress rule for security groups.
                      */
                     ingressRule?: {
                         /**
@@ -1737,6 +1779,8 @@ export interface AWSManagedControlPlane {
                         /**
                          * The security group role to allow access from. Cannot be specified with CidrBlocks.
                          * The field will be combined with source security group IDs if specified.
+                         *
+                         * Items: SecurityGroupRole defines the unique role of a security group.
                          */
                         sourceSecurityGroupRoles?: ('bastion' | 'node' | 'controlplane' | 'apiserver-lb' | 'lb' | 'node-eks-additional')[];
                         /**

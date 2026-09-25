@@ -73,6 +73,9 @@ export interface AzureCluster {
          */
         publicIP?: {
           dnsName?: string;
+          /**
+           * Items: IPTag contains the IpTag associated with the object.
+           */
           ipTags?: {
             /**
              * Tag specifies the value of the IP tag associated with the public IP. Example: SQL.
@@ -120,6 +123,9 @@ export interface AzureCluster {
              */
             ip?: {
               dnsName?: string;
+              /**
+               * Items: IPTag contains the IpTag associated with the object.
+               */
               ipTags?: {
                 /**
                  * Tag specifies the value of the IP tag associated with the public IP. Example: SQL.
@@ -140,6 +146,8 @@ export interface AzureCluster {
           };
           /**
            * PrivateEndpoints defines a list of private endpoints that should be attached to this subnet.
+           *
+           * Items: PrivateEndpointSpec configures an Azure Private Endpoint.
            */
           privateEndpoints?: {
             /**
@@ -171,6 +179,8 @@ export interface AzureCluster {
             privateIPAddresses?: string[];
             /**
              * PrivateLinkServiceConnections specifies Private Link Service Connections of the private endpoint.
+             *
+             * Items: PrivateLinkServiceConnection defines the specification for a private link service connection associated with a private endpoint.
              */
             privateLinkServiceConnections?: {
               /**
@@ -218,6 +228,8 @@ export interface AzureCluster {
             name: string;
             /**
              * SecurityRules is a slice of Azure security rules for security groups.
+             *
+             * Items: SecurityRule defines an Azure security rule for security groups.
              */
             securityRules?: {
               /**
@@ -227,7 +239,7 @@ export interface AzureCluster {
               /**
                * A description for this rule. Restricted to 140 chars.
                */
-              description: string;
+              description?: string;
               /**
                * Destination is the destination address prefix. CIDR or destination IP range. Asterix '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used.
                */
@@ -274,6 +286,8 @@ export interface AzureCluster {
           };
           /**
            * ServiceEndpoints is a slice of Virtual Network service endpoints to enable for the subnets.
+           *
+           * Items: ServiceEndpointSpec configures an Azure Service Endpoint.
            */
           serviceEndpoints?: {
             locations: string[];
@@ -300,6 +314,14 @@ export interface AzureCluster {
         cloudProviderBackoffJitter?: number | string;
         cloudProviderBackoffRetries?: number;
       };
+      /**
+       * Items: RateLimitSpec represents the rate limit configuration for a particular kind of resource.
+       * Eg. loadBalancerRateLimit is used to configure rate limits for load balancers.
+       * This eventually gets converted to CloudProviderRateLimitConfig that cloud-provider-azure expects.
+       * See: https://github.com/kubernetes-sigs/cloud-provider-azure/blob/d585c2031925b39c925624302f22f8856e29e352/pkg/provider/azure_ratelimit.go#L25
+       * We cannot use CloudProviderRateLimitConfig directly because floating point values are not supported in controller-tools.
+       * See: https://github.com/kubernetes-sigs/controller-tools/issues/245
+       */
       rateLimits?: {
         /**
          * RateLimitConfig indicates the rate limit config options.
@@ -439,6 +461,8 @@ export interface AzureCluster {
       /**
        * AdditionalAPIServerLBPorts specifies extra inbound ports for the APIServer load balancer.
        * Each port specified (e.g., 9345) creates an inbound rule where the frontend port and the backend port are the same.
+       *
+       * Items: LoadBalancerPort specifies additional port for the API server load balancer.
        */
       additionalAPIServerLBPorts?: {
         /**
@@ -473,6 +497,9 @@ export interface AzureCluster {
            */
           name?: string;
         };
+        /**
+         * Items: FrontendIP defines a load balancer frontend IP configuration.
+         */
         frontendIPs?: {
           name: string;
           privateIP?: string;
@@ -481,6 +508,9 @@ export interface AzureCluster {
            */
           publicIP?: {
             dnsName?: string;
+            /**
+             * Items: IPTag contains the IpTag associated with the object.
+             */
             ipTags?: {
               /**
                * Tag specifies the value of the IP tag associated with the public IP. Example: SQL.
@@ -508,6 +538,52 @@ export interface AzureCluster {
          */
         idleTimeoutInMinutes?: number;
         name?: string;
+        /**
+         * PrivateLinks to the load balancer (max 8 private links).
+         * Only supported on the API server load balancer.
+         *
+         * Items: PrivateLink configures an Azure private link.
+         */
+        privateLinks?: {
+          /**
+           * AllowedSubscriptions is a list of subscriptions from which the private link can be accessed.
+           */
+          allowedSubscriptions?: string[];
+          /**
+           * AutoApprovedSubscriptions is a list of subscription for which the connections to private link are automatically
+           * approved.
+           */
+          autoApprovedSubscriptions?: string[];
+          /**
+           * EnableProxyProtocol indicates whether the private link service is enabled for proxy protocol or not.
+           */
+          enableProxyProtocol?: boolean;
+          /**
+           * LBFrontendIPConfigNames are the names of the load balancer FrontendIP to which the private link will forward
+           * requests. The specified frontend IP configs must have the private IP set.
+           */
+          lbFrontendIPConfigNames: string[];
+          /**
+           * Name of the private link.
+           */
+          name?: string;
+          /**
+           * NATIPConfigurations specify up to 8 NAT IP configurations for the private link.
+           *
+           * Items: PrivateLinkNATIPConfiguration specifies NAT IP configuration for the private link.
+           */
+          natIPConfigurations: {
+            /**
+             * AllocationMethod specifies how the private link NAT IPs are allocated: "Static" or "Dynamic".
+             */
+            allocationMethod: 'Static' | 'Dynamic';
+            privateIPAddress?: string;
+            /**
+             * Subnet from which the IP is allocated.
+             */
+            subnet: string;
+          }[];
+        }[];
         /**
          * SKU defines an Azure load balancer SKU.
          */
@@ -541,6 +617,9 @@ export interface AzureCluster {
            */
           name?: string;
         };
+        /**
+         * Items: FrontendIP defines a load balancer frontend IP configuration.
+         */
         frontendIPs?: {
           name: string;
           privateIP?: string;
@@ -549,6 +628,9 @@ export interface AzureCluster {
            */
           publicIP?: {
             dnsName?: string;
+            /**
+             * Items: IPTag contains the IpTag associated with the object.
+             */
             ipTags?: {
               /**
                * Tag specifies the value of the IP tag associated with the public IP. Example: SQL.
@@ -576,6 +658,52 @@ export interface AzureCluster {
          */
         idleTimeoutInMinutes?: number;
         name?: string;
+        /**
+         * PrivateLinks to the load balancer (max 8 private links).
+         * Only supported on the API server load balancer.
+         *
+         * Items: PrivateLink configures an Azure private link.
+         */
+        privateLinks?: {
+          /**
+           * AllowedSubscriptions is a list of subscriptions from which the private link can be accessed.
+           */
+          allowedSubscriptions?: string[];
+          /**
+           * AutoApprovedSubscriptions is a list of subscription for which the connections to private link are automatically
+           * approved.
+           */
+          autoApprovedSubscriptions?: string[];
+          /**
+           * EnableProxyProtocol indicates whether the private link service is enabled for proxy protocol or not.
+           */
+          enableProxyProtocol?: boolean;
+          /**
+           * LBFrontendIPConfigNames are the names of the load balancer FrontendIP to which the private link will forward
+           * requests. The specified frontend IP configs must have the private IP set.
+           */
+          lbFrontendIPConfigNames: string[];
+          /**
+           * Name of the private link.
+           */
+          name?: string;
+          /**
+           * NATIPConfigurations specify up to 8 NAT IP configurations for the private link.
+           *
+           * Items: PrivateLinkNATIPConfiguration specifies NAT IP configuration for the private link.
+           */
+          natIPConfigurations: {
+            /**
+             * AllocationMethod specifies how the private link NAT IPs are allocated: "Static" or "Dynamic".
+             */
+            allocationMethod: 'Static' | 'Dynamic';
+            privateIPAddress?: string;
+            /**
+             * Subnet from which the IP is allocated.
+             */
+            subnet: string;
+          }[];
+        }[];
         /**
          * SKU defines an Azure load balancer SKU.
          */
@@ -608,6 +736,9 @@ export interface AzureCluster {
            */
           name?: string;
         };
+        /**
+         * Items: FrontendIP defines a load balancer frontend IP configuration.
+         */
         frontendIPs?: {
           name: string;
           privateIP?: string;
@@ -616,6 +747,9 @@ export interface AzureCluster {
            */
           publicIP?: {
             dnsName?: string;
+            /**
+             * Items: IPTag contains the IpTag associated with the object.
+             */
             ipTags?: {
               /**
                * Tag specifies the value of the IP tag associated with the public IP. Example: SQL.
@@ -644,6 +778,52 @@ export interface AzureCluster {
         idleTimeoutInMinutes?: number;
         name?: string;
         /**
+         * PrivateLinks to the load balancer (max 8 private links).
+         * Only supported on the API server load balancer.
+         *
+         * Items: PrivateLink configures an Azure private link.
+         */
+        privateLinks?: {
+          /**
+           * AllowedSubscriptions is a list of subscriptions from which the private link can be accessed.
+           */
+          allowedSubscriptions?: string[];
+          /**
+           * AutoApprovedSubscriptions is a list of subscription for which the connections to private link are automatically
+           * approved.
+           */
+          autoApprovedSubscriptions?: string[];
+          /**
+           * EnableProxyProtocol indicates whether the private link service is enabled for proxy protocol or not.
+           */
+          enableProxyProtocol?: boolean;
+          /**
+           * LBFrontendIPConfigNames are the names of the load balancer FrontendIP to which the private link will forward
+           * requests. The specified frontend IP configs must have the private IP set.
+           */
+          lbFrontendIPConfigNames: string[];
+          /**
+           * Name of the private link.
+           */
+          name?: string;
+          /**
+           * NATIPConfigurations specify up to 8 NAT IP configurations for the private link.
+           *
+           * Items: PrivateLinkNATIPConfiguration specifies NAT IP configuration for the private link.
+           */
+          natIPConfigurations: {
+            /**
+             * AllocationMethod specifies how the private link NAT IPs are allocated: "Static" or "Dynamic".
+             */
+            allocationMethod: 'Static' | 'Dynamic';
+            privateIPAddress?: string;
+            /**
+             * Subnet from which the IP is allocated.
+             */
+            subnet: string;
+          }[];
+        }[];
+        /**
          * SKU defines an Azure load balancer SKU.
          */
         sku?: string;
@@ -668,6 +848,8 @@ export interface AzureCluster {
       privateDNSZoneResourceGroup?: string;
       /**
        * Subnets is the configuration for the control-plane subnet and the node subnet.
+       *
+       * Items: SubnetSpec configures an Azure subnet.
        */
       subnets?: {
         /**
@@ -697,6 +879,9 @@ export interface AzureCluster {
            */
           ip?: {
             dnsName?: string;
+            /**
+             * Items: IPTag contains the IpTag associated with the object.
+             */
             ipTags?: {
               /**
                * Tag specifies the value of the IP tag associated with the public IP. Example: SQL.
@@ -717,6 +902,8 @@ export interface AzureCluster {
         };
         /**
          * PrivateEndpoints defines a list of private endpoints that should be attached to this subnet.
+         *
+         * Items: PrivateEndpointSpec configures an Azure Private Endpoint.
          */
         privateEndpoints?: {
           /**
@@ -748,6 +935,8 @@ export interface AzureCluster {
           privateIPAddresses?: string[];
           /**
            * PrivateLinkServiceConnections specifies Private Link Service Connections of the private endpoint.
+           *
+           * Items: PrivateLinkServiceConnection defines the specification for a private link service connection associated with a private endpoint.
            */
           privateLinkServiceConnections?: {
             /**
@@ -795,6 +984,8 @@ export interface AzureCluster {
           name: string;
           /**
            * SecurityRules is a slice of Azure security rules for security groups.
+           *
+           * Items: SecurityRule defines an Azure security rule for security groups.
            */
           securityRules?: {
             /**
@@ -804,7 +995,7 @@ export interface AzureCluster {
             /**
              * A description for this rule. Restricted to 140 chars.
              */
-            description: string;
+            description?: string;
             /**
              * Destination is the destination address prefix. CIDR or destination IP range. Asterix '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used.
              */
@@ -851,6 +1042,8 @@ export interface AzureCluster {
         };
         /**
          * ServiceEndpoints is a slice of Virtual Network service endpoints to enable for the subnets.
+         *
+         * Items: ServiceEndpointSpec configures an Azure Service Endpoint.
          */
         serviceEndpoints?: {
           locations: string[];
@@ -876,6 +1069,8 @@ export interface AzureCluster {
         name: string;
         /**
          * Peerings defines a list of peerings of the newly created virtual network with existing virtual networks.
+         *
+         * Items: VnetPeeringSpec specifies an existing remote virtual network to peer with the AzureCluster's virtual network.
          */
         peerings?: {
           /**
@@ -965,6 +1160,8 @@ export interface AzureCluster {
   status?: {
     /**
      * Conditions defines current service state of the AzureCluster.
+     *
+     * Items: Condition defines an observation of a Cluster API resource operational state.
      */
     conditions?: {
       /**
@@ -1030,6 +1227,8 @@ export interface AzureCluster {
     /**
      * LongRunningOperationStates saves the states for Azure long-running operations so they can be continued on the
      * next reconciliation loop.
+     *
+     * Items: Future contains the data needed for an Azure long-running operation to continue across reconcile loops.
      */
     longRunningOperationStates?: {
       /**

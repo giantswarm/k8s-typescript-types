@@ -32,7 +32,7 @@ export interface Catalog {
                  * Namespace is the namespace of the catalog values config map, e.g. giantswarm.
                  */
                 namespace: string;
-            };
+            } | null;
             /**
              * Secret references a secret containing catalog values that should be applied to apps in this catalog.
              */
@@ -45,8 +45,8 @@ export interface Catalog {
                  * Namespace is the namespace of the secret, e.g. giantswarm.
                  */
                 namespace: string;
-            };
-        };
+            } | null;
+        } | null;
         description: string;
         /**
          * LogoURL contains the links for logo image file for this catalog
@@ -107,12 +107,14 @@ export interface Catalog {
         helmRepositoryList?: {
             /**
              * Entries of HelmRepository custom resources.
+             *
+             * Items: HelmRepositoryRef represents a basic HelmRepository custom resource information.
              */
             entries: {
                 name: string;
                 namespace: string;
             }[];
-        };
+        } | null;
     };
 }
 //# sourceMappingURL=Catalog.d.ts.map

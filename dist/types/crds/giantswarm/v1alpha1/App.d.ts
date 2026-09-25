@@ -23,7 +23,7 @@ export interface App {
         /**
          * CatalogNamespace is the namespace of the Catalog CR this app belongs to. e.g. giantswarm
          */
-        catalogNamespace?: string;
+        catalogNamespace?: string | null;
         /**
          * Config is the config to be applied when the app is deployed.
          */
@@ -40,7 +40,7 @@ export interface App {
                  * Namespace is the namespace of the values config map, e.g. monitoring.
                  */
                 namespace: string;
-            };
+            } | null;
             /**
              * Secret references a secret containing secret values that should be applied to the app.
              */
@@ -53,8 +53,8 @@ export interface App {
                  * Namespace is the namespace of the secret, e.g. kube-system.
                  */
                 namespace: string;
-            };
-        };
+            } | null;
+        } | null;
         /**
          * ExtraConfigs is a list of configurations to merge together based on the priority and order in the list. See: https://github.com/giantswarm/rfc/tree/main/multi-layer-app-config#enhancing-app-cr
          */
@@ -75,7 +75,7 @@ export interface App {
              * Priority is used to indicate at which stage the extra configuration should be merged. See: https://github.com/giantswarm/rfc/tree/main/multi-layer-app-config#enhancing-app-cr
              */
             priority?: number;
-        }[];
+        }[] | null;
         /**
          * Install is the config used when installing the app.
          */
@@ -83,12 +83,12 @@ export interface App {
             /**
              * SkipCRDs when true decides that CRDs which are supplied with the chart are not installed. Default: false.
              */
-            skipCRDs?: boolean;
+            skipCRDs?: boolean | null;
             /**
              * Timeout for the Helm install. When not set the default timeout of 5 minutes is being enforced.
              */
             timeout?: string;
-        };
+        } | null;
         /**
          * KubeConfig is the kubeconfig to connect to the cluster when deploying the app.
          */
@@ -101,7 +101,7 @@ export interface App {
                  * Name is the name of the kubeconfig context e.g. giantswarm-12345.
                  */
                 name: string;
-            };
+            } | null;
             /**
              * InCluster is a flag for whether to use InCluster credentials. When true the context name and secret should not be set.
              */
@@ -118,7 +118,7 @@ export interface App {
                  * Namespace is the namespace of the secret containing the kubeconfig, e.g. giantswarm.
                  */
                 namespace: string;
-            };
+            } | null;
         };
         /**
          * Name is the name of the app to be deployed. e.g. kubernetes-prometheus
@@ -137,14 +137,14 @@ export interface App {
              */
             annotations?: {
                 [k: string]: string;
-            };
+            } | null;
             /**
              * Labels is a string map of labels to apply to the target namespace.
              */
             labels?: {
                 [k: string]: string;
-            };
-        };
+            } | null;
+        } | null;
         /**
          * Rollback is the config used when rolling back the app.
          */
@@ -153,7 +153,7 @@ export interface App {
              * Timeout for the Helm rollback. When not set the default timeout of 5 minutes is being enforced.
              */
             timeout?: string;
-        };
+        } | null;
         /**
          * Uninstall is the config used when uninstalling the app.
          */
@@ -162,7 +162,7 @@ export interface App {
              * Timeout for the Helm uninstall. When not set the default timeout of 5 minutes is being enforced.
              */
             timeout?: string;
-        };
+        } | null;
         /**
          * Upgrade is the config used when upgrading the app.
          */
@@ -171,7 +171,7 @@ export interface App {
              * Timeout for the Helm upgrade. When not set the default timeout of 5 minutes is being enforced.
              */
             timeout?: string;
-        };
+        } | null;
         /**
          * UserConfig is the user config to be applied when the app is deployed.
          */
@@ -188,7 +188,7 @@ export interface App {
                  * Namespace is the namespace of the user values config map on the management cluster, e.g. 123ab.
                  */
                 namespace: string;
-            };
+            } | null;
             /**
              * Secret references a secret containing user secret values that should be applied to the app.
              */
@@ -201,8 +201,8 @@ export interface App {
                  * Namespace is the namespace of the secret, e.g. kube-system.
                  */
                 namespace: string;
-            };
-        };
+            } | null;
+        } | null;
         /**
          * Version is the version of the app that should be deployed. e.g. 1.0.0
          */
@@ -223,7 +223,7 @@ export interface App {
             /**
              * LastDeployed is the time when the app was last deployed.
              */
-            lastDeployed?: string;
+            lastDeployed?: string | null;
             /**
              * Reason is the description of the last status of helm release when the app is not installed successfully, e.g. deploy resource already exists.
              */

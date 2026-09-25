@@ -39,6 +39,9 @@ export interface VSphereClusterIdentity {
       selector?: {
         /**
          * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+         *
+         * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+         * relates the key and values.
          */
         matchExpressions?: {
           /**
@@ -79,6 +82,8 @@ export interface VSphereClusterIdentity {
   status?: {
     /**
      * Conditions defines current service state of the VSphereCluster.
+     *
+     * Items: Condition defines an observation of a Cluster API resource operational state.
      */
     conditions?: {
       /**
@@ -125,6 +130,8 @@ export interface VSphereClusterIdentity {
        * Known condition types are Available and Paused.
        *
        * @maxItems 32
+       *
+       * Items: Condition contains details for one aspect of the current state of this API Resource.
        */
       conditions?: {
         /**
