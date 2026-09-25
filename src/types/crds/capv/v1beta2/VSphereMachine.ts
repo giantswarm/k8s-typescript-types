@@ -66,6 +66,8 @@ export interface VSphereMachine {
      * dataDisks are additional disks to add to the VM that are not part of the VM's OVA template.
      *
      * @maxItems 29
+     *
+     * Items: VSphereDisk is an additional disk to add to the VM that is not part of the VM OVA template.
      */
     dataDisks?: {
       /**
@@ -180,6 +182,9 @@ export interface VSphereMachine {
        *
        *
        * @maxItems 128
+       *
+       * Items: NetworkDeviceSpec defines the network configuration for a virtual machine's
+       * network device.
        */
       devices: {
         /**
@@ -188,6 +193,8 @@ export interface VSphereMachine {
          * with IPAddresses fulfilled by an IPAM provider.
          *
          * @maxItems 128
+         *
+         * Items: IPPoolReference is a reference to an IPPool.
          */
         addressesFromPools?: {
           /**
@@ -384,6 +391,8 @@ export interface VSphereMachine {
          * routes is a list of optional, static routes applied to the device.
          *
          * @maxItems 512
+         *
+         * Items: NetworkRouteSpec defines a static network route.
          */
         routes?: {
           /**
@@ -418,6 +427,8 @@ export interface VSphereMachine {
        * machine.
        *
        * @maxItems 512
+       *
+       * Items: NetworkRouteSpec defines a static network route.
        */
       routes?: {
         /**
@@ -457,6 +468,8 @@ export interface VSphereMachine {
      * pciDevices is the list of pci devices used by the virtual machine.
      *
      * @maxItems 128
+     *
+     * Items: PCIDeviceSpec defines virtual machine's PCI configuration.
      */
     pciDevices?: {
       /**
@@ -605,6 +618,8 @@ export interface VSphereMachine {
      * addresses contains the VSphere instance associated addresses.
      *
      * @maxItems 128
+     *
+     * Items: MachineAddress contains information for the node's address.
      */
     addresses?: {
       /**
@@ -621,6 +636,8 @@ export interface VSphereMachine {
      * Known condition types are Ready, VirtualMachineProvisioned and Paused.
      *
      * @maxItems 32
+     *
+     * Items: Condition contains details for one aspect of the current state of this API Resource.
      */
     conditions?: {
       /**
@@ -670,6 +687,10 @@ export interface VSphereMachine {
          * conditions defines current service state of the VSphereMachine.
          *
          * Deprecated: This field is deprecated and is going to be removed when support for v1beta1 will be dropped. Please see https://github.com/kubernetes-sigs/cluster-api/blob/main/docs/proposals/20240916-improve-status-in-CAPI-resources.md for more details.
+         *
+         * Items: Condition defines an observation of a Cluster API resource operational state.
+         *
+         * Deprecated: This type is deprecated and is going to be removed when support for v1beta1 will be dropped. Please see https://github.com/kubernetes-sigs/cluster-api/blob/main/docs/proposals/20240916-improve-status-in-CAPI-resources.md for more details.
          */
         conditions?: {
           /**
@@ -766,6 +787,8 @@ export interface VSphereMachine {
      * network interfaces.
      *
      * @maxItems 128
+     *
+     * Items: NetworkStatus provides information about one of a VM's networks.
      */
     network?: {
       /**

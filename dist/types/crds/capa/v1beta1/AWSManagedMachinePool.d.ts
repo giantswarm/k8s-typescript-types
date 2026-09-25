@@ -57,12 +57,18 @@ export interface AWSManagedMachinePool {
              * AdditionalSecurityGroups is an array of references to security groups that should be applied to the
              * instances. These security groups would be set in addition to any security groups defined
              * at the cluster level or in the actuator.
+             *
+             * Items: AWSResourceReference is a reference to a specific AWS resource by ID or filters.
+             * Only one of ID or Filters may be specified. Specifying more than one will result in
+             * a validation error.
              */
             additionalSecurityGroups?: {
                 /**
                  * Filters is a set of key/value pairs used to identify a resource
                  * They are applied according to the rules defined by the AWS API:
                  * https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Using_Filtering.html
+                 *
+                 * Items: Filter is a filter used to identify an AWS resource.
                  */
                 filters?: {
                     /**
@@ -264,6 +270,8 @@ export interface AWSManagedMachinePool {
         subnetIDs?: string[];
         /**
          * Taints specifies the taints to apply to the nodes of the machine pool
+         *
+         * Items: Taint defines the specs for a Kubernetes taint.
          */
         taints?: {
             /**
@@ -302,6 +310,8 @@ export interface AWSManagedMachinePool {
     status?: {
         /**
          * Conditions defines current service state of the managed machine pool
+         *
+         * Items: Condition defines an observation of a Cluster API resource operational state.
          */
         conditions?: {
             /**

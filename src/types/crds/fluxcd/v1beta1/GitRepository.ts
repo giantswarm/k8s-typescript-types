@@ -34,6 +34,9 @@ export interface GitRepository {
       /**
        * NamespaceSelectors is the list of namespace selectors to which this ACL applies.
        * Items in this list are evaluated using a logical OR operation.
+       *
+       * Items: NamespaceSelector selects the namespaces to which this ACL applies.
+       * An empty map of MatchLabels matches all namespaces in a cluster.
        */
       namespaceSelectors: {
         /**
@@ -59,6 +62,8 @@ export interface GitRepository {
     ignore?: string;
     /**
      * Extra git repositories to map into the repository
+     *
+     * Items: GitRepositoryInclude defines a source with a from and to path.
      */
     include?: {
       /**
@@ -189,6 +194,8 @@ export interface GitRepository {
     };
     /**
      * Conditions holds the conditions for the GitRepository.
+     *
+     * Items: Condition contains details for one aspect of the current state of this API Resource.
      */
     conditions?: {
       /**
@@ -226,6 +233,8 @@ export interface GitRepository {
     }[];
     /**
      * IncludedArtifacts represents the included artifacts from the last successful repository sync.
+     *
+     * Items: Artifact represents the output of a source synchronisation.
      */
     includedArtifacts?: {
       /**

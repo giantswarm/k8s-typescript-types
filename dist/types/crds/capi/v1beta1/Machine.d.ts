@@ -185,6 +185,8 @@ export interface Machine {
          * This helps to improve readability of conditions bubbling up to the Machine's owner resource / to the Cluster).
          *
          * @maxItems 32
+         *
+         * Items: MachineReadinessGate contains the type of a Machine condition to be used as a readiness gate.
          */
         readinessGates?: {
             /**
@@ -215,6 +217,8 @@ export interface Machine {
          *
          * @minItems 1
          * @maxItems 64
+         *
+         * Items: MachineTaint defines a taint equivalent to corev1.Taint, but additionally having a propagation field.
          */
         taints?: [
             {
@@ -281,6 +285,8 @@ export interface Machine {
         /**
          * addresses is a list of addresses assigned to the machine.
          * This field is copied from the infrastructure provider reference.
+         *
+         * Items: MachineAddress contains information for the node's address.
          */
         addresses?: {
             /**
@@ -303,6 +309,8 @@ export interface Machine {
         certificatesExpiryDate?: string;
         /**
          * conditions defines current service state of the Machine.
+         *
+         * Items: Condition defines an observation of a Cluster API resource operational state.
          */
         conditions?: {
             /**
@@ -533,6 +541,8 @@ export interface Machine {
              * APIServerPodHealthy, ControllerManagerPodHealthy, SchedulerPodHealthy, EtcdPodHealthy, EtcdMemberHealthy.
              *
              * @maxItems 32
+             *
+             * Items: Condition contains details for one aspect of the current state of this API Resource.
              */
             conditions?: {
                 /**

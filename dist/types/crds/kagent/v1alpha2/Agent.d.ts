@@ -49,6 +49,9 @@ export interface Agent {
             selector?: {
                 /**
                  * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                 *
+                 * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+                 * relates the key and values.
                  */
                 matchExpressions?: {
                     /**
@@ -107,6 +110,9 @@ export interface Agent {
                          * compute a sum by iterating through the elements of this field and adding
                          * "weight" to the sum if the node matches the corresponding matchExpressions; the
                          * node(s) with the highest sum are the most preferred.
+                         *
+                         * Items: An empty preferred scheduling term matches all objects with implicit weight 0
+                         * (i.e. it's a no-op). A null preferred scheduling term matches no objects (i.e. is also a no-op).
                          */
                         preferredDuringSchedulingIgnoredDuringExecution?: {
                             /**
@@ -115,6 +121,9 @@ export interface Agent {
                             preference: {
                                 /**
                                  * A list of node selector requirements by node's labels.
+                                 *
+                                 * Items: A node selector requirement is a selector that contains values, a key, and an operator
+                                 * that relates the key and values.
                                  */
                                 matchExpressions?: {
                                     /**
@@ -137,6 +146,9 @@ export interface Agent {
                                 }[];
                                 /**
                                  * A list of node selector requirements by node's fields.
+                                 *
+                                 * Items: A node selector requirement is a selector that contains values, a key, and an operator
+                                 * that relates the key and values.
                                  */
                                 matchFields?: {
                                     /**
@@ -173,10 +185,17 @@ export interface Agent {
                         requiredDuringSchedulingIgnoredDuringExecution?: {
                             /**
                              * Required. A list of node selector terms. The terms are ORed.
+                             *
+                             * Items: A null or empty node selector term matches no objects. The requirements of
+                             * them are ANDed.
+                             * The TopologySelectorTerm type implements a subset of the NodeSelectorTerm.
                              */
                             nodeSelectorTerms: {
                                 /**
                                  * A list of node selector requirements by node's labels.
+                                 *
+                                 * Items: A node selector requirement is a selector that contains values, a key, and an operator
+                                 * that relates the key and values.
                                  */
                                 matchExpressions?: {
                                     /**
@@ -199,6 +218,9 @@ export interface Agent {
                                 }[];
                                 /**
                                  * A list of node selector requirements by node's fields.
+                                 *
+                                 * Items: A node selector requirement is a selector that contains values, a key, and an operator
+                                 * that relates the key and values.
                                  */
                                 matchFields?: {
                                     /**
@@ -236,6 +258,8 @@ export interface Agent {
                          * compute a sum by iterating through the elements of this field and adding
                          * "weight" to the sum if the node has pods which matches the corresponding podAffinityTerm; the
                          * node(s) with the highest sum are the most preferred.
+                         *
+                         * Items: The weights of all of the matched WeightedPodAffinityTerm fields are added per-node to find the most preferred node(s)
                          */
                         preferredDuringSchedulingIgnoredDuringExecution?: {
                             /**
@@ -249,6 +273,9 @@ export interface Agent {
                                 labelSelector?: {
                                     /**
                                      * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                                     *
+                                     * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+                                     * relates the key and values.
                                      */
                                     matchExpressions?: {
                                         /**
@@ -309,6 +336,9 @@ export interface Agent {
                                 namespaceSelector?: {
                                     /**
                                      * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                                     *
+                                     * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+                                     * relates the key and values.
                                      */
                                     matchExpressions?: {
                                         /**
@@ -367,6 +397,13 @@ export interface Agent {
                          * system may or may not try to eventually evict the pod from its node.
                          * When there are multiple elements, the lists of nodes corresponding to each
                          * podAffinityTerm are intersected, i.e. all terms must be satisfied.
+                         *
+                         * Items: Defines a set of pods (namely those matching the labelSelector
+                         * relative to the given namespace(s)) that this pod should be
+                         * co-located (affinity) or not co-located (anti-affinity) with,
+                         * where co-located is defined as running on a node whose value of
+                         * the label with key <topologyKey> matches that of any node on which
+                         * a pod of the set of pods is running
                          */
                         requiredDuringSchedulingIgnoredDuringExecution?: {
                             /**
@@ -376,6 +413,9 @@ export interface Agent {
                             labelSelector?: {
                                 /**
                                  * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                                 *
+                                 * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+                                 * relates the key and values.
                                  */
                                 matchExpressions?: {
                                     /**
@@ -436,6 +476,9 @@ export interface Agent {
                             namespaceSelector?: {
                                 /**
                                  * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                                 *
+                                 * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+                                 * relates the key and values.
                                  */
                                 matchExpressions?: {
                                     /**
@@ -495,6 +538,8 @@ export interface Agent {
                          * compute a sum by iterating through the elements of this field and subtracting
                          * "weight" from the sum if the node has pods which matches the corresponding podAffinityTerm; the
                          * node(s) with the highest sum are the most preferred.
+                         *
+                         * Items: The weights of all of the matched WeightedPodAffinityTerm fields are added per-node to find the most preferred node(s)
                          */
                         preferredDuringSchedulingIgnoredDuringExecution?: {
                             /**
@@ -508,6 +553,9 @@ export interface Agent {
                                 labelSelector?: {
                                     /**
                                      * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                                     *
+                                     * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+                                     * relates the key and values.
                                      */
                                     matchExpressions?: {
                                         /**
@@ -568,6 +616,9 @@ export interface Agent {
                                 namespaceSelector?: {
                                     /**
                                      * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                                     *
+                                     * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+                                     * relates the key and values.
                                      */
                                     matchExpressions?: {
                                         /**
@@ -626,6 +677,13 @@ export interface Agent {
                          * system may or may not try to eventually evict the pod from its node.
                          * When there are multiple elements, the lists of nodes corresponding to each
                          * podAffinityTerm are intersected, i.e. all terms must be satisfied.
+                         *
+                         * Items: Defines a set of pods (namely those matching the labelSelector
+                         * relative to the given namespace(s)) that this pod should be
+                         * co-located (affinity) or not co-located (anti-affinity) with,
+                         * where co-located is defined as running on a node whose value of
+                         * the label with key <topologyKey> matches that of any node on which
+                         * a pod of the set of pods is running
                          */
                         requiredDuringSchedulingIgnoredDuringExecution?: {
                             /**
@@ -635,6 +693,9 @@ export interface Agent {
                             labelSelector?: {
                                 /**
                                  * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                                 *
+                                 * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+                                 * relates the key and values.
                                  */
                                 matchExpressions?: {
                                     /**
@@ -695,6 +756,9 @@ export interface Agent {
                             namespaceSelector?: {
                                 /**
                                  * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                                 *
+                                 * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+                                 * relates the key and values.
                                  */
                                 matchExpressions?: {
                                     /**
@@ -757,6 +821,8 @@ export interface Agent {
                 cmd?: string;
                 /**
                  * Env are additional environment variables set on the agent container.
+                 *
+                 * Items: EnvVar represents an environment variable present in a Container.
                  */
                 env?: {
                     /**
@@ -890,6 +956,8 @@ export interface Agent {
                 /**
                  * ExtraContainers is a list of additional containers to run alongside the main agent container.
                  * Useful for sidecars such as token proxies, log shippers, or security agents.
+                 *
+                 * Items: A single application container that you want to run within a pod.
                  */
                 extraContainers?: {
                     /**
@@ -917,6 +985,8 @@ export interface Agent {
                     /**
                      * List of environment variables to set in the container.
                      * Cannot be updated.
+                     *
+                     * Items: EnvVar represents an environment variable present in a Container.
                      */
                     env?: {
                         /**
@@ -1054,6 +1124,8 @@ export interface Agent {
                      * sources, the value associated with the last source will take precedence.
                      * Values defined by an Env with a duplicate key will take precedence.
                      * Cannot be updated.
+                     *
+                     * Items: EnvFromSource represents the source of a set of ConfigMaps or Secrets
                      */
                     envFrom?: {
                         /**
@@ -1147,6 +1219,8 @@ export interface Agent {
                                 host?: string;
                                 /**
                                  * Custom headers to set in the request. HTTP allows repeated headers.
+                                 *
+                                 * Items: HTTPHeader describes a custom header to be used in HTTP probes
                                  */
                                 httpHeaders?: {
                                     /**
@@ -1238,6 +1312,8 @@ export interface Agent {
                                 host?: string;
                                 /**
                                  * Custom headers to set in the request. HTTP allows repeated headers.
+                                 *
+                                 * Items: HTTPHeader describes a custom header to be used in HTTP probes
                                  */
                                 httpHeaders?: {
                                     /**
@@ -1352,6 +1428,8 @@ export interface Agent {
                             host?: string;
                             /**
                              * Custom headers to set in the request. HTTP allows repeated headers.
+                             *
+                             * Items: HTTPHeader describes a custom header to be used in HTTP probes
                              */
                             httpHeaders?: {
                                 /**
@@ -1444,6 +1522,8 @@ export interface Agent {
                      * Modifying this array with strategic merge patch may corrupt the data.
                      * For more information See https://github.com/kubernetes/kubernetes/issues/108255.
                      * Cannot be updated.
+                     *
+                     * Items: ContainerPort represents a network port in a single container.
                      */
                     ports?: {
                         /**
@@ -1526,6 +1606,8 @@ export interface Agent {
                             host?: string;
                             /**
                              * Custom headers to set in the request. HTTP allows repeated headers.
+                             *
+                             * Items: HTTPHeader describes a custom header to be used in HTTP probes
                              */
                             httpHeaders?: {
                                 /**
@@ -1607,6 +1689,8 @@ export interface Agent {
                     /**
                      * Resources resize policy for the container.
                      * This field cannot be set on ephemeral containers.
+                     *
+                     * Items: ContainerResizePolicy represents resource resize policy for the container.
                      */
                     resizePolicy?: {
                         /**
@@ -1634,6 +1718,8 @@ export interface Agent {
                          * DynamicResourceAllocation feature gate.
                          *
                          * This field is immutable. It can only be set for containers.
+                         *
+                         * Items: ResourceClaim references one entry in PodSpec.ResourceClaims.
                          */
                         claims?: {
                             /**
@@ -1696,6 +1782,8 @@ export interface Agent {
                      * - Identical rules are not forbidden in validations.
                      * When rules are specified, container MUST set RestartPolicy explicitly
                      * even it if matches the Pod's RestartPolicy.
+                     *
+                     * Items: ContainerRestartRule describes how a container exit is handled.
                      */
                     restartPolicyRules?: {
                         /**
@@ -1770,10 +1858,14 @@ export interface Agent {
                         capabilities?: {
                             /**
                              * Added capabilities
+                             *
+                             * Items: Capability represent POSIX capabilities type
                              */
                             add?: string[];
                             /**
                              * Removed capabilities
+                             *
+                             * Items: Capability represent POSIX capabilities type
                              */
                             drop?: string[];
                         };
@@ -1959,6 +2051,8 @@ export interface Agent {
                             host?: string;
                             /**
                              * Custom headers to set in the request. HTTP allows repeated headers.
+                             *
+                             * Items: HTTPHeader describes a custom header to be used in HTTP probes
                              */
                             httpHeaders?: {
                                 /**
@@ -2080,6 +2174,8 @@ export interface Agent {
                     tty?: boolean;
                     /**
                      * volumeDevices is the list of block devices to be used by the container.
+                     *
+                     * Items: volumeDevice describes a mapping of a raw block device within a container.
                      */
                     volumeDevices?: {
                         /**
@@ -2094,6 +2190,8 @@ export interface Agent {
                     /**
                      * Pod volumes to mount into the container's filesystem.
                      * Cannot be updated.
+                     *
+                     * Items: VolumeMount describes a mounting of a Volume within a container.
                      */
                     volumeMounts?: {
                         /**
@@ -2171,6 +2269,9 @@ export interface Agent {
                 /**
                  * ImagePullSecrets are references to secrets in the agent's namespace
                  * used for pulling the agent container image.
+                 *
+                 * Items: LocalObjectReference contains enough information to let you locate the
+                 * referenced object inside the same namespace.
                  */
                 imagePullSecrets?: {
                     /**
@@ -2369,6 +2470,8 @@ export interface Agent {
                      * Sysctls hold a list of namespaced sysctls used for the pod. Pods with unsupported
                      * sysctls (by the container runtime) might fail to launch.
                      * Note that this field cannot be set when spec.os.name is windows.
+                     *
+                     * Items: Sysctl defines a kernel parameter to be set
                      */
                     sysctls?: {
                         /**
@@ -2429,6 +2532,8 @@ export interface Agent {
                      * DynamicResourceAllocation feature gate.
                      *
                      * This field is immutable. It can only be set for containers.
+                     *
+                     * Items: ResourceClaim references one entry in PodSpec.ResourceClaims.
                      */
                     claims?: {
                         /**
@@ -2507,10 +2612,14 @@ export interface Agent {
                     capabilities?: {
                         /**
                          * Added capabilities
+                         *
+                         * Items: Capability represent POSIX capabilities type
                          */
                         add?: string[];
                         /**
                          * Removed capabilities
+                         *
+                         * Items: Capability represent POSIX capabilities type
                          */
                         drop?: string[];
                     };
@@ -2669,6 +2778,9 @@ export interface Agent {
                 serviceAccountName?: string;
                 /**
                  * Tolerations applied to the agent pods.
+                 *
+                 * Items: The pod this Toleration is attached to tolerates any taint that matches
+                 * the triple <key,value,effect> using the matching operator <operator>.
                  */
                 tolerations?: {
                     /**
@@ -2704,6 +2816,8 @@ export interface Agent {
                 }[];
                 /**
                  * VolumeMounts are additional volume mounts added to the agent container.
+                 *
+                 * Items: VolumeMount describes a mounting of a Volume within a container.
                  */
                 volumeMounts?: {
                     /**
@@ -2763,6 +2877,8 @@ export interface Agent {
                 }[];
                 /**
                  * Volumes are additional volumes added to the agent pod.
+                 *
+                 * Items: Volume represents a named volume in a pod that may be accessed by any container in the pod.
                  */
                 volumes?: {
                     /**
@@ -2959,6 +3075,8 @@ export interface Agent {
                          * present. If a key is specified which is not present in the ConfigMap,
                          * the volume setup will error unless it is marked optional. Paths must be
                          * relative and may not contain the '..' path or start with '..'.
+                         *
+                         * Items: Maps a string key to a path within a volume.
                          */
                         items?: {
                             /**
@@ -3057,6 +3175,8 @@ export interface Agent {
                         defaultMode?: number;
                         /**
                          * Items is a list of downward API volume file
+                         *
+                         * Items: DownwardAPIVolumeFile represents information to create the file containing the pod field
                          */
                         items?: {
                             /**
@@ -3300,6 +3420,9 @@ export interface Agent {
                                 selector?: {
                                     /**
                                      * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                                     *
+                                     * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+                                     * relates the key and values.
                                      */
                                     matchExpressions?: {
                                         /**
@@ -3750,6 +3873,9 @@ export interface Agent {
                         /**
                          * sources is the list of volume projections. Each entry in this list
                          * handles one source.
+                         *
+                         * Items: Projection that may be projected along with other supported volume types.
+                         * Exactly one of these fields must be set.
                          */
                         sources?: {
                             /**
@@ -3777,6 +3903,9 @@ export interface Agent {
                                 labelSelector?: {
                                     /**
                                      * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                                     *
+                                     * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+                                     * relates the key and values.
                                      */
                                     matchExpressions?: {
                                         /**
@@ -3841,6 +3970,8 @@ export interface Agent {
                                  * present. If a key is specified which is not present in the ConfigMap,
                                  * the volume setup will error unless it is marked optional. Paths must be
                                  * relative and may not contain the '..' path or start with '..'.
+                                 *
+                                 * Items: Maps a string key to a path within a volume.
                                  */
                                 items?: {
                                     /**
@@ -3883,6 +4014,8 @@ export interface Agent {
                             downwardAPI?: {
                                 /**
                                  * Items is a list of DownwardAPIVolume file
+                                 *
+                                 * Items: DownwardAPIVolumeFile represents information to create the file containing the pod field
                                  */
                                 items?: {
                                     /**
@@ -4062,6 +4195,8 @@ export interface Agent {
                                  * present. If a key is specified which is not present in the Secret,
                                  * the volume setup will error unless it is marked optional. Paths must be
                                  * relative and may not contain the '..' path or start with '..'.
+                                 *
+                                 * Items: Maps a string key to a path within a volume.
                                  */
                                 items?: {
                                     /**
@@ -4310,6 +4445,8 @@ export interface Agent {
                          * present. If a key is specified which is not present in the Secret,
                          * the volume setup will error unless it is marked optional. Paths must be
                          * relative and may not contain the '..' path or start with '..'.
+                         *
+                         * Items: Maps a string key to a path within a volume.
                          */
                         items?: {
                             /**
@@ -4437,6 +4574,8 @@ export interface Agent {
             a2aConfig?: {
                 /**
                  * @minItems 1
+                 *
+                 * Items: AgentSkill describes a specific capability or function of the agent.
                  */
                 skills?: [
                     {
@@ -5080,6 +5219,9 @@ export interface Agent {
                          * compute a sum by iterating through the elements of this field and adding
                          * "weight" to the sum if the node matches the corresponding matchExpressions; the
                          * node(s) with the highest sum are the most preferred.
+                         *
+                         * Items: An empty preferred scheduling term matches all objects with implicit weight 0
+                         * (i.e. it's a no-op). A null preferred scheduling term matches no objects (i.e. is also a no-op).
                          */
                         preferredDuringSchedulingIgnoredDuringExecution?: {
                             /**
@@ -5088,6 +5230,9 @@ export interface Agent {
                             preference: {
                                 /**
                                  * A list of node selector requirements by node's labels.
+                                 *
+                                 * Items: A node selector requirement is a selector that contains values, a key, and an operator
+                                 * that relates the key and values.
                                  */
                                 matchExpressions?: {
                                     /**
@@ -5110,6 +5255,9 @@ export interface Agent {
                                 }[];
                                 /**
                                  * A list of node selector requirements by node's fields.
+                                 *
+                                 * Items: A node selector requirement is a selector that contains values, a key, and an operator
+                                 * that relates the key and values.
                                  */
                                 matchFields?: {
                                     /**
@@ -5146,10 +5294,17 @@ export interface Agent {
                         requiredDuringSchedulingIgnoredDuringExecution?: {
                             /**
                              * Required. A list of node selector terms. The terms are ORed.
+                             *
+                             * Items: A null or empty node selector term matches no objects. The requirements of
+                             * them are ANDed.
+                             * The TopologySelectorTerm type implements a subset of the NodeSelectorTerm.
                              */
                             nodeSelectorTerms: {
                                 /**
                                  * A list of node selector requirements by node's labels.
+                                 *
+                                 * Items: A node selector requirement is a selector that contains values, a key, and an operator
+                                 * that relates the key and values.
                                  */
                                 matchExpressions?: {
                                     /**
@@ -5172,6 +5327,9 @@ export interface Agent {
                                 }[];
                                 /**
                                  * A list of node selector requirements by node's fields.
+                                 *
+                                 * Items: A node selector requirement is a selector that contains values, a key, and an operator
+                                 * that relates the key and values.
                                  */
                                 matchFields?: {
                                     /**
@@ -5209,6 +5367,8 @@ export interface Agent {
                          * compute a sum by iterating through the elements of this field and adding
                          * "weight" to the sum if the node has pods which matches the corresponding podAffinityTerm; the
                          * node(s) with the highest sum are the most preferred.
+                         *
+                         * Items: The weights of all of the matched WeightedPodAffinityTerm fields are added per-node to find the most preferred node(s)
                          */
                         preferredDuringSchedulingIgnoredDuringExecution?: {
                             /**
@@ -5222,6 +5382,9 @@ export interface Agent {
                                 labelSelector?: {
                                     /**
                                      * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                                     *
+                                     * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+                                     * relates the key and values.
                                      */
                                     matchExpressions?: {
                                         /**
@@ -5282,6 +5445,9 @@ export interface Agent {
                                 namespaceSelector?: {
                                     /**
                                      * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                                     *
+                                     * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+                                     * relates the key and values.
                                      */
                                     matchExpressions?: {
                                         /**
@@ -5340,6 +5506,13 @@ export interface Agent {
                          * system may or may not try to eventually evict the pod from its node.
                          * When there are multiple elements, the lists of nodes corresponding to each
                          * podAffinityTerm are intersected, i.e. all terms must be satisfied.
+                         *
+                         * Items: Defines a set of pods (namely those matching the labelSelector
+                         * relative to the given namespace(s)) that this pod should be
+                         * co-located (affinity) or not co-located (anti-affinity) with,
+                         * where co-located is defined as running on a node whose value of
+                         * the label with key <topologyKey> matches that of any node on which
+                         * a pod of the set of pods is running
                          */
                         requiredDuringSchedulingIgnoredDuringExecution?: {
                             /**
@@ -5349,6 +5522,9 @@ export interface Agent {
                             labelSelector?: {
                                 /**
                                  * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                                 *
+                                 * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+                                 * relates the key and values.
                                  */
                                 matchExpressions?: {
                                     /**
@@ -5409,6 +5585,9 @@ export interface Agent {
                             namespaceSelector?: {
                                 /**
                                  * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                                 *
+                                 * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+                                 * relates the key and values.
                                  */
                                 matchExpressions?: {
                                     /**
@@ -5468,6 +5647,8 @@ export interface Agent {
                          * compute a sum by iterating through the elements of this field and subtracting
                          * "weight" from the sum if the node has pods which matches the corresponding podAffinityTerm; the
                          * node(s) with the highest sum are the most preferred.
+                         *
+                         * Items: The weights of all of the matched WeightedPodAffinityTerm fields are added per-node to find the most preferred node(s)
                          */
                         preferredDuringSchedulingIgnoredDuringExecution?: {
                             /**
@@ -5481,6 +5662,9 @@ export interface Agent {
                                 labelSelector?: {
                                     /**
                                      * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                                     *
+                                     * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+                                     * relates the key and values.
                                      */
                                     matchExpressions?: {
                                         /**
@@ -5541,6 +5725,9 @@ export interface Agent {
                                 namespaceSelector?: {
                                     /**
                                      * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                                     *
+                                     * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+                                     * relates the key and values.
                                      */
                                     matchExpressions?: {
                                         /**
@@ -5599,6 +5786,13 @@ export interface Agent {
                          * system may or may not try to eventually evict the pod from its node.
                          * When there are multiple elements, the lists of nodes corresponding to each
                          * podAffinityTerm are intersected, i.e. all terms must be satisfied.
+                         *
+                         * Items: Defines a set of pods (namely those matching the labelSelector
+                         * relative to the given namespace(s)) that this pod should be
+                         * co-located (affinity) or not co-located (anti-affinity) with,
+                         * where co-located is defined as running on a node whose value of
+                         * the label with key <topologyKey> matches that of any node on which
+                         * a pod of the set of pods is running
                          */
                         requiredDuringSchedulingIgnoredDuringExecution?: {
                             /**
@@ -5608,6 +5802,9 @@ export interface Agent {
                             labelSelector?: {
                                 /**
                                  * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                                 *
+                                 * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+                                 * relates the key and values.
                                  */
                                 matchExpressions?: {
                                     /**
@@ -5668,6 +5865,9 @@ export interface Agent {
                             namespaceSelector?: {
                                 /**
                                  * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                                 *
+                                 * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+                                 * relates the key and values.
                                  */
                                 matchExpressions?: {
                                     /**
@@ -5722,6 +5922,8 @@ export interface Agent {
                 };
                 /**
                  * Env are additional environment variables set on the agent container.
+                 *
+                 * Items: EnvVar represents an environment variable present in a Container.
                  */
                 env?: {
                     /**
@@ -5855,6 +6057,8 @@ export interface Agent {
                 /**
                  * ExtraContainers is a list of additional containers to run alongside the main agent container.
                  * Useful for sidecars such as token proxies, log shippers, or security agents.
+                 *
+                 * Items: A single application container that you want to run within a pod.
                  */
                 extraContainers?: {
                     /**
@@ -5882,6 +6086,8 @@ export interface Agent {
                     /**
                      * List of environment variables to set in the container.
                      * Cannot be updated.
+                     *
+                     * Items: EnvVar represents an environment variable present in a Container.
                      */
                     env?: {
                         /**
@@ -6019,6 +6225,8 @@ export interface Agent {
                      * sources, the value associated with the last source will take precedence.
                      * Values defined by an Env with a duplicate key will take precedence.
                      * Cannot be updated.
+                     *
+                     * Items: EnvFromSource represents the source of a set of ConfigMaps or Secrets
                      */
                     envFrom?: {
                         /**
@@ -6112,6 +6320,8 @@ export interface Agent {
                                 host?: string;
                                 /**
                                  * Custom headers to set in the request. HTTP allows repeated headers.
+                                 *
+                                 * Items: HTTPHeader describes a custom header to be used in HTTP probes
                                  */
                                 httpHeaders?: {
                                     /**
@@ -6203,6 +6413,8 @@ export interface Agent {
                                 host?: string;
                                 /**
                                  * Custom headers to set in the request. HTTP allows repeated headers.
+                                 *
+                                 * Items: HTTPHeader describes a custom header to be used in HTTP probes
                                  */
                                 httpHeaders?: {
                                     /**
@@ -6317,6 +6529,8 @@ export interface Agent {
                             host?: string;
                             /**
                              * Custom headers to set in the request. HTTP allows repeated headers.
+                             *
+                             * Items: HTTPHeader describes a custom header to be used in HTTP probes
                              */
                             httpHeaders?: {
                                 /**
@@ -6409,6 +6623,8 @@ export interface Agent {
                      * Modifying this array with strategic merge patch may corrupt the data.
                      * For more information See https://github.com/kubernetes/kubernetes/issues/108255.
                      * Cannot be updated.
+                     *
+                     * Items: ContainerPort represents a network port in a single container.
                      */
                     ports?: {
                         /**
@@ -6491,6 +6707,8 @@ export interface Agent {
                             host?: string;
                             /**
                              * Custom headers to set in the request. HTTP allows repeated headers.
+                             *
+                             * Items: HTTPHeader describes a custom header to be used in HTTP probes
                              */
                             httpHeaders?: {
                                 /**
@@ -6572,6 +6790,8 @@ export interface Agent {
                     /**
                      * Resources resize policy for the container.
                      * This field cannot be set on ephemeral containers.
+                     *
+                     * Items: ContainerResizePolicy represents resource resize policy for the container.
                      */
                     resizePolicy?: {
                         /**
@@ -6599,6 +6819,8 @@ export interface Agent {
                          * DynamicResourceAllocation feature gate.
                          *
                          * This field is immutable. It can only be set for containers.
+                         *
+                         * Items: ResourceClaim references one entry in PodSpec.ResourceClaims.
                          */
                         claims?: {
                             /**
@@ -6661,6 +6883,8 @@ export interface Agent {
                      * - Identical rules are not forbidden in validations.
                      * When rules are specified, container MUST set RestartPolicy explicitly
                      * even it if matches the Pod's RestartPolicy.
+                     *
+                     * Items: ContainerRestartRule describes how a container exit is handled.
                      */
                     restartPolicyRules?: {
                         /**
@@ -6735,10 +6959,14 @@ export interface Agent {
                         capabilities?: {
                             /**
                              * Added capabilities
+                             *
+                             * Items: Capability represent POSIX capabilities type
                              */
                             add?: string[];
                             /**
                              * Removed capabilities
+                             *
+                             * Items: Capability represent POSIX capabilities type
                              */
                             drop?: string[];
                         };
@@ -6924,6 +7152,8 @@ export interface Agent {
                             host?: string;
                             /**
                              * Custom headers to set in the request. HTTP allows repeated headers.
+                             *
+                             * Items: HTTPHeader describes a custom header to be used in HTTP probes
                              */
                             httpHeaders?: {
                                 /**
@@ -7045,6 +7275,8 @@ export interface Agent {
                     tty?: boolean;
                     /**
                      * volumeDevices is the list of block devices to be used by the container.
+                     *
+                     * Items: volumeDevice describes a mapping of a raw block device within a container.
                      */
                     volumeDevices?: {
                         /**
@@ -7059,6 +7291,8 @@ export interface Agent {
                     /**
                      * Pod volumes to mount into the container's filesystem.
                      * Cannot be updated.
+                     *
+                     * Items: VolumeMount describes a mounting of a Volume within a container.
                      */
                     volumeMounts?: {
                         /**
@@ -7131,6 +7365,9 @@ export interface Agent {
                 /**
                  * ImagePullSecrets are references to secrets in the agent's namespace
                  * used for pulling the agent container image.
+                 *
+                 * Items: LocalObjectReference contains enough information to let you locate the
+                 * referenced object inside the same namespace.
                  */
                 imagePullSecrets?: {
                     /**
@@ -7330,6 +7567,8 @@ export interface Agent {
                      * Sysctls hold a list of namespaced sysctls used for the pod. Pods with unsupported
                      * sysctls (by the container runtime) might fail to launch.
                      * Note that this field cannot be set when spec.os.name is windows.
+                     *
+                     * Items: Sysctl defines a kernel parameter to be set
                      */
                     sysctls?: {
                         /**
@@ -7390,6 +7629,8 @@ export interface Agent {
                      * DynamicResourceAllocation feature gate.
                      *
                      * This field is immutable. It can only be set for containers.
+                     *
+                     * Items: ResourceClaim references one entry in PodSpec.ResourceClaims.
                      */
                     claims?: {
                         /**
@@ -7468,10 +7709,14 @@ export interface Agent {
                     capabilities?: {
                         /**
                          * Added capabilities
+                         *
+                         * Items: Capability represent POSIX capabilities type
                          */
                         add?: string[];
                         /**
                          * Removed capabilities
+                         *
+                         * Items: Capability represent POSIX capabilities type
                          */
                         drop?: string[];
                     };
@@ -7630,6 +7875,9 @@ export interface Agent {
                 serviceAccountName?: string;
                 /**
                  * Tolerations applied to the agent pods.
+                 *
+                 * Items: The pod this Toleration is attached to tolerates any taint that matches
+                 * the triple <key,value,effect> using the matching operator <operator>.
                  */
                 tolerations?: {
                     /**
@@ -7665,6 +7913,8 @@ export interface Agent {
                 }[];
                 /**
                  * VolumeMounts are additional volume mounts added to the agent container.
+                 *
+                 * Items: VolumeMount describes a mounting of a Volume within a container.
                  */
                 volumeMounts?: {
                     /**
@@ -7724,6 +7974,8 @@ export interface Agent {
                 }[];
                 /**
                  * Volumes are additional volumes added to the agent pod.
+                 *
+                 * Items: Volume represents a named volume in a pod that may be accessed by any container in the pod.
                  */
                 volumes?: {
                     /**
@@ -7920,6 +8172,8 @@ export interface Agent {
                          * present. If a key is specified which is not present in the ConfigMap,
                          * the volume setup will error unless it is marked optional. Paths must be
                          * relative and may not contain the '..' path or start with '..'.
+                         *
+                         * Items: Maps a string key to a path within a volume.
                          */
                         items?: {
                             /**
@@ -8018,6 +8272,8 @@ export interface Agent {
                         defaultMode?: number;
                         /**
                          * Items is a list of downward API volume file
+                         *
+                         * Items: DownwardAPIVolumeFile represents information to create the file containing the pod field
                          */
                         items?: {
                             /**
@@ -8261,6 +8517,9 @@ export interface Agent {
                                 selector?: {
                                     /**
                                      * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                                     *
+                                     * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+                                     * relates the key and values.
                                      */
                                     matchExpressions?: {
                                         /**
@@ -8711,6 +8970,9 @@ export interface Agent {
                         /**
                          * sources is the list of volume projections. Each entry in this list
                          * handles one source.
+                         *
+                         * Items: Projection that may be projected along with other supported volume types.
+                         * Exactly one of these fields must be set.
                          */
                         sources?: {
                             /**
@@ -8738,6 +9000,9 @@ export interface Agent {
                                 labelSelector?: {
                                     /**
                                      * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                                     *
+                                     * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+                                     * relates the key and values.
                                      */
                                     matchExpressions?: {
                                         /**
@@ -8802,6 +9067,8 @@ export interface Agent {
                                  * present. If a key is specified which is not present in the ConfigMap,
                                  * the volume setup will error unless it is marked optional. Paths must be
                                  * relative and may not contain the '..' path or start with '..'.
+                                 *
+                                 * Items: Maps a string key to a path within a volume.
                                  */
                                 items?: {
                                     /**
@@ -8844,6 +9111,8 @@ export interface Agent {
                             downwardAPI?: {
                                 /**
                                  * Items is a list of DownwardAPIVolume file
+                                 *
+                                 * Items: DownwardAPIVolumeFile represents information to create the file containing the pod field
                                  */
                                 items?: {
                                     /**
@@ -9023,6 +9292,8 @@ export interface Agent {
                                  * present. If a key is specified which is not present in the Secret,
                                  * the volume setup will error unless it is marked optional. Paths must be
                                  * relative and may not contain the '..' path or start with '..'.
+                                 *
+                                 * Items: Maps a string key to a path within a volume.
                                  */
                                 items?: {
                                     /**
@@ -9271,6 +9542,8 @@ export interface Agent {
                          * present. If a key is specified which is not present in the Secret,
                          * the volume setup will error unless it is marked optional. Paths must be
                          * relative and may not contain the '..' path or start with '..'.
+                         *
+                         * Items: Maps a string key to a path within a volume.
                          */
                         items?: {
                             /**
@@ -9415,6 +9688,10 @@ export interface Agent {
                  * using Go template syntax, e.g. include("alias/key") or include("name/key").
                  *
                  * @maxItems 20
+                 *
+                 * Items: PromptSource references a ConfigMap whose keys are available as prompt fragments.
+                 * In systemMessage templates, use include("alias/key") (or include("name/key") if no alias is set)
+                 * to insert the value of a specific key from this source.
                  */
                 dataSources?: [] | [
                     {
@@ -11589,6 +11866,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -11664,6 +11943,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -11738,229 +12019,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                }
-            ] | [
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -12036,6 +12096,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -12110,6 +12172,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -12184,80 +12248,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -12333,6 +12325,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -12407,6 +12401,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -12481,6 +12477,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -12555,80 +12553,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -12704,6 +12630,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -12778,6 +12706,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -12852,6 +12782,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -12926,6 +12858,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -13000,80 +12934,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -13149,6 +13011,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -13223,6 +13087,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -13297,6 +13163,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -13371,6 +13239,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -13445,6 +13315,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -13519,80 +13391,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -13668,6 +13468,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -13742,6 +13544,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -13816,6 +13620,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -13890,6 +13696,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -13964,6 +13772,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -14038,6 +13848,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -14112,747 +13924,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                }
-            ] | [
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -14928,6 +14001,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -15002,6 +14077,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -15076,6 +14153,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -15150,6 +14229,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -15224,6 +14305,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -15298,6 +14381,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -15372,6 +14457,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -15446,154 +14533,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -15669,6 +14610,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -15743,6 +14686,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -15817,6 +14762,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -15891,6 +14838,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -15965,6 +14914,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -16039,6 +14990,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -16113,6 +15066,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -16187,6 +15142,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -16261,154 +15218,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -16484,6 +15295,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -16558,6 +15371,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -16632,6 +15447,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -16706,6 +15523,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -16780,6 +15599,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -16854,6 +15675,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -16928,6 +15751,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -17002,6 +15827,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -17076,6 +15903,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -17150,154 +15979,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -17373,6 +16056,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -17447,6 +16132,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -17521,6 +16208,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -17595,6 +16284,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -17669,6 +16360,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -17743,6 +16436,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -17817,6 +16512,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -17891,6 +16588,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -17965,6 +16664,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -18039,6 +16740,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -18113,154 +16816,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -18336,6 +16893,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -18410,6 +16969,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -18484,6 +17045,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -18558,6 +17121,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -18632,6 +17197,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -18706,6 +17273,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -18780,6 +17349,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -18854,6 +17425,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -18928,6 +17501,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -19002,6 +17577,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -19076,6 +17653,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -19150,154 +17729,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -19373,6 +17806,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -19447,6 +17882,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -19521,6 +17958,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -19595,6 +18034,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -19669,6 +18110,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -19743,6 +18186,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -19817,6 +18262,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -19891,6 +18338,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -19965,6 +18414,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -20039,6 +18490,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -20113,6 +18566,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -20187,6 +18642,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -20261,154 +18718,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -20484,6 +18795,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -20558,6 +18871,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -20632,6 +18947,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -20706,6 +19023,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -20780,6 +19099,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -20854,6 +19175,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -20928,6 +19251,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -21002,6 +19327,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -21076,6 +19403,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -21150,6 +19479,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -21224,6 +19555,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -21298,6 +19631,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -21372,6 +19707,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -21446,154 +19783,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -21669,6 +19860,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -21743,6 +19936,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -21817,6 +20012,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -21891,6 +20088,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -21965,6 +20164,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -22039,6 +20240,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -22113,6 +20316,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -22187,6 +20392,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -22261,6 +20468,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -22335,6 +20544,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -22409,6 +20620,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -22483,6 +20696,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -22557,6 +20772,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -22631,6 +20848,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -22705,154 +20924,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -22928,6 +21001,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -23002,6 +21077,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -23076,6 +21153,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -23150,6 +21229,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -23224,6 +21305,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -23298,6 +21381,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -23372,6 +21457,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -23446,6 +21533,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -23520,6 +21609,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -23594,6 +21685,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -23668,6 +21761,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -23742,6 +21837,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -23816,6 +21913,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -23890,6 +21989,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -23964,6 +22065,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -24038,154 +22141,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -24261,6 +22218,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -24335,6 +22294,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -24409,6 +22370,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -24483,6 +22446,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -24557,6 +22522,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -24631,6 +22598,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -24705,6 +22674,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -24779,6 +22750,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -24853,6 +22826,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -24927,6 +22902,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -25001,6 +22978,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -25075,6 +23054,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -25149,6 +23130,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -25223,6 +23206,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -25297,6 +23282,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -25371,6 +23358,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -25445,154 +23434,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
-                     */
-                    headersFrom?: {
-                        name: string;
-                        value?: string;
-                        /**
-                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
-                         */
-                        valueFrom?: {
-                            /**
-                             * The key of the ConfigMap or Secret.
-                             */
-                            key: string;
-                            /**
-                             * The name of the ConfigMap or Secret.
-                             */
-                            name: string;
-                            type: 'ConfigMap' | 'Secret';
-                        };
-                    }[];
-                    mcpServer?: {
-                        /**
-                         * AllowedHeaders specifies which headers from the A2A request should be
-                         * propagated to MCP tool calls. Header names are case-insensitive.
-                         *
-                         * Authorization header behavior:
-                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
-                         * - When STS token propagation is enabled, STS-generated Authorization headers
-                         *   will take precedence and replace any Authorization header from the A2A request
-                         * - This is a security measure to prevent request headers from overwriting
-                         *   authentication tokens generated by the STS integration
-                         *
-                         * Example: ["x-user-email", "x-tenant-id"]
-                         */
-                        allowedHeaders?: string[];
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                        /**
-                         * RequireApproval lists tool names that require human approval before
-                         * execution. Each name must also appear in ToolNames. When a tool in
-                         * this list is invoked by the agent, execution pauses and the user is
-                         * prompted to approve or reject the call.
-                         *
-                         * @maxItems 50
-                         */
-                        requireApproval?: string[];
-                        /**
-                         * The names of the tools to be provided by the ToolServer
-                         * For a list of all the tools provided by the server,
-                         * the client can query the status of the ToolServer object after it has been created
-                         *
-                         * @maxItems 50
-                         */
-                        toolNames?: string[];
-                    };
-                    /**
-                     * ToolProviderType represents the tool provider type
-                     */
-                    type?: 'McpServer' | 'Agent';
-                },
-                {
-                    agent?: {
-                        apiGroup?: string;
-                        kind?: string;
-                        name: string;
-                        namespace?: string;
-                    };
-                    /**
-                     * HeadersFrom specifies a list of configuration values to be added as
-                     * headers to requests sent to the Tool from this agent. The value of
-                     * each header is resolved from either a Secret or ConfigMap in the same
-                     * namespace as the Agent. Headers specified here will override any
-                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -25668,6 +23511,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -25742,6 +23587,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -25816,6 +23663,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -25890,6 +23739,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -25964,6 +23815,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -26038,6 +23891,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -26112,6 +23967,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -26186,6 +24043,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -26260,6 +24119,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -26334,6 +24195,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -26408,6 +24271,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -26482,6 +24347,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -26556,6 +24423,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -26630,6 +24499,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -26704,6 +24575,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -26778,6 +24651,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -26852,6 +24727,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -26926,6 +24803,85 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                }
+            ] | [
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -27000,6 +24956,8 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -27074,6 +25032,2745 @@ export interface Agent {
                      * each header is resolved from either a Secret or ConfigMap in the same
                      * namespace as the Agent. Headers specified here will override any
                      * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                }
+            ] | [
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
+                     */
+                    headersFrom?: {
+                        name: string;
+                        value?: string;
+                        /**
+                         * ValueSource defines a source for configuration values from a Secret or ConfigMap
+                         */
+                        valueFrom?: {
+                            /**
+                             * The key of the ConfigMap or Secret.
+                             */
+                            key: string;
+                            /**
+                             * The name of the ConfigMap or Secret.
+                             */
+                            name: string;
+                            type: 'ConfigMap' | 'Secret';
+                        };
+                    }[];
+                    mcpServer?: {
+                        /**
+                         * AllowedHeaders specifies which headers from the A2A request should be
+                         * propagated to MCP tool calls. Header names are case-insensitive.
+                         *
+                         * Authorization header behavior:
+                         * - Authorization headers CAN be propagated if explicitly listed in allowedHeaders
+                         * - When STS token propagation is enabled, STS-generated Authorization headers
+                         *   will take precedence and replace any Authorization header from the A2A request
+                         * - This is a security measure to prevent request headers from overwriting
+                         *   authentication tokens generated by the STS integration
+                         *
+                         * Example: ["x-user-email", "x-tenant-id"]
+                         */
+                        allowedHeaders?: string[];
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                        /**
+                         * RequireApproval lists tool names that require human approval before
+                         * execution. Each name must also appear in ToolNames. When a tool in
+                         * this list is invoked by the agent, execution pauses and the user is
+                         * prompted to approve or reject the call.
+                         *
+                         * @maxItems 50
+                         */
+                        requireApproval?: string[];
+                        /**
+                         * The names of the tools to be provided by the ToolServer
+                         * For a list of all the tools provided by the server,
+                         * the client can query the status of the ToolServer object after it has been created
+                         *
+                         * @maxItems 50
+                         */
+                        toolNames?: string[];
+                    };
+                    /**
+                     * ToolProviderType represents the tool provider type
+                     */
+                    type?: 'McpServer' | 'Agent';
+                },
+                {
+                    agent?: {
+                        apiGroup?: string;
+                        kind?: string;
+                        name: string;
+                        namespace?: string;
+                    };
+                    /**
+                     * HeadersFrom specifies a list of configuration values to be added as
+                     * headers to requests sent to the Tool from this agent. The value of
+                     * each header is resolved from either a Secret or ConfigMap in the same
+                     * namespace as the Agent. Headers specified here will override any
+                     * headers of the same name/key specified on the tool.
+                     *
+                     * Items: ValueRef represents a configuration value
                      */
                     headersFrom?: {
                         name: string;
@@ -27182,6 +27879,8 @@ export interface Agent {
              *
              * @minItems 1
              * @maxItems 20
+             *
+             * Items: GitRepo specifies a single Git repository to fetch skills from.
              */
             gitRefs?: [
                 {
@@ -31832,6 +32531,9 @@ export interface Agent {
              * use them automatically when pulling images.
              *
              * @maxItems 20
+             *
+             * Items: LocalObjectReference contains enough information to let you locate the
+             * referenced object inside the same namespace.
              */
             imagePullSecrets?: [] | [
                 {
@@ -33960,6 +34662,8 @@ export interface Agent {
             initContainer?: {
                 /**
                  * Additional environment variables for the skills-init init container.
+                 *
+                 * Items: EnvVar represents an environment variable present in a Container.
                  */
                 env?: {
                     /**
@@ -34102,6 +34806,8 @@ export interface Agent {
                      * DynamicResourceAllocation feature gate.
                      *
                      * This field is immutable. It can only be set for containers.
+                     *
+                     * Items: ResourceClaim references one entry in PodSpec.ResourceClaims.
                      */
                     claims?: {
                         /**
@@ -34283,6 +34989,9 @@ export interface Agent {
      * AgentStatus defines the observed state of Agent.
      */
     status?: {
+        /**
+         * Items: Condition contains details for one aspect of the current state of this API Resource.
+         */
         conditions?: {
             /**
              * lastTransitionTime is the last time the condition transitioned from one status to another.

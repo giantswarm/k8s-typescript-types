@@ -162,6 +162,9 @@ export interface OCIRepository {
        * while verifying an OCI artifact which was signed using Cosign keyless
        * signing. The artifact's identity is deemed to be verified if any of the
        * specified matchers match against the identity.
+       *
+       * Items: OIDCIdentityMatch specifies options for verifying the certificate identity,
+       * i.e. the issuer and the subject of the certificate.
        */
       matchOIDCIdentity?: {
         /**
@@ -252,6 +255,8 @@ export interface OCIRepository {
     };
     /**
      * Conditions holds the conditions for the OCIRepository.
+     *
+     * Items: Condition contains details for one aspect of the current state of this API Resource.
      */
     conditions?: {
       /**

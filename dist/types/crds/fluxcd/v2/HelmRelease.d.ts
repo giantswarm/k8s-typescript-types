@@ -182,6 +182,9 @@ export interface HelmRelease {
          * DependsOn may contain a DependencyReference slice with
          * references to HelmRelease resources that must be ready before this HelmRelease
          * can be reconciled.
+         *
+         * Items: DependencyReference contains enough information to locate the referenced Kubernetes resource object
+         * and optional CEL expression to assess its readiness.
          */
         dependsOn?: {
             /**
@@ -211,6 +214,9 @@ export interface HelmRelease {
             /**
              * Ignore contains a list of rules for specifying which changes to ignore
              * during diffing.
+             *
+             * Items: IgnoreRule defines a rule to selectively disregard specific changes during
+             * the drift detection process.
              */
             ignore?: {
                 /**
@@ -279,6 +285,8 @@ export interface HelmRelease {
          * The expressions are evaluated only when the specific Helm action
          * taking place has wait enabled, i.e. DisableWait is false, and the
          * 'poller' WaitStrategy is used.
+         *
+         * Items: CustomHealthCheck defines the health check for custom resources.
          */
         healthCheckExprs?: {
             /**
@@ -529,6 +537,8 @@ export interface HelmRelease {
         /**
          * PostRenderers holds an array of Helm PostRenderers, which will be applied in order
          * of their definition.
+         *
+         * Items: PostRenderer contains a Helm PostRenderer specification.
          */
         postRenderers?: {
             /**
@@ -539,6 +549,8 @@ export interface HelmRelease {
                  * Images is a list of (image name, new name, new tag or digest)
                  * for changing image names, tags or digests. This can also be achieved with a
                  * patch, but this operator is simpler to specify.
+                 *
+                 * Items: Image contains an image name, a new name, a new tag or digest, which will replace the original name and tag.
                  */
                 images?: {
                     /**
@@ -562,6 +574,9 @@ export interface HelmRelease {
                 /**
                  * Strategic merge and JSON patches, defined as inline YAML objects,
                  * capable of targeting objects based on kind, label and annotation selectors.
+                 *
+                 * Items: Patch contains an inline StrategicMerge or JSON6902 patch, and the target the patch should
+                 * be applied to.
                  */
                 patches?: {
                     /**
@@ -708,6 +723,8 @@ export interface HelmRelease {
             enable?: boolean;
             /**
              * Filters is a list of tests to run or exclude from running.
+             *
+             * Items: Filter holds the configuration for individual Helm test filters.
              */
             filters?: {
                 /**
@@ -911,6 +928,9 @@ export interface HelmRelease {
         /**
          * ValuesFrom holds references to resources containing Helm values for this HelmRelease,
          * and information about how they should be merged.
+         *
+         * Items: ValuesReference contains a reference to a resource containing Helm values,
+         * and optionally the key they can be found at.
          */
         valuesFrom?: {
             /**
@@ -973,6 +993,8 @@ export interface HelmRelease {
     status?: {
         /**
          * Conditions holds the conditions for the HelmRelease.
+         *
+         * Items: Condition contains details for one aspect of the current state of this API Resource.
          */
         conditions?: {
             /**
@@ -1021,6 +1043,9 @@ export interface HelmRelease {
         /**
          * History holds the history of Helm releases performed for this HelmRelease
          * up to the last successfully completed release.
+         *
+         * Items: Snapshot captures a point-in-time copy of the status information for a Helm release,
+         * as managed by the controller.
          */
         history?: {
             /**
@@ -1126,6 +1151,8 @@ export interface HelmRelease {
         inventory?: {
             /**
              * Entries of Kubernetes resource object references.
+             *
+             * Items: ResourceRef contains the information necessary to locate a resource within a cluster.
              */
             entries: {
                 /**

@@ -182,6 +182,9 @@ export interface MachineDeployment {
         selector: {
             /**
              * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+             *
+             * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+             * relates the key and values.
              */
             matchExpressions?: {
                 /**
@@ -368,6 +371,8 @@ export interface MachineDeployment {
                  *
                  * @minItems 1
                  * @maxItems 32
+                 *
+                 * Items: MachineReadinessGate contains the type of a Machine condition to be used as a readiness gate.
                  */
                 readinessGates?: [
                     {
@@ -416,6 +421,8 @@ export interface MachineDeployment {
                  *
                  * @minItems 1
                  * @maxItems 64
+                 *
+                 * Items: MachineTaint defines a taint equivalent to corev1.Taint, but additionally having a propagation field.
                  */
                 taints?: [
                     {
@@ -490,6 +497,8 @@ export interface MachineDeployment {
          * Known condition types are Available, MachinesReady, MachinesUpToDate, ScalingUp, ScalingDown, Remediating, Deleting, Paused.
          *
          * @maxItems 32
+         *
+         * Items: Condition contains details for one aspect of the current state of this API Resource.
          */
         conditions?: {
             /**
@@ -544,6 +553,10 @@ export interface MachineDeployment {
                  * conditions defines current service state of the MachineDeployment.
                  *
                  * Deprecated: This field is deprecated and is going to be removed when support for v1beta1 will be dropped. Please see https://github.com/kubernetes-sigs/cluster-api/blob/main/docs/proposals/20240916-improve-status-in-CAPI-resources.md for more details.
+                 *
+                 * Items: Condition defines an observation of a Cluster API resource operational state.
+                 *
+                 * Deprecated: This type is deprecated and is going to be removed when support for v1beta1 will be dropped. Please see https://github.com/kubernetes-sigs/cluster-api/blob/main/docs/proposals/20240916-improve-status-in-CAPI-resources.md for more details.
                  */
                 conditions?: {
                     /**

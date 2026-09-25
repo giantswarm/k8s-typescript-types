@@ -38,6 +38,8 @@ export interface Agent {
     a2aConfig?: {
       /**
        * @minItems 1
+       *
+       * Items: AgentSkill describes a specific capability or function of the agent.
        */
       skills?: [
         {
@@ -106,6 +108,9 @@ export interface Agent {
       annotations?: {
         [k: string]: string;
       };
+      /**
+       * Items: EnvVar represents an environment variable present in a Container.
+       */
       env?: {
         /**
          * Name of the environment variable.
@@ -235,6 +240,10 @@ export interface Agent {
           };
         };
       }[];
+      /**
+       * Items: LocalObjectReference contains enough information to let you locate the
+       * referenced object inside the same namespace.
+       */
       imagePullSecrets?: {
         /**
          * Name of the referent.
@@ -252,6 +261,9 @@ export interface Agent {
        * If not specified, the default value is 1.
        */
       replicas?: number;
+      /**
+       * Items: Volume represents a named volume in a pod that may be accessed by any container in the pod.
+       */
       volumes?: {
         /**
          * awsElasticBlockStore represents an AWS Disk resource that is attached to a
@@ -447,6 +459,8 @@ export interface Agent {
            * present. If a key is specified which is not present in the ConfigMap,
            * the volume setup will error unless it is marked optional. Paths must be
            * relative and may not contain the '..' path or start with '..'.
+           *
+           * Items: Maps a string key to a path within a volume.
            */
           items?: {
             /**
@@ -545,6 +559,8 @@ export interface Agent {
           defaultMode?: number;
           /**
            * Items is a list of downward API volume file
+           *
+           * Items: DownwardAPIVolumeFile represents information to create the file containing the pod field
            */
           items?: {
             /**
@@ -788,6 +804,9 @@ export interface Agent {
               selector?: {
                 /**
                  * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                 *
+                 * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+                 * relates the key and values.
                  */
                 matchExpressions?: {
                   /**
@@ -1238,6 +1257,9 @@ export interface Agent {
           /**
            * sources is the list of volume projections. Each entry in this list
            * handles one source.
+           *
+           * Items: Projection that may be projected along with other supported volume types.
+           * Exactly one of these fields must be set.
            */
           sources?: {
             /**
@@ -1265,6 +1287,9 @@ export interface Agent {
               labelSelector?: {
                 /**
                  * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                 *
+                 * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+                 * relates the key and values.
                  */
                 matchExpressions?: {
                   /**
@@ -1329,6 +1354,8 @@ export interface Agent {
                * present. If a key is specified which is not present in the ConfigMap,
                * the volume setup will error unless it is marked optional. Paths must be
                * relative and may not contain the '..' path or start with '..'.
+               *
+               * Items: Maps a string key to a path within a volume.
                */
               items?: {
                 /**
@@ -1371,6 +1398,8 @@ export interface Agent {
             downwardAPI?: {
               /**
                * Items is a list of DownwardAPIVolume file
+               *
+               * Items: DownwardAPIVolumeFile represents information to create the file containing the pod field
                */
               items?: {
                 /**
@@ -1550,6 +1579,8 @@ export interface Agent {
                * present. If a key is specified which is not present in the Secret,
                * the volume setup will error unless it is marked optional. Paths must be
                * relative and may not contain the '..' path or start with '..'.
+               *
+               * Items: Maps a string key to a path within a volume.
                */
               items?: {
                 /**
@@ -1798,6 +1829,8 @@ export interface Agent {
            * present. If a key is specified which is not present in the Secret,
            * the volume setup will error unless it is marked optional. Paths must be
            * relative and may not contain the '..' path or start with '..'.
+           *
+           * Items: Maps a string key to a path within a volume.
            */
           items?: {
             /**
@@ -7218,6 +7251,9 @@ export interface Agent {
    * AgentStatus defines the observed state of Agent.
    */
   status?: {
+    /**
+     * Items: Condition contains details for one aspect of the current state of this API Resource.
+     */
     conditions?: {
       /**
        * lastTransitionTime is the last time the condition transitioned from one status to another.

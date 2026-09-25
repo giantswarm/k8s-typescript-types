@@ -50,6 +50,9 @@ export interface AzureClusterIdentity {
             selector?: {
                 /**
                  * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                 *
+                 * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+                 * relates the key and values.
                  */
                 matchExpressions?: {
                     /**
@@ -136,6 +139,8 @@ export interface AzureClusterIdentity {
     status?: {
         /**
          * Conditions defines current service state of the AzureClusterIdentity.
+         *
+         * Items: Condition defines an observation of a Cluster API resource operational state.
          */
         conditions?: {
             /**

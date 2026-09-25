@@ -63,6 +63,8 @@ export interface KubeadmControlPlane {
            *
            * @minItems 1
            * @maxItems 100
+           *
+           * Items: Arg represents an argument with a name and a value.
            */
           extraArgs?: [
             {
@@ -93,6 +95,8 @@ export interface KubeadmControlPlane {
            *
            * @minItems 1
            * @maxItems 100
+           *
+           * Items: EnvVar represents an environment variable present in a Container.
            */
           extraEnvs?: [
             {
@@ -359,6 +363,9 @@ export interface KubeadmControlPlane {
            *
            * @minItems 1
            * @maxItems 100
+           *
+           * Items: HostPathMount contains elements describing volumes that are mounted from the
+           * host.
            */
           extraVolumes?: [
             {
@@ -452,6 +459,8 @@ export interface KubeadmControlPlane {
            *
            * @minItems 1
            * @maxItems 100
+           *
+           * Items: Arg represents an argument with a name and a value.
            */
           extraArgs?: [
             {
@@ -482,6 +491,8 @@ export interface KubeadmControlPlane {
            *
            * @minItems 1
            * @maxItems 100
+           *
+           * Items: EnvVar represents an environment variable present in a Container.
            */
           extraEnvs?: [
             {
@@ -748,6 +759,9 @@ export interface KubeadmControlPlane {
            *
            * @minItems 1
            * @maxItems 100
+           *
+           * Items: HostPathMount contains elements describing volumes that are mounted from the
+           * host.
            */
           extraVolumes?: [
             {
@@ -873,6 +887,8 @@ export interface KubeadmControlPlane {
              *
              * @minItems 1
              * @maxItems 100
+             *
+             * Items: Arg represents an argument with a name and a value.
              */
             extraArgs?: [
               {
@@ -903,6 +919,8 @@ export interface KubeadmControlPlane {
              *
              * @minItems 1
              * @maxItems 100
+             *
+             * Items: EnvVar represents an environment variable present in a Container.
              */
             extraEnvs?: [
               {
@@ -1212,6 +1230,8 @@ export interface KubeadmControlPlane {
            *
            * @minItems 1
            * @maxItems 100
+           *
+           * Items: Arg represents an argument with a name and a value.
            */
           extraArgs?: [
             {
@@ -1242,6 +1262,8 @@ export interface KubeadmControlPlane {
            *
            * @minItems 1
            * @maxItems 100
+           *
+           * Items: EnvVar represents an environment variable present in a Container.
            */
           extraEnvs?: [
             {
@@ -1508,6 +1530,9 @@ export interface KubeadmControlPlane {
            *
            * @minItems 1
            * @maxItems 100
+           *
+           * Items: HostPathMount contains elements describing volumes that are mounted from the
+           * host.
            */
           extraVolumes?: [
             {
@@ -1567,6 +1592,8 @@ export interface KubeadmControlPlane {
          * filesystems specifies the list of file systems to setup.
          *
          * @maxItems 100
+         *
+         * Items: Filesystem defines the file systems to be created.
          */
         filesystems?: {
           /**
@@ -1606,6 +1633,8 @@ export interface KubeadmControlPlane {
          * partitions specifies the list of the partitions to setup.
          *
          * @maxItems 100
+         *
+         * Items: Partition defines how to create and layout a partition.
          */
         partitions?: {
           /**
@@ -1620,6 +1649,8 @@ export interface KubeadmControlPlane {
            *
            * @minItems 1
            * @maxItems 100
+           *
+           * Items: PartitionSpec defines the size and optional type for a partition.
            */
           diskLayout?: [
             {
@@ -1674,6 +1705,8 @@ export interface KubeadmControlPlane {
        *
        * @minItems 1
        * @maxItems 200
+       *
+       * Items: File defines the input for generating write_files in cloud-init.
        */
       files?: [
         {
@@ -1801,6 +1834,8 @@ export interface KubeadmControlPlane {
          *
          * @minItems 1
          * @maxItems 100
+         *
+         * Items: BootstrapToken describes one bootstrap token, stored as a Secret in the cluster.
          */
         bootstrapTokens?: [
           {
@@ -1937,6 +1972,8 @@ export interface KubeadmControlPlane {
            *
            * @minItems 1
            * @maxItems 100
+           *
+           * Items: Arg represents an argument with a name and a value.
            */
           kubeletExtraArgs?: [
             {
@@ -1973,6 +2010,9 @@ export interface KubeadmControlPlane {
            *
            * @minItems 0
            * @maxItems 100
+           *
+           * Items: The node this Taint is attached to has the "effect" on
+           * any pod that does not tolerate the Taint.
            */
           taints?: {
             /**
@@ -2236,6 +2276,9 @@ export interface KubeadmControlPlane {
                    *
                    * @minItems 1
                    * @maxItems 100
+                   *
+                   * Items: KubeConfigAuthExecEnv is used for setting environment variables when executing an exec-based
+                   * credential plugin.
                    */
                   env?: [
                     {
@@ -2320,6 +2363,8 @@ export interface KubeadmControlPlane {
            *
            * @minItems 1
            * @maxItems 100
+           *
+           * Items: Arg represents an argument with a name and a value.
            */
           kubeletExtraArgs?: [
             {
@@ -2356,6 +2401,9 @@ export interface KubeadmControlPlane {
            *
            * @minItems 0
            * @maxItems 100
+           *
+           * Items: The node this Taint is attached to has the "effect" on
+           * any pod that does not tolerate the Taint.
            */
           taints?: {
             /**
@@ -2493,6 +2541,8 @@ export interface KubeadmControlPlane {
        *
        * @minItems 1
        * @maxItems 100
+       *
+       * Items: User defines the input for a generated user in cloud-init.
        */
       users?: [
         {
@@ -2743,6 +2793,8 @@ export interface KubeadmControlPlane {
          *
          * @minItems 1
          * @maxItems 32
+         *
+         * Items: MachineReadinessGate contains the type of a Machine condition to be used as a readiness gate.
          */
         readinessGates?: [
           {
@@ -2791,6 +2843,8 @@ export interface KubeadmControlPlane {
          *
          * @minItems 1
          * @maxItems 64
+         *
+         * Items: MachineTaint defines a taint equivalent to corev1.Taint, but additionally having a propagation field.
          */
         taints?: [
           {
@@ -2971,6 +3025,8 @@ export interface KubeadmControlPlane {
      * ScalingUp, ScalingDown, Remediating, Deleting, Paused.
      *
      * @maxItems 32
+     *
+     * Items: Condition contains details for one aspect of the current state of this API Resource.
      */
     conditions?: {
       /**
@@ -3018,6 +3074,10 @@ export interface KubeadmControlPlane {
          * conditions defines current service state of the KubeadmControlPlane.
          *
          * Deprecated: This field is deprecated and is going to be removed when support for v1beta1 will be dropped. Please see https://github.com/kubernetes-sigs/cluster-api/blob/main/docs/proposals/20240916-improve-status-in-CAPI-resources.md for more details.
+         *
+         * Items: Condition defines an observation of a Cluster API resource operational state.
+         *
+         * Deprecated: This type is deprecated and is going to be removed when support for v1beta1 will be dropped. Please see https://github.com/kubernetes-sigs/cluster-api/blob/main/docs/proposals/20240916-improve-status-in-CAPI-resources.md for more details.
          */
         conditions?: {
           /**

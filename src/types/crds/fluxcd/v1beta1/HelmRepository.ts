@@ -34,6 +34,9 @@ export interface HelmRepository {
       /**
        * NamespaceSelectors is the list of namespace selectors to which this ACL applies.
        * Items in this list are evaluated using a logical OR operation.
+       *
+       * Items: NamespaceSelector selects the namespaces to which this ACL applies.
+       * An empty map of MatchLabels matches all namespaces in a cluster.
        */
       namespaceSelectors: {
         /**
@@ -120,6 +123,8 @@ export interface HelmRepository {
     };
     /**
      * Conditions holds the conditions for the HelmRepository.
+     *
+     * Items: Condition contains details for one aspect of the current state of this API Resource.
      */
     conditions?: {
       /**

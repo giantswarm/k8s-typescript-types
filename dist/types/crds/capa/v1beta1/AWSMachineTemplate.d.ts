@@ -63,6 +63,10 @@ export interface AWSMachineTemplate {
                  * instance. These security groups would be set in addition to any security groups defined
                  * at the cluster level or in the actuator. It is possible to specify either IDs of Filters. Using Filters
                  * will cause additional requests to AWS API and if tags change the attached security groups might change too.
+                 *
+                 * Items: AWSResourceReference is a reference to a specific AWS resource by ID or filters.
+                 * Only one of ID or Filters may be specified. Specifying more than one will result in
+                 * a validation error.
                  */
                 additionalSecurityGroups?: {
                     /**
@@ -75,6 +79,8 @@ export interface AWSMachineTemplate {
                      * Filters is a set of key/value pairs used to identify a resource
                      * They are applied according to the rules defined by the AWS API:
                      * https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Using_Filtering.html
+                     *
+                     * Items: Filter is a filter used to identify an AWS resource.
                      */
                     filters?: {
                         /**
@@ -200,6 +206,8 @@ export interface AWSMachineTemplate {
                 networkInterfaces?: [] | [string] | [string, string];
                 /**
                  * Configuration options for the non root storage volumes.
+                 *
+                 * Items: Volume encapsulates the configuration options for the storage device.
                  */
                 nonRootVolumes?: {
                     /**
@@ -310,6 +318,8 @@ export interface AWSMachineTemplate {
                      * Filters is a set of key/value pairs used to identify a resource
                      * They are applied according to the rules defined by the AWS API:
                      * https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Using_Filtering.html
+                     *
+                     * Items: Filter is a filter used to identify an AWS resource.
                      */
                     filters?: {
                         /**

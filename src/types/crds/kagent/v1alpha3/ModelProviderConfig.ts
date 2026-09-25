@@ -64,6 +64,8 @@ export interface ModelProviderConfig {
   status?: {
     /**
      * Conditions represent the latest available observations of the ModelProviderConfig's state
+     *
+     * Items: Condition contains details for one aspect of the current state of this API Resource.
      */
     conditions?: {
       /**

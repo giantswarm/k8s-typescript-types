@@ -120,6 +120,9 @@ export interface MachineDeployment {
     selector: {
       /**
        * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+       *
+       * Items: A label selector requirement is a selector that contains values, a key, and an operator that
+       * relates the key and values.
        */
       matchExpressions?: {
         /**
@@ -417,6 +420,8 @@ export interface MachineDeployment {
          * This helps to improve readability of conditions bubbling up to the Machine's owner resource / to the Cluster).
          *
          * @maxItems 32
+         *
+         * Items: MachineReadinessGate contains the type of a Machine condition to be used as a readiness gate.
          */
         readinessGates?: {
           /**
@@ -447,6 +452,8 @@ export interface MachineDeployment {
          *
          * @minItems 1
          * @maxItems 64
+         *
+         * Items: MachineTaint defines a taint equivalent to corev1.Taint, but additionally having a propagation field.
          */
         taints?: [
           {
@@ -519,6 +526,8 @@ export interface MachineDeployment {
     availableReplicas?: number;
     /**
      * conditions defines current service state of the MachineDeployment.
+     *
+     * Items: Condition defines an observation of a Cluster API resource operational state.
      */
     conditions?: {
       /**
@@ -606,6 +615,8 @@ export interface MachineDeployment {
        * Known condition types are Available, MachinesReady, MachinesUpToDate, ScalingUp, ScalingDown, Remediating, Deleting, Paused.
        *
        * @maxItems 32
+       *
+       * Items: Condition contains details for one aspect of the current state of this API Resource.
        */
       conditions?: {
         /**

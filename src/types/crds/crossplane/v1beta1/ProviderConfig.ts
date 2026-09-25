@@ -29,6 +29,9 @@ export interface ProviderConfig {
   spec?: {
     /**
      * AssumeRoleChain defines the options for assuming an IAM role
+     *
+     * Items: AssumeRoleOptions define the options for assuming an IAM Role
+     * Fields are similar to the STS AssumeRoleOptions in the AWS SDK
      */
     assumeRoleChain?: {
       /**
@@ -44,6 +47,8 @@ export interface ProviderConfig {
        * name and an associated value. For more information about session tags, see
        * Tagging STS Sessions
        * (https://docs.aws.amazon.com/IAM/latest/UserGuide/id_session-tags.html).
+       *
+       * Items: Tag is session tag that can be used to assume an IAM Role
        */
       tags?: {
         /**
@@ -375,6 +380,8 @@ export interface ProviderConfig {
   status?: {
     /**
      * Conditions of the resource.
+     *
+     * Items: A Condition that may apply to a resource.
      */
     conditions?: {
       /**

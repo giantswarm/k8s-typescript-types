@@ -108,7 +108,7 @@ export interface Release {
          * this release ends. This may not be set at the time of release creation
          * and can be specified later.
          */
-        endOfLifeDate?: string;
+        endOfLifeDate?: string | null;
         /**
          * Notice outlines anything worth being aware of in this release.
          */

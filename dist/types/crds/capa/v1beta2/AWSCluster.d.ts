@@ -85,6 +85,9 @@ export interface AWSCluster {
             /**
              * AdditionalListeners sets the additional listeners for the control plane load balancer.
              * This is only applicable to Network Load Balancer (NLB) types for the time being.
+             *
+             * Items: AdditionalListenerSpec defines the desired state of an
+             * additional listener on an AWS load balancer.
              */
             additionalListeners?: {
                 /**
@@ -203,6 +206,8 @@ export interface AWSCluster {
             healthCheckProtocol?: 'TCP' | 'SSL' | 'HTTP' | 'HTTPS' | 'TLS' | 'UDP';
             /**
              * IngressRules sets the ingress rules for the control plane load balancer.
+             *
+             * Items: IngressRule defines an AWS ingress rule for security groups.
              */
             ingressRules?: {
                 /**
@@ -236,6 +241,8 @@ export interface AWSCluster {
                 /**
                  * The security group role to allow access from. Cannot be specified with CidrBlocks.
                  * The field will be combined with source security group IDs if specified.
+                 *
+                 * Items: SecurityGroupRole defines the unique role of a security group.
                  */
                 sourceSecurityGroupRoles?: ('bastion' | 'node' | 'controlplane' | 'apiserver-lb' | 'lb' | 'node-eks-additional')[];
                 /**
@@ -324,6 +331,8 @@ export interface AWSCluster {
         network?: {
             /**
              * AdditionalControlPlaneIngressRules is an optional set of ingress rules to add to the control plane
+             *
+             * Items: IngressRule defines an AWS ingress rule for security groups.
              */
             additionalControlPlaneIngressRules?: {
                 /**
@@ -357,6 +366,8 @@ export interface AWSCluster {
                 /**
                  * The security group role to allow access from. Cannot be specified with CidrBlocks.
                  * The field will be combined with source security group IDs if specified.
+                 *
+                 * Items: SecurityGroupRole defines the unique role of a security group.
                  */
                 sourceSecurityGroupRoles?: ('bastion' | 'node' | 'controlplane' | 'apiserver-lb' | 'lb' | 'node-eks-additional')[];
                 /**
@@ -366,6 +377,8 @@ export interface AWSCluster {
             }[];
             /**
              * AdditionalNodeIngressRules is an optional set of ingress rules to add to every node
+             *
+             * Items: IngressRule defines an AWS ingress rule for security groups.
              */
             additionalNodeIngressRules?: {
                 /**
@@ -399,6 +412,8 @@ export interface AWSCluster {
                 /**
                  * The security group role to allow access from. Cannot be specified with CidrBlocks.
                  * The field will be combined with source security group IDs if specified.
+                 *
+                 * Items: SecurityGroupRole defines the unique role of a security group.
                  */
                 sourceSecurityGroupRoles?: ('bastion' | 'node' | 'controlplane' | 'apiserver-lb' | 'lb' | 'node-eks-additional')[];
                 /**
@@ -413,6 +428,8 @@ export interface AWSCluster {
                 /**
                  * CNIIngressRules specify rules to apply to control plane and worker node security groups.
                  * The source for the rule will be set to control plane and worker security group IDs.
+                 *
+                 * Items: CNIIngressRule defines an AWS ingress rule for CNI requirements.
                  */
                 cniIngressRules?: {
                     description: string;
@@ -438,6 +455,8 @@ export interface AWSCluster {
             };
             /**
              * Subnets configuration.
+             *
+             * Items: SubnetSpec configures an AWS Subnet.
              */
             subnets?: {
                 /**
@@ -671,6 +690,8 @@ export interface AWSCluster {
                  * SecondaryCidrBlocks are additional CIDR blocks to be associated when the provider creates a managed VPC.
                  * Defaults to none. Mutually exclusive with IPAMPool. This makes sense to use if, for example, you want to use
                  * a separate IP range for pods (e.g. Cilium ENI mode).
+                 *
+                 * Items: VpcCidrBlock defines the CIDR block and settings to associate with the managed VPC. Currently, only IPv4 is supported.
                  */
                 secondaryCidrBlocks?: {
                     /**
@@ -710,6 +731,30 @@ export interface AWSCluster {
          */
         s3Bucket?: {
             /**
+             * AdditionalIAMRoles is a list of additional IAM roles
+             * with custom S3 prefixes for accessing bootstrap data.
+             * This is useful for custom node pools (e.g., Karpenter) that need access
+             * to bootstrap data stored under custom prefixes.
+             *
+             * Items: AdditionalIAMRole defines an additional IAM role
+             * with a custom S3 prefix for accessing bootstrap data from S3 Bucket.
+             * This enables support for custom node pools (e.g., Karpenter) that need
+             * access to bootstrap data with custom S3 prefixes.
+             */
+            additionalIAMRoles?: {
+                /**
+                 * Name is the name of the IAM role that will be granted access.
+                 * This must match the IAM role name (not the ARN).
+                 */
+                name: string;
+                /**
+                 * Prefix is the S3 object key prefix (path) this role is granted access to.
+                 * It is appended to the bucket in the policy's resource ARN, so use a trailing "/*"
+                 * for wildcard access to a path (e.g. "karpenter-nodes/*") or "*" for the whole bucket.
+                 */
+                prefix: string;
+            }[];
+            /**
              * BestEffortDeleteObjects defines whether access/permission errors during object deletion should be ignored.
              */
             bestEffortDeleteObjects?: boolean;
@@ -747,6 +792,9 @@ export interface AWSCluster {
             /**
              * AdditionalListeners sets the additional listeners for the control plane load balancer.
              * This is only applicable to Network Load Balancer (NLB) types for the time being.
+             *
+             * Items: AdditionalListenerSpec defines the desired state of an
+             * additional listener on an AWS load balancer.
              */
             additionalListeners?: {
                 /**
@@ -865,6 +913,8 @@ export interface AWSCluster {
             healthCheckProtocol?: 'TCP' | 'SSL' | 'HTTP' | 'HTTPS' | 'TLS' | 'UDP';
             /**
              * IngressRules sets the ingress rules for the control plane load balancer.
+             *
+             * Items: IngressRule defines an AWS ingress rule for security groups.
              */
             ingressRules?: {
                 /**
@@ -898,6 +948,8 @@ export interface AWSCluster {
                 /**
                  * The security group role to allow access from. Cannot be specified with CidrBlocks.
                  * The field will be combined with source security group IDs if specified.
+                 *
+                 * Items: SecurityGroupRole defines the unique role of a security group.
                  */
                 sourceSecurityGroupRoles?: ('bastion' | 'node' | 'controlplane' | 'apiserver-lb' | 'lb' | 'node-eks-additional')[];
                 /**
@@ -953,6 +1005,8 @@ export interface AWSCluster {
         bastion?: {
             /**
              * Addresses contains the AWS instance associated addresses.
+             *
+             * Items: MachineAddress contains information for the node's address.
              */
             addresses?: {
                 /**
@@ -982,7 +1036,7 @@ export interface AWSCluster {
              * "None": The instance may not make use of any Capacity Reservations. This is to conserve open reservations for desired workloads
              * "CapacityReservationsOnly": The instance will only run if matched or targeted to a Capacity Reservation. Note that this is incompatible with a MarketType of `Spot`
              */
-            capacityReservationPreference?: ('' | 'None' | 'CapacityReservationsOnly' | 'Open') & string;
+            capacityReservationPreference?: '' | 'None' | 'CapacityReservationsOnly' | 'Open';
             /**
              * CPUOptions defines CPU-related settings for the instance, including the confidential computing policy.
              * When omitted, this means no opinion and the AWS platform is left to choose a reasonable default.
@@ -1133,6 +1187,8 @@ export interface AWSCluster {
             networkInterfaces?: string[];
             /**
              * Configuration options for the non root storage volumes.
+             *
+             * Items: Volume encapsulates the configuration options for the storage device.
              */
             nonRootVolumes?: {
                 /**
@@ -1289,6 +1345,8 @@ export interface AWSCluster {
         };
         /**
          * Conditions provide observations of the operational state of a Cluster API resource.
+         *
+         * Items: Condition defines an observation of a Cluster API resource operational state.
          */
         conditions?: {
             /**
@@ -1389,6 +1447,8 @@ export interface AWSCluster {
                 };
                 /**
                  * ELBListeners is an array of listeners associated with the load balancer. There must be at least one.
+                 *
+                 * Items: Listener defines an AWS network load balancer listener.
                  */
                 elbListeners?: {
                     port: number;
@@ -1454,6 +1514,8 @@ export interface AWSCluster {
                 };
                 /**
                  * ClassicELBListeners is an array of classic elb listeners associated with the load balancer. There must be at least one.
+                 *
+                 * Items: ClassicELBListener defines an AWS classic load balancer listener.
                  */
                 listeners?: {
                     instancePort: number;
@@ -1542,6 +1604,8 @@ export interface AWSCluster {
                 };
                 /**
                  * ELBListeners is an array of listeners associated with the load balancer. There must be at least one.
+                 *
+                 * Items: Listener defines an AWS network load balancer listener.
                  */
                 elbListeners?: {
                     port: number;
@@ -1607,6 +1671,8 @@ export interface AWSCluster {
                 };
                 /**
                  * ClassicELBListeners is an array of classic elb listeners associated with the load balancer. There must be at least one.
+                 *
+                 * Items: ClassicELBListener defines an AWS classic load balancer listener.
                  */
                 listeners?: {
                     instancePort: number;
@@ -1666,6 +1732,8 @@ export interface AWSCluster {
                     id: string;
                     /**
                      * IngressRules is the inbound rules associated with the security group.
+                     *
+                     * Items: IngressRule defines an AWS ingress rule for security groups.
                      */
                     ingressRule?: {
                         /**
@@ -1699,6 +1767,8 @@ export interface AWSCluster {
                         /**
                          * The security group role to allow access from. Cannot be specified with CidrBlocks.
                          * The field will be combined with source security group IDs if specified.
+                         *
+                         * Items: SecurityGroupRole defines the unique role of a security group.
                          */
                         sourceSecurityGroupRoles?: ('bastion' | 'node' | 'controlplane' | 'apiserver-lb' | 'lb' | 'node-eks-additional')[];
                         /**

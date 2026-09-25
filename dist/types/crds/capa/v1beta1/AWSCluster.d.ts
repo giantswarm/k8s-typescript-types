@@ -171,6 +171,8 @@ export interface AWSCluster {
                 /**
                  * CNIIngressRules specify rules to apply to control plane and worker node security groups.
                  * The source for the rule will be set to control plane and worker security group IDs.
+                 *
+                 * Items: CNIIngressRule defines an AWS ingress rule for CNI requirements.
                  */
                 cniIngressRules?: {
                     description: string;
@@ -191,6 +193,8 @@ export interface AWSCluster {
             };
             /**
              * Subnets configuration.
+             *
+             * Items: SubnetSpec configures an AWS Subnet.
              */
             subnets?: {
                 /**
@@ -332,6 +336,8 @@ export interface AWSCluster {
         bastion?: {
             /**
              * Addresses contains the AWS instance associated addresses.
+             *
+             * Items: MachineAddress contains information for the node's address.
              */
             addresses?: {
                 /**
@@ -374,6 +380,8 @@ export interface AWSCluster {
             networkInterfaces?: string[];
             /**
              * Configuration options for the non root storage volumes.
+             *
+             * Items: Volume encapsulates the configuration options for the storage device.
              */
             nonRootVolumes?: {
                 /**
@@ -499,6 +507,8 @@ export interface AWSCluster {
         };
         /**
          * Conditions provide observations of the operational state of a Cluster API resource.
+         *
+         * Items: Condition defines an observation of a Cluster API resource operational state.
          */
         conditions?: {
             /**
@@ -608,6 +618,8 @@ export interface AWSCluster {
                 };
                 /**
                  * Listeners is an array of classic elb listeners associated with the load balancer. There must be at least one.
+                 *
+                 * Items: ClassicELBListener defines an AWS classic load balancer listener.
                  */
                 listeners?: {
                     instancePort: number;
@@ -659,6 +671,8 @@ export interface AWSCluster {
                     id: string;
                     /**
                      * IngressRules is the inbound rules associated with the security group.
+                     *
+                     * Items: IngressRule defines an AWS ingress rule for security groups.
                      */
                     ingressRule?: {
                         /**

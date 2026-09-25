@@ -70,6 +70,9 @@ export interface Kustomization {
          * DependsOn may contain a meta.NamespacedObjectReference slice
          * with references to Kustomization resources that must be ready before this
          * Kustomization can be reconciled.
+         *
+         * Items: NamespacedObjectReference contains enough information to locate the referenced Kubernetes resource object in any
+         * namespace.
          */
         dependsOn?: {
             /**
@@ -88,6 +91,9 @@ export interface Kustomization {
         force?: boolean;
         /**
          * A list of resources to be included in the health assessment.
+         *
+         * Items: NamespacedObjectKindReference contains enough information to locate the typed referenced Kubernetes resource object
+         * in any namespace.
          */
         healthChecks?: {
             /**
@@ -111,6 +117,8 @@ export interface Kustomization {
          * Images is a list of (image name, new name, new tag or digest)
          * for changing image names, tags or digests. This can also be achieved with a
          * patch, but this operator is simpler to specify.
+         *
+         * Items: Image contains an image name, a new name, a new tag or digest, which will replace the original name and tag.
          */
         images?: {
             /**
@@ -206,6 +214,9 @@ export interface Kustomization {
         /**
          * Strategic merge and JSON patches, defined as inline YAML objects,
          * capable of targeting objects based on kind, label and annotation selectors.
+         *
+         * Items: Patch contains an inline StrategicMerge or JSON6902 patch, and the target the patch should
+         * be applied to.
          */
         patches?: {
             /**
@@ -261,10 +272,15 @@ export interface Kustomization {
         /**
          * JSON 6902 patches, defined as inline YAML objects.
          * Deprecated: Use Patches instead.
+         *
+         * Items: JSON6902Patch contains a JSON6902 patch and the target the patch should be applied to.
          */
         patchesJson6902?: {
             /**
              * Patch contains the JSON6902 patch document with an array of operation objects.
+             *
+             * Items: JSON6902 is a JSON6902 operation object.
+             * https://datatracker.ietf.org/doc/html/rfc6902#section-4
              */
             patch: {
                 /**
@@ -370,6 +386,9 @@ export interface Kustomization {
              * the variables and their values to be substituted in the YAML manifests.
              * The ConfigMap and the Secret data keys represent the var names and they
              * must match the vars declared in the manifests for the substitution to happen.
+             *
+             * Items: SubstituteReference contains a reference to a resource containing
+             * the variables name and value.
              */
             substituteFrom?: {
                 /**
@@ -454,6 +473,9 @@ export interface Kustomization {
      * KustomizationStatus defines the observed state of a kustomization.
      */
     status?: {
+        /**
+         * Items: Condition contains details for one aspect of the current state of this API Resource.
+         */
         conditions?: {
             /**
              * lastTransitionTime is the last time the condition transitioned from one status to another.
@@ -494,6 +516,8 @@ export interface Kustomization {
         inventory?: {
             /**
              * Entries of Kubernetes resource object references.
+             *
+             * Items: ResourceRef contains the information necessary to locate a resource within a cluster.
              */
             entries: {
                 /**

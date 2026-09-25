@@ -49,12 +49,18 @@ export interface AWSMachinePool {
              * AdditionalSecurityGroups is an array of references to security groups that should be applied to the
              * instances. These security groups would be set in addition to any security groups defined
              * at the cluster level or in the actuator.
+             *
+             * Items: AWSResourceReference is a reference to a specific AWS resource by ID or filters.
+             * Only one of ID or Filters may be specified. Specifying more than one will result in
+             * a validation error.
              */
             additionalSecurityGroups?: {
                 /**
                  * Filters is a set of key/value pairs used to identify a resource
                  * They are applied according to the rules defined by the AWS API:
                  * https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Using_Filtering.html
+                 *
+                 * Items: Filter is a filter used to identify an AWS resource.
                  */
                 filters?: {
                     /**
@@ -94,7 +100,7 @@ export interface AWSMachinePool {
              * "None": The instance may not make use of any Capacity Reservations. This is to conserve open reservations for desired workloads
              * "CapacityReservationsOnly": The instance will only run if matched or targeted to a Capacity Reservation
              */
-            capacityReservationPreference?: ('' | 'None' | 'CapacityReservationsOnly' | 'Open') & string;
+            capacityReservationPreference?: '' | 'None' | 'CapacityReservationsOnly' | 'Open';
             /**
              * EnclaveOptions defines the options for Nitro Enclave support on the instance.
              */
@@ -205,6 +211,8 @@ export interface AWSMachinePool {
             name?: string;
             /**
              * Configuration options for the non root storage volumes.
+             *
+             * Items: Volume encapsulates the configuration options for the storage device.
              */
             nonRootVolumes?: {
                 /**
@@ -367,6 +375,8 @@ export interface AWSMachinePool {
                  * An IP address prefix and domain name can also include a literal port number (1.2.3.4:80).
                  *
                  * @maxItems 64
+                 *
+                 * Items: IgnitionNoProxy defines the list of domains to not proxy for Ignition.
                  */
                 noProxy?: string[];
             };
@@ -398,6 +408,8 @@ export interface AWSMachinePool {
                  * Supported schemes are http, https, tftp, s3, arn, gs, and `data` (RFC 2397) URL scheme.
                  *
                  * @maxItems 64
+                 *
+                 * Items: IgnitionCASource defines the source of the certificate authority to use for Ignition.
                  */
                 certificateAuthorities?: string[];
             };
@@ -410,6 +422,8 @@ export interface AWSMachinePool {
         };
         /**
          * AWSLifecycleHooks specifies lifecycle hooks for the autoscaling group.
+         *
+         * Items: AWSLifecycleHook describes an AWS lifecycle hook
          */
         lifecycleHooks?: {
             /**
@@ -472,6 +486,10 @@ export interface AWSMachinePool {
                  */
                 spotAllocationStrategy?: 'lowest-price' | 'capacity-optimized' | 'capacity-optimized-prioritized' | 'price-capacity-optimized';
             };
+            /**
+             * Items: Overrides are used to override the instance type specified by the launch template with multiple
+             * instance types that can be used to launch On-Demand Instances and Spot Instances.
+             */
             overrides?: {
                 instanceType: string;
             }[];
@@ -523,12 +541,18 @@ export interface AWSMachinePool {
         };
         /**
          * Subnets is an array of subnet configurations
+         *
+         * Items: AWSResourceReference is a reference to a specific AWS resource by ID or filters.
+         * Only one of ID or Filters may be specified. Specifying more than one will result in
+         * a validation error.
          */
         subnets?: {
             /**
              * Filters is a set of key/value pairs used to identify a resource
              * They are applied according to the rules defined by the AWS API:
              * https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Using_Filtering.html
+             *
+             * Items: Filter is a filter used to identify an AWS resource.
              */
             filters?: {
                 /**
@@ -577,6 +601,8 @@ export interface AWSMachinePool {
         asgStatus?: string;
         /**
          * Conditions defines current service state of the AWSMachinePool.
+         *
+         * Items: Condition defines an observation of a Cluster API resource operational state.
          */
         conditions?: {
             /**
@@ -657,6 +683,8 @@ export interface AWSMachinePool {
         infrastructureMachineKind?: string;
         /**
          * Instances contains the status for each instance in the pool
+         *
+         * Items: AWSMachinePoolInstanceStatus defines the status of the AWSMachinePoolInstance.
          */
         instances?: {
             /**
