@@ -9,5 +9,6 @@ export * as capvcd from './capvcd';
 export * as crossplane from './crossplane';
 export * as externalSecrets from './external-secrets';
 export * as fluxcd from './fluxcd';
+export * as fluxoperator from './fluxoperator';
 export * as giantswarm from './giantswarm';
 export * as kagent from './kagent';

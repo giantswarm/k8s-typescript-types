@@ -153,6 +153,20 @@
         # v1
         - https://raw.githubusercontent.com/fluxcd/image-automation-controller/refs/tags/v1.2.3/config/crd/bases/image.toolkit.fluxcd.io_imageupdateautomations.yaml
 
+- group: fluxoperator
+  resources:
+    # Flux Operator CRDs (fluxcd.controlplane.io), pinned to the release
+    # flux-operator-app deploys on Giant Swarm management clusters (currently
+    # v0.60.0). Bump this tag in step with it.
+    - name: FluxInstance
+      crdURL: https://raw.githubusercontent.com/controlplaneio-fluxcd/flux-operator/refs/tags/v0.60.0/config/crd/bases/fluxcd.controlplane.io_fluxinstances.yaml
+    - name: FluxReport
+      crdURL: https://raw.githubusercontent.com/controlplaneio-fluxcd/flux-operator/refs/tags/v0.60.0/config/crd/bases/fluxcd.controlplane.io_fluxreports.yaml
+    - name: ResourceSet
+      crdURL: https://raw.githubusercontent.com/controlplaneio-fluxcd/flux-operator/refs/tags/v0.60.0/config/crd/bases/fluxcd.controlplane.io_resourcesets.yaml
+    - name: ResourceSetInputProvider
+      crdURL: https://raw.githubusercontent.com/controlplaneio-fluxcd/flux-operator/refs/tags/v0.60.0/config/crd/bases/fluxcd.controlplane.io_resourcesetinputproviders.yaml
+
 - group: giantswarm
   resources:
     - name: App
