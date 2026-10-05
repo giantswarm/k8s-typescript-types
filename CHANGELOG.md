@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Update @types/node to v24.13.4 (giantswarm/k8s-typescript-types#90)
+- Pinned the `capz` and `external-secrets` CRD sources, which tracked upstream
+  `main`, to the commit and release that reproduce the committed types. Their
+  upstream changes since then failed the generated-output check on every pull
+  request. The types do not change.
 
 ## [0.8.0] - 2026-09-10
 
