@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Update tsx to v4.23.15 (giantswarm/k8s-typescript-types#95)
+
 ## [0.9.0] - 2026-10-05
 
 ### Added
