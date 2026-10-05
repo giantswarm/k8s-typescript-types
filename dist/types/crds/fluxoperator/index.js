@@ -33,19 +33,9 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.kagent = exports.giantswarm = exports.fluxoperator = exports.fluxcd = exports.externalSecrets = exports.crossplane = exports.capvcd = exports.capv = exports.capz = exports.capa = exports.capi = void 0;
+exports.v1 = void 0;
 /**
  * This file was automatically generated, PLEASE DO NOT MODIFY IT BY HAND.
  */
-exports.capi = __importStar(require("./capi"));
-exports.capa = __importStar(require("./capa"));
-exports.capz = __importStar(require("./capz"));
-exports.capv = __importStar(require("./capv"));
-exports.capvcd = __importStar(require("./capvcd"));
-exports.crossplane = __importStar(require("./crossplane"));
-exports.externalSecrets = __importStar(require("./external-secrets"));
-exports.fluxcd = __importStar(require("./fluxcd"));
-exports.fluxoperator = __importStar(require("./fluxoperator"));
-exports.giantswarm = __importStar(require("./giantswarm"));
-exports.kagent = __importStar(require("./kagent"));
+exports.v1 = __importStar(require("./v1"));
 //# sourceMappingURL=index.js.map

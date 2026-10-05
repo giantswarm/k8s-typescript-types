@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `fluxoperator.v1` types for the Flux Operator (`fluxcd.controlplane.io`):
+  `FluxInstance`, `FluxReport`, `ResourceSet` and `ResourceSetInputProvider`,
+  generated from the CRDs of flux-operator `v0.60.0`, the release
+  flux-operator-app deploys on Giant Swarm management clusters. A consumer
+  smoke (`src/smoke/fluxoperator-v1.ts`) asserts the shapes the Dev Portal's
+  Flux UI reads.
+
 ### Changed
 
 - Update @types/node to v24.13.4 (giantswarm/k8s-typescript-types#90)
