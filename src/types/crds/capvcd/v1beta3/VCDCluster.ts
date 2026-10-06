@@ -79,9 +79,9 @@ export interface VCDCluster {
          */
         name: string;
         /**
-         * OVDC defines the name or URN-ID of the OVDC which corresponds to this zone.
+         * OVDCName defines the actual name of the OVDC which corresponds to this zone.
          */
-        ovdc: string;
+        ovdcName: string;
         /**
          * OVDCNetworkName defines the OVDC network for this zone.
          */
@@ -94,8 +94,8 @@ export interface VCDCluster {
      * deployment. e.g. zone1 -> ovdc1, zone2 -> ovdc2
      */
     ovcdZoneConfigMap?: string;
-    ovdc?: string;
-    ovdcNetwork?: string;
+    ovdc: string;
+    ovdcNetwork: string;
     parentUid?: string;
     /**
      * ProxyConfig defines HTTP proxy environment variables for containerd
@@ -233,9 +233,9 @@ export interface VCDCluster {
          */
         name: string;
         /**
-         * OVDC defines the name or URN-ID of the OVDC which corresponds to this zone.
+         * OVDCName defines the actual name of the OVDC which corresponds to this zone.
          */
-        ovdc: string;
+        ovdcName: string;
         /**
          * OVDCNetworkName defines the OVDC network for this zone.
          */

@@ -7,6 +7,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Renovate opens a pull request for each new release of a CRD source pinned to
+  a release tag, and the `Regenerate types` workflow pushes the regenerated
+  types onto it, so a bump's added and removed fields are reviewed in its diff.
+- `capv.v1alpha3` and `capv.v1alpha4`, which the deployed CAPV release defines
+  (as not served).
+
+### Changed
+
+- CRD sources follow the versions deployed on Giant Swarm management clusters
+  instead of commits on upstream `main`:
+  - `capi`: Giant Swarm fork `v1.14.2-gs-df613140e` (was upstream v1.13.4).
+    Adds the `upgradePlan`/`versions` fields of Cluster, KubeadmControlPlane,
+    MachineDeployment and MachinePool, and Machine's
+    `waitForPre*HookStartTime`.
+  - `capa`: Giant Swarm fork `v2.11.1-gs-6d635ed37`. Removes fields that are
+    newer than that release, among them AWSCluster's S3 bucket
+    `additionalIAMRoles`, AWSManagedControlPlane's `podIdentityAssociations` and
+    `controlPlaneScalingConfig`, and the `enclaveOptions` of AWSMachinePool and
+    AWSManagedMachinePool.
+  - `capz`: Giant Swarm fork `v1.27.0-gs-99647669a`. AzureCluster's private
+    links gain `natIpConfigurations`, and a security rule's `description`
+    becomes required.
+  - `capv`: `v1beta1` from the deployed v1.15.3, which removes VSphereMachine's
+    `cryptoKeyID`, `cryptoProfile`, `ftEncryptionMode`, `migrateEncryption` and
+    `nestedHV`. `v1beta2` comes from v1.17.0.
+  - `capvcd`: Giant Swarm fork commit `06f9f9c8`. In `v1beta3` VCDCluster's
+    `ovdc` and `ovdcNetwork` become required, and a zone's `ovdc` is named
+    `ovdcName`.
+  - `crossplane`: provider-family-aws v1.21.0, which removes ProviderConfig's
+    `reconciliationPolicy`.
+  - `giantswarm`: App and Catalog from apiextensions-application v0.6.2,
+    Release from the releases SDK `sdk/v0.13.0` (same CRD as before).
+- The generator exits non-zero when a CRD cannot be fetched or turned into
+  types, instead of leaving that resource out of the generated indexes.
+
+### Removed
+
+- `giantswarm.v1alpha1.Catalog`'s `status`: the Catalog CRD management clusters
+  install (apiextensions-application v0.6.2) does not define it.
+
 ## [0.11.0] - 2026-10-06
 
 ### Added

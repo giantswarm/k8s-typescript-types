@@ -3,5 +3,7 @@
   "extends": [
     // Base config - https://github.com/giantswarm/renovate-presets/blob/main/default.json5
     "github>giantswarm/renovate-presets:default.json5",
+    // Repo-owned rules: CRD source pins in src/generator/config/resources.yaml
+    "github>giantswarm/k8s-typescript-types:renovate-custom.json5",
   ],
 }

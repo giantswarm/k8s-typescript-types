@@ -1,89 +1,111 @@
 - group: capi
   resources:
-    # Pinned to a cluster-api release tag: on `main` the CRDs have moved to
-    # `core/config/crd/bases/`, so these URLs 404 there and a regeneration
-    # would drop the types. v1.13.4 serves v1beta1 and v1beta2; releases before
-    # v1.13 also still serve v1alpha3 and v1alpha4, which we do not need.
+    # Follows the Giant Swarm fork that cluster-api-app deploys on management
+    # clusters (currently v9.0.0, fork tag v1.14.2-gs-df613140e). Bump by hand in
+    # step with the app: the fork's `-gs-<sha>` tags don't sort by release, so
+    # Renovate leaves them alone.
     - name: Cluster
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api/refs/tags/v1.13.4/config/crd/bases/cluster.x-k8s.io_clusters.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/cluster-api/refs/tags/v1.14.2-gs-df613140e/core/config/crd/bases/cluster.x-k8s.io_clusters.yaml
     - name: MachineDeployment
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api/refs/tags/v1.13.4/config/crd/bases/cluster.x-k8s.io_machinedeployments.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/cluster-api/refs/tags/v1.14.2-gs-df613140e/core/config/crd/bases/cluster.x-k8s.io_machinedeployments.yaml
     - name: Machine
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api/refs/tags/v1.13.4/config/crd/bases/cluster.x-k8s.io_machines.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/cluster-api/refs/tags/v1.14.2-gs-df613140e/core/config/crd/bases/cluster.x-k8s.io_machines.yaml
     - name: MachinePool
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api/refs/tags/v1.13.4/config/crd/bases/cluster.x-k8s.io_machinepools.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/cluster-api/refs/tags/v1.14.2-gs-df613140e/core/config/crd/bases/cluster.x-k8s.io_machinepools.yaml
     - name: KubeadmControlPlane
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api/refs/tags/v1.13.4/controlplane/kubeadm/config/crd/bases/controlplane.cluster.x-k8s.io_kubeadmcontrolplanes.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/cluster-api/refs/tags/v1.14.2-gs-df613140e/controlplane/kubeadm/config/crd/bases/controlplane.cluster.x-k8s.io_kubeadmcontrolplanes.yaml
 
 - group: capa
   resources:
-    # Pinned to a commit on `main` (2026-09-30): no release tag matches the
-    # committed types, and an unpinned `main` breaks the generated-output check.
+    # Follows the Giant Swarm fork that cluster-api-provider-aws-app deploys on
+    # management clusters (currently v2.43.0, fork tag v2.11.1-gs-6d635ed37).
+    # Bump by hand in step with the app, as for capi.
     - name: AWSCluster
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-aws/0efa4cc1e6a008c995bac03c09209508877783d6/config/crd/bases/infrastructure.cluster.x-k8s.io_awsclusters.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/cluster-api-provider-aws/refs/tags/v2.11.1-gs-6d635ed37/config/crd/bases/infrastructure.cluster.x-k8s.io_awsclusters.yaml
     - name: AWSMachinePool
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-aws/0efa4cc1e6a008c995bac03c09209508877783d6/config/crd/bases/infrastructure.cluster.x-k8s.io_awsmachinepools.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/cluster-api-provider-aws/refs/tags/v2.11.1-gs-6d635ed37/config/crd/bases/infrastructure.cluster.x-k8s.io_awsmachinepools.yaml
     - name: AWSMachineTemplate
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-aws/0efa4cc1e6a008c995bac03c09209508877783d6/config/crd/bases/infrastructure.cluster.x-k8s.io_awsmachinetemplates.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/cluster-api-provider-aws/refs/tags/v2.11.1-gs-6d635ed37/config/crd/bases/infrastructure.cluster.x-k8s.io_awsmachinetemplates.yaml
     - name: AWSManagedCluster
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-aws/0efa4cc1e6a008c995bac03c09209508877783d6/config/crd/bases/infrastructure.cluster.x-k8s.io_awsmanagedclusters.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/cluster-api-provider-aws/refs/tags/v2.11.1-gs-6d635ed37/config/crd/bases/infrastructure.cluster.x-k8s.io_awsmanagedclusters.yaml
     - name: AWSManagedMachinePool
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-aws/0efa4cc1e6a008c995bac03c09209508877783d6/config/crd/bases/infrastructure.cluster.x-k8s.io_awsmanagedmachinepools.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/cluster-api-provider-aws/refs/tags/v2.11.1-gs-6d635ed37/config/crd/bases/infrastructure.cluster.x-k8s.io_awsmanagedmachinepools.yaml
     - name: AWSManagedControlPlane
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-aws/0efa4cc1e6a008c995bac03c09209508877783d6/config/crd/bases/controlplane.cluster.x-k8s.io_awsmanagedcontrolplanes.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/cluster-api-provider-aws/refs/tags/v2.11.1-gs-6d635ed37/config/crd/bases/controlplane.cluster.x-k8s.io_awsmanagedcontrolplanes.yaml
     - name: AWSClusterRoleIdentity
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-aws/0efa4cc1e6a008c995bac03c09209508877783d6/config/crd/bases/infrastructure.cluster.x-k8s.io_awsclusterroleidentities.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/cluster-api-provider-aws/refs/tags/v2.11.1-gs-6d635ed37/config/crd/bases/infrastructure.cluster.x-k8s.io_awsclusterroleidentities.yaml
 
 - group: capz
   resources:
-    # Pinned to a commit on `main` (2026-09-08): no release tag matches the
-    # committed types, and an unpinned `main` breaks the generated-output check.
+    # Follows the Giant Swarm fork that cluster-api-provider-azure-app deploys on
+    # management clusters (currently v4.7.2, fork tag v1.27.0-gs-99647669a).
+    # Bump by hand in step with the app, as for capi.
     - name: AzureCluster
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-azure/149a62eb2a1989a24afda78f57c51483970aa8ee/config/crd/bases/infrastructure.cluster.x-k8s.io_azureclusters.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/cluster-api-provider-azure/refs/tags/v1.27.0-gs-99647669a/config/crd/bases/infrastructure.cluster.x-k8s.io_azureclusters.yaml
     - name: AzureClusterIdentity
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-azure/149a62eb2a1989a24afda78f57c51483970aa8ee/config/crd/bases/infrastructure.cluster.x-k8s.io_azureclusteridentities.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/cluster-api-provider-azure/refs/tags/v1.27.0-gs-99647669a/config/crd/bases/infrastructure.cluster.x-k8s.io_azureclusteridentities.yaml
     - name: AzureMachineTemplate
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-azure/149a62eb2a1989a24afda78f57c51483970aa8ee/config/crd/bases/infrastructure.cluster.x-k8s.io_azuremachinetemplates.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/cluster-api-provider-azure/refs/tags/v1.27.0-gs-99647669a/config/crd/bases/infrastructure.cluster.x-k8s.io_azuremachinetemplates.yaml
     - name: AzureMachine
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-azure/149a62eb2a1989a24afda78f57c51483970aa8ee/config/crd/bases/infrastructure.cluster.x-k8s.io_azuremachines.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/cluster-api-provider-azure/refs/tags/v1.27.0-gs-99647669a/config/crd/bases/infrastructure.cluster.x-k8s.io_azuremachines.yaml
     - name: AzureMachinePool
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-azure/149a62eb2a1989a24afda78f57c51483970aa8ee/config/crd/bases/infrastructure.cluster.x-k8s.io_azuremachinepools.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/cluster-api-provider-azure/refs/tags/v1.27.0-gs-99647669a/config/crd/bases/infrastructure.cluster.x-k8s.io_azuremachinepools.yaml
     - name: AzureASOManagedCluster
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-azure/149a62eb2a1989a24afda78f57c51483970aa8ee/config/crd/bases/infrastructure.cluster.x-k8s.io_azureasomanagedclusters.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/cluster-api-provider-azure/refs/tags/v1.27.0-gs-99647669a/config/crd/bases/infrastructure.cluster.x-k8s.io_azureasomanagedclusters.yaml
     - name: AzureASOManagedMachinePool
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-azure/149a62eb2a1989a24afda78f57c51483970aa8ee/config/crd/bases/infrastructure.cluster.x-k8s.io_azureasomanagedmachinepools.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/cluster-api-provider-azure/refs/tags/v1.27.0-gs-99647669a/config/crd/bases/infrastructure.cluster.x-k8s.io_azureasomanagedmachinepools.yaml
 
 - group: capv
   resources:
-    # Pinned to a commit on `main` (2026-10-02): no release tag matches the
-    # committed types, and an unpinned `main` breaks the generated-output check.
+    # Follows the release cluster-api-provider-vsphere-app deploys on management
+    # clusters (currently v3.0.0, upstream v1.15.3). v1.15.3 does not serve
+    # v1beta2 yet, so v1.17.0 is listed for it. The deployed release is listed
+    # last, against the usual oldest-first order, so that it wins for every
+    # version it serves and only v1beta2 comes from v1.17.0. Bump both by hand.
     - name: VSphereCluster
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-vsphere/4ad33925cc0f6bb15b7d47499f0599dc60e7cd4a/config/default/crd/bases/infrastructure.cluster.x-k8s.io_vsphereclusters.yaml
+      crdURLs:
+        # v1beta2
+        - https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-vsphere/refs/tags/v1.17.0/config/default/crd/bases/infrastructure.cluster.x-k8s.io_vsphereclusters.yaml
+        # v1alpha3, v1alpha4, v1beta1 (deployed)
+        - https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-vsphere/refs/tags/v1.15.3/config/default/crd/bases/infrastructure.cluster.x-k8s.io_vsphereclusters.yaml
     - name: VSphereClusterIdentity
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-vsphere/4ad33925cc0f6bb15b7d47499f0599dc60e7cd4a/config/default/crd/bases/infrastructure.cluster.x-k8s.io_vsphereclusteridentities.yaml
+      crdURLs:
+        # v1beta2
+        - https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-vsphere/refs/tags/v1.17.0/config/default/crd/bases/infrastructure.cluster.x-k8s.io_vsphereclusteridentities.yaml
+        # v1alpha3, v1alpha4, v1beta1 (deployed)
+        - https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-vsphere/refs/tags/v1.15.3/config/default/crd/bases/infrastructure.cluster.x-k8s.io_vsphereclusteridentities.yaml
     - name: VSphereMachine
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-vsphere/4ad33925cc0f6bb15b7d47499f0599dc60e7cd4a/config/default/crd/bases/infrastructure.cluster.x-k8s.io_vspheremachines.yaml
+      crdURLs:
+        # v1beta2
+        - https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-vsphere/refs/tags/v1.17.0/config/default/crd/bases/infrastructure.cluster.x-k8s.io_vspheremachines.yaml
+        # v1alpha3, v1alpha4, v1beta1 (deployed)
+        - https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-vsphere/refs/tags/v1.15.3/config/default/crd/bases/infrastructure.cluster.x-k8s.io_vspheremachines.yaml
     - name: VSphereMachineTemplate
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-vsphere/4ad33925cc0f6bb15b7d47499f0599dc60e7cd4a/config/default/crd/bases/infrastructure.cluster.x-k8s.io_vspheremachinetemplates.yaml
+      crdURLs:
+        # v1beta2
+        - https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-vsphere/refs/tags/v1.17.0/config/default/crd/bases/infrastructure.cluster.x-k8s.io_vspheremachinetemplates.yaml
+        # v1alpha3, v1alpha4, v1beta1 (deployed)
+        - https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-vsphere/refs/tags/v1.15.3/config/default/crd/bases/infrastructure.cluster.x-k8s.io_vspheremachinetemplates.yaml
 
 - group: capvcd
   resources:
-    # Pinned to a commit on `main` (2024-10-10): no release tag matches the
-    # committed types, and an unpinned `main` breaks the generated-output check.
+    # Follows the Giant Swarm fork commit cluster-api-provider-cloud-director-app
+    # deploys on management clusters (currently v0.8.5, `COMMIT_TO_SYNC`
+    # 06f9f9c8). No fork tag matches it; bump by hand in step with the app.
     - name: VCDCluster
-      crdURL: https://raw.githubusercontent.com/vmware/cluster-api-provider-cloud-director/adc480c6d402f55997045be5e4af0e0cb8381429/config/crd/bases/infrastructure.cluster.x-k8s.io_vcdclusters.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/cluster-api-provider-cloud-director/06f9f9c8fb663d0c72adb86cc7a6f5efb11a6fd3/config/crd/bases/infrastructure.cluster.x-k8s.io_vcdclusters.yaml
 
 - group: crossplane
   resources:
-    # Pinned to a commit on `main` (2026-10-05): no release tag matches the
-    # committed types, and an unpinned `main` breaks the generated-output check.
+    # Follows the provider-family-aws release management-cluster-bases deploys
+    # (`extras/crossplane/providers/upbound/aws`, currently v1.21.0).
     - name: ProviderConfig
-      crdURL: https://raw.githubusercontent.com/crossplane-contrib/provider-upjet-aws/ee0f9202a36dde528a7bfb5fd610cbf2ebe61ca7/package/crds/aws.upbound.io_providerconfigs.yaml
+      crdURL: https://raw.githubusercontent.com/crossplane-contrib/provider-upjet-aws/refs/tags/v1.21.0/package/crds/aws.upbound.io_providerconfigs.yaml
 
 - group: external-secrets
   resources:
-    # Pinned to a release tag: an unpinned `main` breaks the generated-output
-    # check.
+    # Follows the release external-secrets-app deploys on management clusters
+    # (currently v2.11.0).
     - name: SecretStore
       crdURL: https://raw.githubusercontent.com/external-secrets/external-secrets/refs/tags/v2.11.0/config/crds/bases/external-secrets.io_secretstores.yaml
     - name: ClusterSecretStore
@@ -181,17 +203,21 @@
 
 - group: giantswarm
   resources:
-    # Pinned so a regeneration reproduces the committed types: to the release
-    # tag where it serves the same CRD as `main`, otherwise to a commit on the
-    # default branch (2026-10-06), since no release tag matches.
+    # Each resource follows the release that installs its CRD on management
+    # clusters:
+    # - App, Catalog: apiextensions-application v0.6.2, the version app-operator
+    #   (currently v7.5.4) depends on.
+    # - Organization: organization-operator (currently v2.1.3).
+    # - Release: the releases SDK (currently sdk/v0.13.0).
+    # - KarpenterMachinePool: aws-resolver-rules-operator (currently v0.28.1).
     - name: App
-      crdURL: https://raw.githubusercontent.com/giantswarm/apiextensions-application/c6ae86f215a34710dd9626509dba32ddf3b75f3f/config/crd/application.giantswarm.io_apps.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/apiextensions-application/refs/tags/v0.6.2/config/crd/application.giantswarm.io_apps.yaml
     - name: Catalog
-      crdURL: https://raw.githubusercontent.com/giantswarm/apiextensions-application/c6ae86f215a34710dd9626509dba32ddf3b75f3f/config/crd/application.giantswarm.io_catalogs.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/apiextensions-application/refs/tags/v0.6.2/config/crd/application.giantswarm.io_catalogs.yaml
     - name: Organization
       crdURL: https://raw.githubusercontent.com/giantswarm/organization-operator/refs/tags/v2.1.3/config/crd/bases/security.giantswarm.io_organizations.yaml
     - name: Release
-      crdURL: https://raw.githubusercontent.com/giantswarm/releases/e93e7a0e1aa82fdbc4ea9e8d80451468e86694cb/sdk/config/crd/bases/release.giantswarm.io_releases.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/releases/refs/tags/sdk/v0.13.0/sdk/config/crd/bases/release.giantswarm.io_releases.yaml
     - name: KarpenterMachinePool
       crdURL: https://raw.githubusercontent.com/giantswarm/aws-resolver-rules-operator/refs/tags/v0.28.1/config/crd/bases/infrastructure.cluster.x-k8s.io_karpentermachinepools.yaml
 

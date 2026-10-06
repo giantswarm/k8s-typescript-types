@@ -186,7 +186,7 @@ export interface MachineDeployment {
       rollingUpdate?: {
         /**
          * deletePolicy defines the policy used by the MachineDeployment to identify nodes to delete when downscaling.
-         * Valid values are "Random, "Newest", "Oldest"
+         * Valid values are "Random", "Newest", "Oldest"
          * When no value is supplied, the default DeletePolicy of MachineSet is used
          */
         deletePolicy?: 'Random' | 'Newest' | 'Oldest';
@@ -634,5 +634,23 @@ export interface MachineDeployment {
        */
       upToDateReplicas?: number;
     };
+    /**
+     * versions is the aggregated Kubernetes versions in this MachineDeployment.
+     *
+     * @minItems 1
+     * @maxItems 100
+     *
+     * Items: StatusVersion groups version-related status information.
+     */
+    versions?: {
+      /**
+       * replicas is the number of replicas at this version.
+       */
+      replicas?: number;
+      /**
+       * version is the Kubernetes version.
+       */
+      version: string;
+    }[];
   };
 }

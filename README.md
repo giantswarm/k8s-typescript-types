@@ -83,6 +83,9 @@ This will:
 4. Generate TypeScript interfaces
 5. Create organized output in `src/types/crds/`
 
+If any CRD cannot be fetched or turned into types, the generator reports it and
+exits non-zero instead of leaving that resource out.
+
 ### Build
 
 ```bash
@@ -118,16 +121,31 @@ To add new CRD types:
 - group: my_group
   resources:
     - name: MyResource
-      crdURL: https://raw.githubusercontent.com/example/repo/main/config/crd/my-resource.yaml
+      crdURL: https://raw.githubusercontent.com/example/repo/refs/tags/v1.2.3/config/crd/my-resource.yaml
 ```
 
 3. Run `yarn generate`
 
 The generator will automatically discover all versions from the CRD and generate types for each.
 
-Pin `crdURL` to a release tag rather than a branch such as `main`. Upstream
-projects drop deprecated API versions over time, so a `main` URL makes a
-regeneration silently remove types that consumers still depend on.
+### Pinning CRD sources
+
+Pin every `crdURL` to a release tag (`refs/tags/<tag>`), never a branch such as
+`main`. A branch is ahead of what any cluster serves, and a change upstream
+fails CI's generated-output check on every pull request. Pin to the version
+deployed on Giant Swarm management clusters, and name what it follows (the app
+and its version) in a comment. Pin to a commit only where no tag matches the
+deployed version.
+
+Renovate (`renovate-custom.json5`) opens a pull request for each new release of
+a source pinned by a single `crdURL` tag. The `Regenerate types` workflow then
+pushes the regenerated types onto that pull request, so its diff shows every
+field and API version the release adds or removes. Bumped by hand instead:
+
+- `crdURLs` lists, which pin one release per API version on purpose
+- commit pins
+- the Giant Swarm forks (capi, capa, capz) and flux-operator, which follow what
+  their app deploys
 
 ### Covering several API versions
 
@@ -149,6 +167,11 @@ Types are generated for the union of the versions the listed CRDs serve. List
 them oldest first: where several CRDs serve the same version, the last one wins,
 so the newest schema is the one generated. The most complete schema for a given
 version is the newest release that still serves it.
+
+To keep an API version the deployed release does not serve yet, while
+following the deployed release for every other version, list the deployed
+release last (as `capv` does): it then wins for every version it serves, and
+the newer release only fills in the rest.
 
 ## Configuration Format
 

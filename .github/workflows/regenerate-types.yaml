@@ -1,0 +1,76 @@
+# Regenerates the types on Renovate PR branches and pushes the result back onto
+# the branch, so that a CRD pin bump (or a generator dependency bump) arrives
+# with its regenerated types and the PR diff shows every field and API version
+# it adds or removes. The Mend-hosted Renovate app cannot run postUpgradeTasks.
+#
+# `yarn regenerate` starts from a clean tree, so a type or version upstream
+# dropped shows up as deleted files. If any CRD fails to fetch or generate, the
+# generator exits non-zero and nothing is pushed.
+#
+# The push uses the taylorbot PAT, not GITHUB_TOKEN: a GITHUB_TOKEN push does
+# not trigger CI on the new commit. That run finds nothing to change, so this
+# never loops. renovate-custom.json5 lists taylorbot in gitIgnoredAuthors, so
+# Renovate keeps rebasing the branch.
+name: Regenerate types
+
+on:
+  pull_request:
+    paths:
+      - 'src/generator/**'
+      - 'package.json'
+      - 'yarn.lock'
+
+permissions: {}
+
+concurrency:
+  group: regenerate-types-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  regenerate:
+    name: Regenerate and push
+    # Only Renovate branches: on a human's PR the author commits the types.
+    if: startsWith(github.head_ref, 'renovate/')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Check the bot token is available
+        id: token
+        env:
+          TAYLORBOT_GITHUB_ACTION: ${{ secrets.TAYLORBOT_GITHUB_ACTION }}
+        run: |
+          if [ -z "$TAYLORBOT_GITHUB_ACTION" ]; then
+            echo "::warning::TAYLORBOT_GITHUB_ACTION is not available to this run, nothing is regenerated."
+            echo "available=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        if: steps.token.outputs.available == 'true'
+        with:
+          ref: ${{ github.head_ref }}
+          # Kept in the checkout so `git push` below uses it.
+          token: ${{ secrets.TAYLORBOT_GITHUB_ACTION }}
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        if: steps.token.outputs.available == 'true'
+        with:
+          node-version: 24
+          cache: yarn
+      - if: steps.token.outputs.available == 'true'
+        run: yarn install --frozen-lockfile
+      - if: steps.token.outputs.available == 'true'
+        run: yarn regenerate
+      - name: Commit and push the regenerated types
+        if: steps.token.outputs.available == 'true'
+        run: |
+          set -euo pipefail
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "generated types already in sync, nothing to push"
+            exit 0
+          fi
+          git config --local user.email "dev@giantswarm.io"
+          git config --local user.name "taylorbot"
+          git add -A
+          git commit -m "chore: regenerate types"
+          git push

@@ -24,6 +24,16 @@ interface IVersionResources {
   resources: IResourceWithCRD[];
 }
 
+// Set by any CRD that could not be fetched or turned into types. The run then
+// exits non-zero: a resource that fails is left out of the indexes, which would
+// otherwise remove its types without anyone noticing.
+let failed = false;
+
+function fail(message: string): void {
+  failed = true;
+  error(message);
+}
+
 async function fetchCRDs(group: IGroupInfo): Promise<IResourceWithCRD[]> {
   log(`  Fetching CRDs...`, false);
 
@@ -45,7 +55,7 @@ async function fetchCRDs(group: IGroupInfo): Promise<IResourceWithCRD[]> {
     const response = responses[i];
 
     if (response.status === 'rejected') {
-      error(
+      fail(
         `Could not fetch CRD for resource ${resource.name} from ${url}: ${response.reason}`,
       );
       continue;
@@ -110,7 +120,7 @@ async function generateTypesForVersion(
     const response = responses[i];
 
     if (response.status === 'rejected') {
-      error(
+      fail(
         `      Could not generate types for resource ${resourceWithCRD.resource.name}: ${response.reason}`,
       );
       continue;
@@ -170,7 +180,7 @@ async function generateGroup(group: IGroupInfo): Promise<string[]> {
 
     return versionData.map(v => v.versionName);
   } catch (err) {
-    error((err as Error).toString());
+    fail((err as Error).toString());
     return [];
   }
 }
@@ -198,6 +208,12 @@ async function main() {
     await writeMainIndex(processedGroups);
     log('done.');
     log('');
+
+    if (failed) {
+      error('❌ Type generation failed, see the errors above.');
+      process.exit(1);
+    }
+
     log('✅ Type generation completed successfully!');
   } catch (err) {
     error((err as Error).toString());
