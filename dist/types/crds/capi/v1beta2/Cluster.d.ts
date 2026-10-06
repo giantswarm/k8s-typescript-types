@@ -37,40 +37,22 @@ export interface Cluster {
          *
          * Items: ClusterAvailabilityGate contains the type of a Cluster condition to be used as availability gate.
          */
-        availabilityGates?: [
-            {
-                /**
-                 * conditionType refers to a condition with matching type in the Cluster's condition list.
-                 * If the conditions doesn't exist, it will be treated as unknown.
-                 * Note: Both Cluster API conditions or conditions added by 3rd party controllers can be used as availability gates.
-                 */
-                conditionType: string;
-                /**
-                 * polarity of the conditionType specified in this availabilityGate.
-                 * Valid values are Positive, Negative and omitted.
-                 * When omitted, the default behaviour will be Positive.
-                 * A positive polarity means that the condition should report a true status under normal conditions.
-                 * A negative polarity means that the condition should report a false status under normal conditions.
-                 */
-                polarity?: 'Positive' | 'Negative';
-            },
-            ...{
-                /**
-                 * conditionType refers to a condition with matching type in the Cluster's condition list.
-                 * If the conditions doesn't exist, it will be treated as unknown.
-                 * Note: Both Cluster API conditions or conditions added by 3rd party controllers can be used as availability gates.
-                 */
-                conditionType: string;
-                /**
-                 * polarity of the conditionType specified in this availabilityGate.
-                 * Valid values are Positive, Negative and omitted.
-                 * When omitted, the default behaviour will be Positive.
-                 * A positive polarity means that the condition should report a true status under normal conditions.
-                 * A negative polarity means that the condition should report a false status under normal conditions.
-                 */
-                polarity?: 'Positive' | 'Negative';
-            }[]
-        ];
+        availabilityGates?: {
+            /**
+             * conditionType refers to a condition with matching type in the Cluster's condition list.
+             * If the conditions doesn't exist, it will be treated as unknown.
+             * Note: Both Cluster API conditions or conditions added by 3rd party controllers can be used as availability gates.
+             */
+            conditionType: string;
+            /**
+             * polarity of the conditionType specified in this availabilityGate.
+             * Valid values are Positive, Negative and omitted.
+             * When omitted, the default behaviour will be Positive.
+             * A positive polarity means that the condition should report a true status under normal conditions.
+             * A negative polarity means that the condition should report a false status under normal conditions.
+             */
+            polarity?: 'Positive' | 'Negative';
+        }[];
         /**
          * clusterNetwork represents the cluster network configuration.
          */
@@ -90,7 +72,7 @@ export interface Cluster {
                  * @minItems 1
                  * @maxItems 100
                  */
-                cidrBlocks: [string, ...string[]];
+                cidrBlocks: string[];
             };
             /**
              * serviceDomain is the domain name for services.
@@ -106,7 +88,7 @@ export interface Cluster {
                  * @minItems 1
                  * @maxItems 100
                  */
-                cidrBlocks: [string, ...string[]];
+                cidrBlocks: string[];
             };
         };
         /**
@@ -271,42 +253,23 @@ export interface Cluster {
                          * specified as a duration.  When the named condition has been in the given
                          * status for at least the timeout value, a machine is considered unhealthy.
                          */
-                        unhealthyMachineConditions?: [
-                            {
-                                /**
-                                 * status of the condition, one of True, False, Unknown.
-                                 */
-                                status: 'True' | 'False' | 'Unknown';
-                                /**
-                                 * timeoutSeconds is the duration that a machine must be in a given status for,
-                                 * after which the machine is considered unhealthy.
-                                 * For example, with a value of "3600", the machine must match the status
-                                 * for at least 1 hour before being considered unhealthy.
-                                 */
-                                timeoutSeconds: number;
-                                /**
-                                 * type of Machine condition
-                                 */
-                                type: string;
-                            },
-                            ...{
-                                /**
-                                 * status of the condition, one of True, False, Unknown.
-                                 */
-                                status: 'True' | 'False' | 'Unknown';
-                                /**
-                                 * timeoutSeconds is the duration that a machine must be in a given status for,
-                                 * after which the machine is considered unhealthy.
-                                 * For example, with a value of "3600", the machine must match the status
-                                 * for at least 1 hour before being considered unhealthy.
-                                 */
-                                timeoutSeconds: number;
-                                /**
-                                 * type of Machine condition
-                                 */
-                                type: string;
-                            }[]
-                        ];
+                        unhealthyMachineConditions?: {
+                            /**
+                             * status of the condition, one of True, False, Unknown.
+                             */
+                            status: 'True' | 'False' | 'Unknown';
+                            /**
+                             * timeoutSeconds is the duration that a machine must be in a given status for,
+                             * after which the machine is considered unhealthy.
+                             * For example, with a value of "3600", the machine must match the status
+                             * for at least 1 hour before being considered unhealthy.
+                             */
+                            timeoutSeconds: number;
+                            /**
+                             * type of Machine condition
+                             */
+                            type: string;
+                        }[];
                         /**
                          * unhealthyNodeConditions contains a list of conditions that determine
                          * whether a node is considered unhealthy. The conditions are combined in a
@@ -319,42 +282,23 @@ export interface Cluster {
                          * specified as a duration.  When the named condition has been in the given
                          * status for at least the timeout value, a node is considered unhealthy.
                          */
-                        unhealthyNodeConditions?: [
-                            {
-                                /**
-                                 * status of the condition, one of True, False, Unknown.
-                                 */
-                                status: string;
-                                /**
-                                 * timeoutSeconds is the duration that a node must be in a given status for,
-                                 * after which the node is considered unhealthy.
-                                 * For example, with a value of "3600", the node must match the status
-                                 * for at least 1 hour before being considered unhealthy.
-                                 */
-                                timeoutSeconds: number;
-                                /**
-                                 * type of Node condition
-                                 */
-                                type: string;
-                            },
-                            ...{
-                                /**
-                                 * status of the condition, one of True, False, Unknown.
-                                 */
-                                status: string;
-                                /**
-                                 * timeoutSeconds is the duration that a node must be in a given status for,
-                                 * after which the node is considered unhealthy.
-                                 * For example, with a value of "3600", the node must match the status
-                                 * for at least 1 hour before being considered unhealthy.
-                                 */
-                                timeoutSeconds: number;
-                                /**
-                                 * type of Node condition
-                                 */
-                                type: string;
-                            }[]
-                        ];
+                        unhealthyNodeConditions?: {
+                            /**
+                             * status of the condition, one of True, False, Unknown.
+                             */
+                            status: string;
+                            /**
+                             * timeoutSeconds is the duration that a node must be in a given status for,
+                             * after which the node is considered unhealthy.
+                             * For example, with a value of "3600", the node must match the status
+                             * for at least 1 hour before being considered unhealthy.
+                             */
+                            timeoutSeconds: number;
+                            /**
+                             * type of Node condition
+                             */
+                            type: string;
+                        }[];
                     };
                     /**
                      * enabled controls if a MachineHealthCheck should be created for the target machines.
@@ -474,40 +418,22 @@ export interface Cluster {
                  *
                  * Items: MachineReadinessGate contains the type of a Machine condition to be used as a readiness gate.
                  */
-                readinessGates?: [
-                    {
-                        /**
-                         * conditionType refers to a condition with matching type in the Machine's condition list.
-                         * If the conditions doesn't exist, it will be treated as unknown.
-                         * Note: Both Cluster API conditions or conditions added by 3rd party controllers can be used as readiness gates.
-                         */
-                        conditionType: string;
-                        /**
-                         * polarity of the conditionType specified in this readinessGate.
-                         * Valid values are Positive, Negative and omitted.
-                         * When omitted, the default behaviour will be Positive.
-                         * A positive polarity means that the condition should report a true status under normal conditions.
-                         * A negative polarity means that the condition should report a false status under normal conditions.
-                         */
-                        polarity?: 'Positive' | 'Negative';
-                    },
-                    ...{
-                        /**
-                         * conditionType refers to a condition with matching type in the Machine's condition list.
-                         * If the conditions doesn't exist, it will be treated as unknown.
-                         * Note: Both Cluster API conditions or conditions added by 3rd party controllers can be used as readiness gates.
-                         */
-                        conditionType: string;
-                        /**
-                         * polarity of the conditionType specified in this readinessGate.
-                         * Valid values are Positive, Negative and omitted.
-                         * When omitted, the default behaviour will be Positive.
-                         * A positive polarity means that the condition should report a true status under normal conditions.
-                         * A negative polarity means that the condition should report a false status under normal conditions.
-                         */
-                        polarity?: 'Positive' | 'Negative';
-                    }[]
-                ];
+                readinessGates?: {
+                    /**
+                     * conditionType refers to a condition with matching type in the Machine's condition list.
+                     * If the conditions doesn't exist, it will be treated as unknown.
+                     * Note: Both Cluster API conditions or conditions added by 3rd party controllers can be used as readiness gates.
+                     */
+                    conditionType: string;
+                    /**
+                     * polarity of the conditionType specified in this readinessGate.
+                     * Valid values are Positive, Negative and omitted.
+                     * When omitted, the default behaviour will be Positive.
+                     * A positive polarity means that the condition should report a true status under normal conditions.
+                     * A negative polarity means that the condition should report a false status under normal conditions.
+                     */
+                    polarity?: 'Positive' | 'Negative';
+                }[];
                 /**
                  * replicas is the number of control plane nodes.
                  * If the value is not set, the ControlPlane object is created without the number of Replicas
@@ -544,58 +470,31 @@ export interface Cluster {
                  *
                  * Items: MachineTaint defines a taint equivalent to corev1.Taint, but additionally having a propagation field.
                  */
-                taints?: [
-                    {
-                        /**
-                         * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
-                         */
-                        effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
-                        /**
-                         * key is the taint key to be applied to a node.
-                         * Must be a valid qualified name of maximum size 63 characters
-                         * with an optional subdomain prefix of maximum size 253 characters,
-                         * separated by a `/`.
-                         */
-                        key: string;
-                        /**
-                         * propagation defines how this taint should be propagated to nodes.
-                         * Valid values are 'Always' and 'OnInitialization'.
-                         * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
-                         * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
-                         */
-                        propagation: 'Always' | 'OnInitialization';
-                        /**
-                         * value is the taint value corresponding to the taint key.
-                         * It must be a valid label value of maximum size 63 characters.
-                         */
-                        value?: string;
-                    },
-                    ...{
-                        /**
-                         * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
-                         */
-                        effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
-                        /**
-                         * key is the taint key to be applied to a node.
-                         * Must be a valid qualified name of maximum size 63 characters
-                         * with an optional subdomain prefix of maximum size 253 characters,
-                         * separated by a `/`.
-                         */
-                        key: string;
-                        /**
-                         * propagation defines how this taint should be propagated to nodes.
-                         * Valid values are 'Always' and 'OnInitialization'.
-                         * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
-                         * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
-                         */
-                        propagation: 'Always' | 'OnInitialization';
-                        /**
-                         * value is the taint value corresponding to the taint key.
-                         * It must be a valid label value of maximum size 63 characters.
-                         */
-                        value?: string;
-                    }[]
-                ];
+                taints?: {
+                    /**
+                     * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
+                     */
+                    effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
+                    /**
+                     * key is the taint key to be applied to a node.
+                     * Must be a valid qualified name of maximum size 63 characters
+                     * with an optional subdomain prefix of maximum size 253 characters,
+                     * separated by a `/`.
+                     */
+                    key: string;
+                    /**
+                     * propagation defines how this taint should be propagated to nodes.
+                     * Valid values are 'Always' and 'OnInitialization'.
+                     * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
+                     * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
+                     */
+                    propagation: 'Always' | 'OnInitialization';
+                    /**
+                     * value is the taint value corresponding to the taint key.
+                     * It must be a valid label value of maximum size 63 characters.
+                     */
+                    value?: string;
+                }[];
                 /**
                  * variables can be used to customize the ControlPlane through patches.
                  */
@@ -609,44 +508,24 @@ export interface Cluster {
                      * Items: ClusterVariable can be used to customize the Cluster through patches. Each ClusterVariable is associated with a
                      * Variable definition in the ClusterClass `status` variables.
                      */
-                    overrides?: [
-                        {
-                            /**
-                             * name of the variable.
-                             */
-                            name: string;
-                            /**
-                             * value of the variable.
-                             * Note: the value will be validated against the schema of the corresponding ClusterClassVariable
-                             * from the ClusterClass.
-                             * Note: We have to use apiextensionsv1.JSON instead of a custom JSON type, because controller-tools has a
-                             * hard-coded schema for apiextensionsv1.JSON which cannot be produced by another type via controller-tools,
-                             * i.e. it is not possible to have no type field.
-                             * Ref: https://github.com/kubernetes-sigs/controller-tools/blob/d0e03a142d0ecdd5491593e941ee1d6b5d91dba6/pkg/crd/known_types.go#L106-L111
-                             */
-                            value: {
-                                [k: string]: unknown;
-                            };
-                        },
-                        ...{
-                            /**
-                             * name of the variable.
-                             */
-                            name: string;
-                            /**
-                             * value of the variable.
-                             * Note: the value will be validated against the schema of the corresponding ClusterClassVariable
-                             * from the ClusterClass.
-                             * Note: We have to use apiextensionsv1.JSON instead of a custom JSON type, because controller-tools has a
-                             * hard-coded schema for apiextensionsv1.JSON which cannot be produced by another type via controller-tools,
-                             * i.e. it is not possible to have no type field.
-                             * Ref: https://github.com/kubernetes-sigs/controller-tools/blob/d0e03a142d0ecdd5491593e941ee1d6b5d91dba6/pkg/crd/known_types.go#L106-L111
-                             */
-                            value: {
-                                [k: string]: unknown;
-                            };
-                        }[]
-                    ];
+                    overrides?: {
+                        /**
+                         * name of the variable.
+                         */
+                        name: string;
+                        /**
+                         * value of the variable.
+                         * Note: the value will be validated against the schema of the corresponding ClusterClassVariable
+                         * from the ClusterClass.
+                         * Note: We have to use apiextensionsv1.JSON instead of a custom JSON type, because controller-tools has a
+                         * hard-coded schema for apiextensionsv1.JSON which cannot be produced by another type via controller-tools,
+                         * i.e. it is not possible to have no type field.
+                         * Ref: https://github.com/kubernetes-sigs/controller-tools/blob/d0e03a142d0ecdd5491593e941ee1d6b5d91dba6/pkg/crd/known_types.go#L106-L111
+                         */
+                        value: {
+                            [k: string]: unknown;
+                        };
+                    }[];
                 };
             };
             /**
@@ -660,44 +539,24 @@ export interface Cluster {
              * Items: ClusterVariable can be used to customize the Cluster through patches. Each ClusterVariable is associated with a
              * Variable definition in the ClusterClass `status` variables.
              */
-            variables?: [
-                {
-                    /**
-                     * name of the variable.
-                     */
-                    name: string;
-                    /**
-                     * value of the variable.
-                     * Note: the value will be validated against the schema of the corresponding ClusterClassVariable
-                     * from the ClusterClass.
-                     * Note: We have to use apiextensionsv1.JSON instead of a custom JSON type, because controller-tools has a
-                     * hard-coded schema for apiextensionsv1.JSON which cannot be produced by another type via controller-tools,
-                     * i.e. it is not possible to have no type field.
-                     * Ref: https://github.com/kubernetes-sigs/controller-tools/blob/d0e03a142d0ecdd5491593e941ee1d6b5d91dba6/pkg/crd/known_types.go#L106-L111
-                     */
-                    value: {
-                        [k: string]: unknown;
-                    };
-                },
-                ...{
-                    /**
-                     * name of the variable.
-                     */
-                    name: string;
-                    /**
-                     * value of the variable.
-                     * Note: the value will be validated against the schema of the corresponding ClusterClassVariable
-                     * from the ClusterClass.
-                     * Note: We have to use apiextensionsv1.JSON instead of a custom JSON type, because controller-tools has a
-                     * hard-coded schema for apiextensionsv1.JSON which cannot be produced by another type via controller-tools,
-                     * i.e. it is not possible to have no type field.
-                     * Ref: https://github.com/kubernetes-sigs/controller-tools/blob/d0e03a142d0ecdd5491593e941ee1d6b5d91dba6/pkg/crd/known_types.go#L106-L111
-                     */
-                    value: {
-                        [k: string]: unknown;
-                    };
-                }[]
-            ];
+            variables?: {
+                /**
+                 * name of the variable.
+                 */
+                name: string;
+                /**
+                 * value of the variable.
+                 * Note: the value will be validated against the schema of the corresponding ClusterClassVariable
+                 * from the ClusterClass.
+                 * Note: We have to use apiextensionsv1.JSON instead of a custom JSON type, because controller-tools has a
+                 * hard-coded schema for apiextensionsv1.JSON which cannot be produced by another type via controller-tools,
+                 * i.e. it is not possible to have no type field.
+                 * Ref: https://github.com/kubernetes-sigs/controller-tools/blob/d0e03a142d0ecdd5491593e941ee1d6b5d91dba6/pkg/crd/known_types.go#L106-L111
+                 */
+                value: {
+                    [k: string]: unknown;
+                };
+            }[];
             /**
              * version is the Kubernetes version of the cluster.
              */
@@ -716,1086 +575,442 @@ export interface Cluster {
                  * Items: MachineDeploymentTopology specifies the different parameters for a set of worker nodes in the topology.
                  * This set of nodes is managed by a MachineDeployment object whose lifecycle is managed by the Cluster controller.
                  */
-                machineDeployments?: [
-                    {
+                machineDeployments?: {
+                    /**
+                     * class is the name of the MachineDeploymentClass used to create the set of worker nodes.
+                     * This should match one of the deployment classes defined in the ClusterClass object
+                     * mentioned in the `Cluster.Spec.Class` field.
+                     */
+                    class: string;
+                    /**
+                     * deletion contains configuration options for Machine deletion.
+                     */
+                    deletion?: {
                         /**
-                         * class is the name of the MachineDeploymentClass used to create the set of worker nodes.
-                         * This should match one of the deployment classes defined in the ClusterClass object
-                         * mentioned in the `Cluster.Spec.Class` field.
+                         * nodeDeletionTimeoutSeconds defines how long the controller will attempt to delete the Node that the Machine
+                         * hosts after the Machine is marked for deletion. A duration of 0 will retry deletion indefinitely.
+                         * Defaults to 10 seconds.
                          */
-                        class: string;
+                        nodeDeletionTimeoutSeconds?: number;
                         /**
-                         * deletion contains configuration options for Machine deletion.
+                         * nodeDrainTimeoutSeconds is the total amount of time that the controller will spend on draining a node.
+                         * The default value is 0, meaning that the node can be drained without any time limitations.
+                         * NOTE: nodeDrainTimeoutSeconds is different from `kubectl drain --timeout`
                          */
-                        deletion?: {
-                            /**
-                             * nodeDeletionTimeoutSeconds defines how long the controller will attempt to delete the Node that the Machine
-                             * hosts after the Machine is marked for deletion. A duration of 0 will retry deletion indefinitely.
-                             * Defaults to 10 seconds.
-                             */
-                            nodeDeletionTimeoutSeconds?: number;
-                            /**
-                             * nodeDrainTimeoutSeconds is the total amount of time that the controller will spend on draining a node.
-                             * The default value is 0, meaning that the node can be drained without any time limitations.
-                             * NOTE: nodeDrainTimeoutSeconds is different from `kubectl drain --timeout`
-                             */
-                            nodeDrainTimeoutSeconds?: number;
-                            /**
-                             * nodeVolumeDetachTimeoutSeconds is the total amount of time that the controller will spend on waiting for all volumes
-                             * to be detached. The default value is 0, meaning that the volumes can be detached without any time limitations.
-                             */
-                            nodeVolumeDetachTimeoutSeconds?: number;
-                            /**
-                             * order defines the order in which Machines are deleted when downscaling.
-                             * Defaults to "Random".  Valid values are "Random, "Newest", "Oldest"
-                             */
-                            order?: 'Random' | 'Newest' | 'Oldest';
-                        };
+                        nodeDrainTimeoutSeconds?: number;
                         /**
-                         * failureDomain is the failure domain the machines will be created in.
-                         * Must match a key in the FailureDomains map stored on the cluster object.
+                         * nodeVolumeDetachTimeoutSeconds is the total amount of time that the controller will spend on waiting for all volumes
+                         * to be detached. The default value is 0, meaning that the volumes can be detached without any time limitations.
                          */
-                        failureDomain?: string;
+                        nodeVolumeDetachTimeoutSeconds?: number;
                         /**
-                         * healthCheck allows to enable, disable and override MachineDeployment health check
-                         * configuration from the ClusterClass for this MachineDeployment.
+                         * order defines the order in which Machines are deleted when downscaling.
+                         * Defaults to "Random".  Valid values are "Random, "Newest", "Oldest"
                          */
-                        healthCheck?: {
-                            /**
-                             * checks are the checks that are used to evaluate if a Machine is healthy.
-                             *
-                             * If one of checks and remediation fields are set, the system assumes that an healthCheck override is defined,
-                             * and as a consequence the checks and remediation fields from Cluster will be used instead of the
-                             * corresponding fields in ClusterClass.
-                             *
-                             * Independent of this configuration the MachineHealthCheck controller will always
-                             * flag Machines with `cluster.x-k8s.io/remediate-machine` annotation and
-                             * Machines with deleted Nodes as unhealthy.
-                             *
-                             * Furthermore, if checks.nodeStartupTimeoutSeconds is not set it
-                             * is defaulted to 10 minutes and evaluated accordingly.
-                             */
-                            checks?: {
-                                /**
-                                 * nodeStartupTimeoutSeconds allows to set the maximum time for MachineHealthCheck
-                                 * to consider a Machine unhealthy if a corresponding Node isn't associated
-                                 * through a `Spec.ProviderID` field.
-                                 *
-                                 * The duration set in this field is compared to the greatest of:
-                                 * - Cluster's infrastructure ready condition timestamp (if and when available)
-                                 * - Control Plane's initialized condition timestamp (if and when available)
-                                 * - Machine's infrastructure ready condition timestamp (if and when available)
-                                 * - Machine's metadata creation timestamp
-                                 *
-                                 * Defaults to 10 minutes.
-                                 * If you wish to disable this feature, set the value explicitly to 0.
-                                 */
-                                nodeStartupTimeoutSeconds?: number;
-                                /**
-                                 * unhealthyMachineConditions contains a list of the machine conditions that determine
-                                 * whether a machine is considered unhealthy.  The conditions are combined in a
-                                 * logical OR, i.e. if any of the conditions is met, the machine is unhealthy.
-                                 *
-                                 * @minItems 1
-                                 * @maxItems 100
-                                 *
-                                 * Items: UnhealthyMachineCondition represents a Machine condition type and value with a timeout
-                                 * specified as a duration.  When the named condition has been in the given
-                                 * status for at least the timeout value, a machine is considered unhealthy.
-                                 */
-                                unhealthyMachineConditions?: [
-                                    {
-                                        /**
-                                         * status of the condition, one of True, False, Unknown.
-                                         */
-                                        status: 'True' | 'False' | 'Unknown';
-                                        /**
-                                         * timeoutSeconds is the duration that a machine must be in a given status for,
-                                         * after which the machine is considered unhealthy.
-                                         * For example, with a value of "3600", the machine must match the status
-                                         * for at least 1 hour before being considered unhealthy.
-                                         */
-                                        timeoutSeconds: number;
-                                        /**
-                                         * type of Machine condition
-                                         */
-                                        type: string;
-                                    },
-                                    ...{
-                                        /**
-                                         * status of the condition, one of True, False, Unknown.
-                                         */
-                                        status: 'True' | 'False' | 'Unknown';
-                                        /**
-                                         * timeoutSeconds is the duration that a machine must be in a given status for,
-                                         * after which the machine is considered unhealthy.
-                                         * For example, with a value of "3600", the machine must match the status
-                                         * for at least 1 hour before being considered unhealthy.
-                                         */
-                                        timeoutSeconds: number;
-                                        /**
-                                         * type of Machine condition
-                                         */
-                                        type: string;
-                                    }[]
-                                ];
-                                /**
-                                 * unhealthyNodeConditions contains a list of conditions that determine
-                                 * whether a node is considered unhealthy. The conditions are combined in a
-                                 * logical OR, i.e. if any of the conditions is met, the node is unhealthy.
-                                 *
-                                 * @minItems 1
-                                 * @maxItems 100
-                                 *
-                                 * Items: UnhealthyNodeCondition represents a Node condition type and value with a timeout
-                                 * specified as a duration.  When the named condition has been in the given
-                                 * status for at least the timeout value, a node is considered unhealthy.
-                                 */
-                                unhealthyNodeConditions?: [
-                                    {
-                                        /**
-                                         * status of the condition, one of True, False, Unknown.
-                                         */
-                                        status: string;
-                                        /**
-                                         * timeoutSeconds is the duration that a node must be in a given status for,
-                                         * after which the node is considered unhealthy.
-                                         * For example, with a value of "3600", the node must match the status
-                                         * for at least 1 hour before being considered unhealthy.
-                                         */
-                                        timeoutSeconds: number;
-                                        /**
-                                         * type of Node condition
-                                         */
-                                        type: string;
-                                    },
-                                    ...{
-                                        /**
-                                         * status of the condition, one of True, False, Unknown.
-                                         */
-                                        status: string;
-                                        /**
-                                         * timeoutSeconds is the duration that a node must be in a given status for,
-                                         * after which the node is considered unhealthy.
-                                         * For example, with a value of "3600", the node must match the status
-                                         * for at least 1 hour before being considered unhealthy.
-                                         */
-                                        timeoutSeconds: number;
-                                        /**
-                                         * type of Node condition
-                                         */
-                                        type: string;
-                                    }[]
-                                ];
-                            };
-                            /**
-                             * enabled controls if a MachineHealthCheck should be created for the target machines.
-                             *
-                             * If false: No MachineHealthCheck will be created.
-                             *
-                             * If not set(default): A MachineHealthCheck will be created if it is defined here or
-                             *  in the associated ClusterClass. If no MachineHealthCheck is defined then none will be created.
-                             *
-                             * If true: A MachineHealthCheck is guaranteed to be created. Cluster validation will
-                             * block if `enable` is true and no MachineHealthCheck definition is available.
-                             */
-                            enabled?: boolean;
-                            /**
-                             * remediation configures if and how remediations are triggered if a Machine is unhealthy.
-                             *
-                             * If one of checks and remediation fields are set, the system assumes that an healthCheck override is defined,
-                             * and as a consequence the checks and remediation fields from cluster will be used instead of the
-                             * corresponding fields in ClusterClass.
-                             *
-                             * If an health check override is defined and remediation or remediation.triggerIf is not set,
-                             * remediation will always be triggered for unhealthy Machines.
-                             *
-                             * If an health check override is defined and remediation or remediation.templateRef is not set,
-                             * the OwnerRemediated condition will be set on unhealthy Machines to trigger remediation via
-                             * the owner of the Machines, for example a MachineSet or a KubeadmControlPlane.
-                             */
-                            remediation?: {
-                                /**
-                                 * maxInFlight determines how many in flight remediations should happen at the same time.
-                                 *
-                                 * Remediation only happens on the MachineSet with the most current revision, while
-                                 * older MachineSets (usually present during rollout operations) aren't allowed to remediate.
-                                 *
-                                 * Note: In general (independent of remediations), unhealthy machines are always
-                                 * prioritized during scale down operations over healthy ones.
-                                 *
-                                 * MaxInFlight can be set to a fixed number or a percentage.
-                                 * Example: when this is set to 20%, the MachineSet controller deletes at most 20% of
-                                 * the desired replicas.
-                                 *
-                                 * If not set, remediation is limited to all machines (bounded by replicas)
-                                 * under the active MachineSet's management.
-                                 */
-                                maxInFlight?: number | string;
-                                /**
-                                 * templateRef is a reference to a remediation template
-                                 * provided by an infrastructure provider.
-                                 *
-                                 * This field is completely optional, when filled, the MachineHealthCheck controller
-                                 * creates a new object from the template referenced and hands off remediation of the machine to
-                                 * a controller that lives outside of Cluster API.
-                                 */
-                                templateRef?: {
-                                    /**
-                                     * apiVersion of the remediation template.
-                                     * apiVersion must be fully qualified domain name followed by / and a version.
-                                     * NOTE: This field must be kept in sync with the APIVersion of the remediation template.
-                                     */
-                                    apiVersion: string;
-                                    /**
-                                     * kind of the remediation template.
-                                     * kind must consist of alphanumeric characters or '-', start with an alphabetic character, and end with an alphanumeric character.
-                                     */
-                                    kind: string;
-                                    /**
-                                     * name of the remediation template.
-                                     * name must consist of lower case alphanumeric characters, '-' or '.', and must start and end with an alphanumeric character.
-                                     */
-                                    name: string;
-                                };
-                                /**
-                                 * triggerIf configures if remediations are triggered.
-                                 * If this field is not set, remediations are always triggered.
-                                 */
-                                triggerIf?: {
-                                    /**
-                                     * unhealthyInRange specifies that remediations are only triggered if the number of
-                                     * unhealthy Machines is in the configured range.
-                                     * Takes precedence over unhealthyLessThanOrEqualTo.
-                                     * Eg. "[3-5]" - This means that remediation will be allowed only when:
-                                     * (a) there are at least 3 unhealthy Machines (and)
-                                     * (b) there are at most 5 unhealthy Machines
-                                     */
-                                    unhealthyInRange?: string;
-                                    /**
-                                     * unhealthyLessThanOrEqualTo specifies that remediations are only triggered if the number of
-                                     * unhealthy Machines is less than or equal to the configured value.
-                                     * unhealthyInRange takes precedence if set.
-                                     */
-                                    unhealthyLessThanOrEqualTo?: number | string;
-                                };
-                            };
-                        };
+                        order?: 'Random' | 'Newest' | 'Oldest';
+                    };
+                    /**
+                     * failureDomain is the failure domain the machines will be created in.
+                     * Must match a key in the FailureDomains map stored on the cluster object.
+                     */
+                    failureDomain?: string;
+                    /**
+                     * healthCheck allows to enable, disable and override MachineDeployment health check
+                     * configuration from the ClusterClass for this MachineDeployment.
+                     */
+                    healthCheck?: {
                         /**
-                         * metadata is the metadata applied to the MachineDeployment and the machines of the MachineDeployment.
-                         * At runtime this metadata is merged with the corresponding metadata from the ClusterClass.
-                         */
-                        metadata?: {
-                            /**
-                             * annotations is an unstructured key value map stored with a resource that may be
-                             * set by external tools to store and retrieve arbitrary metadata. They are not
-                             * queryable and should be preserved when modifying objects.
-                             * More info: http://kubernetes.io/docs/user-guide/annotations
-                             */
-                            annotations?: {
-                                [k: string]: string;
-                            };
-                            /**
-                             * labels is a map of string keys and values that can be used to organize and categorize
-                             * (scope and select) objects. May match selectors of replication controllers
-                             * and services.
-                             * More info: http://kubernetes.io/docs/user-guide/labels
-                             */
-                            labels?: {
-                                [k: string]: string;
-                            };
-                        };
-                        /**
-                         * minReadySeconds is the minimum number of seconds for which a newly created machine should
-                         * be ready.
-                         * Defaults to 0 (machine will be considered available as soon as it
-                         * is ready)
-                         */
-                        minReadySeconds?: number;
-                        /**
-                         * name is the unique identifier for this MachineDeploymentTopology.
-                         * The value is used with other unique identifiers to create a MachineDeployment's Name
-                         * (e.g. cluster's name, etc). In case the name is greater than the allowed maximum length,
-                         * the values are hashed together.
-                         */
-                        name: string;
-                        /**
-                         * readinessGates specifies additional conditions to include when evaluating Machine Ready condition.
+                         * checks are the checks that are used to evaluate if a Machine is healthy.
                          *
-                         * This field can be used e.g. to instruct the machine controller to include in the computation for Machine's ready
-                         * computation a condition, managed by an external controllers, reporting the status of special software/hardware installed on the Machine.
+                         * If one of checks and remediation fields are set, the system assumes that an healthCheck override is defined,
+                         * and as a consequence the checks and remediation fields from Cluster will be used instead of the
+                         * corresponding fields in ClusterClass.
                          *
-                         * If this field is not defined, readinessGates from the corresponding MachineDeploymentClass will be used, if any.
+                         * Independent of this configuration the MachineHealthCheck controller will always
+                         * flag Machines with `cluster.x-k8s.io/remediate-machine` annotation and
+                         * Machines with deleted Nodes as unhealthy.
                          *
-                         * @minItems 1
-                         * @maxItems 32
-                         *
-                         * Items: MachineReadinessGate contains the type of a Machine condition to be used as a readiness gate.
+                         * Furthermore, if checks.nodeStartupTimeoutSeconds is not set it
+                         * is defaulted to 10 minutes and evaluated accordingly.
                          */
-                        readinessGates?: [
-                            {
-                                /**
-                                 * conditionType refers to a condition with matching type in the Machine's condition list.
-                                 * If the conditions doesn't exist, it will be treated as unknown.
-                                 * Note: Both Cluster API conditions or conditions added by 3rd party controllers can be used as readiness gates.
-                                 */
-                                conditionType: string;
-                                /**
-                                 * polarity of the conditionType specified in this readinessGate.
-                                 * Valid values are Positive, Negative and omitted.
-                                 * When omitted, the default behaviour will be Positive.
-                                 * A positive polarity means that the condition should report a true status under normal conditions.
-                                 * A negative polarity means that the condition should report a false status under normal conditions.
-                                 */
-                                polarity?: 'Positive' | 'Negative';
-                            },
-                            ...{
-                                /**
-                                 * conditionType refers to a condition with matching type in the Machine's condition list.
-                                 * If the conditions doesn't exist, it will be treated as unknown.
-                                 * Note: Both Cluster API conditions or conditions added by 3rd party controllers can be used as readiness gates.
-                                 */
-                                conditionType: string;
-                                /**
-                                 * polarity of the conditionType specified in this readinessGate.
-                                 * Valid values are Positive, Negative and omitted.
-                                 * When omitted, the default behaviour will be Positive.
-                                 * A positive polarity means that the condition should report a true status under normal conditions.
-                                 * A negative polarity means that the condition should report a false status under normal conditions.
-                                 */
-                                polarity?: 'Positive' | 'Negative';
-                            }[]
-                        ];
-                        /**
-                         * replicas is the number of worker nodes belonging to this set.
-                         * If the value is nil, the MachineDeployment is created without the number of Replicas (defaulting to 1)
-                         * and it's assumed that an external entity (like cluster autoscaler) is responsible for the management
-                         * of this value.
-                         */
-                        replicas?: number;
-                        /**
-                         * rollout allows you to configure the behaviour of rolling updates to the MachineDeployment Machines.
-                         * It allows you to define the strategy used during rolling replacements.
-                         */
-                        rollout?: {
+                        checks?: {
                             /**
-                             * after is a field to indicate a rollout should be performed
-                             * after the specified time even if no changes have been made to the
-                             * MachineDeployment.
-                             * Example: In the YAML the time can be specified in the RFC3339 format.
-                             * To specify the rolloutAfter target as March 9, 2023, at 9 am UTC
-                             * use "2023-03-09T09:00:00Z".
+                             * nodeStartupTimeoutSeconds allows to set the maximum time for MachineHealthCheck
+                             * to consider a Machine unhealthy if a corresponding Node isn't associated
+                             * through a `Spec.ProviderID` field.
+                             *
+                             * The duration set in this field is compared to the greatest of:
+                             * - Cluster's infrastructure ready condition timestamp (if and when available)
+                             * - Control Plane's initialized condition timestamp (if and when available)
+                             * - Machine's infrastructure ready condition timestamp (if and when available)
+                             * - Machine's metadata creation timestamp
+                             *
+                             * Defaults to 10 minutes.
+                             * If you wish to disable this feature, set the value explicitly to 0.
                              */
-                            after?: string;
+                            nodeStartupTimeoutSeconds?: number;
                             /**
-                             * strategy specifies how to roll out control plane Machines.
-                             */
-                            strategy?: {
-                                /**
-                                 * rollingUpdate is the rolling update config params. Present only if
-                                 * type = RollingUpdate.
-                                 */
-                                rollingUpdate?: {
-                                    /**
-                                     * maxSurge is the maximum number of machines that can be scheduled above the
-                                     * desired number of machines.
-                                     * Value can be an absolute number (ex: 5) or a percentage of
-                                     * desired machines (ex: 10%).
-                                     * This can not be 0 if MaxUnavailable is 0.
-                                     * Absolute number is calculated from percentage by rounding up.
-                                     * Defaults to 1.
-                                     * Example: when this is set to 30%, the new MachineSet can be scaled
-                                     * up immediately when the rolling update starts, such that the total
-                                     * number of old and new machines do not exceed 130% of desired
-                                     * machines. Once old machines have been killed, new MachineSet can
-                                     * be scaled up further, ensuring that total number of machines running
-                                     * at any time during the update is at most 130% of desired machines.
-                                     */
-                                    maxSurge?: number | string;
-                                    /**
-                                     * maxUnavailable is the maximum number of machines that can be unavailable during the update.
-                                     * Value can be an absolute number (ex: 5) or a percentage of desired
-                                     * machines (ex: 10%).
-                                     * Absolute number is calculated from percentage by rounding down.
-                                     * This can not be 0 if MaxSurge is 0.
-                                     * Defaults to 0.
-                                     * Example: when this is set to 30%, the old MachineSet can be scaled
-                                     * down to 70% of desired machines immediately when the rolling update
-                                     * starts. Once new machines are ready, old MachineSet can be scaled
-                                     * down further, followed by scaling up the new MachineSet, ensuring
-                                     * that the total number of machines available at all times
-                                     * during the update is at least 70% of desired machines.
-                                     */
-                                    maxUnavailable?: number | string;
-                                };
-                                /**
-                                 * type of rollout. Allowed values are RollingUpdate and OnDelete.
-                                 * Default is RollingUpdate.
-                                 */
-                                type: 'RollingUpdate' | 'OnDelete';
-                            };
-                        };
-                        /**
-                         * taints are the node taints that Cluster API will manage.
-                         * This list is not necessarily complete: other Kubernetes components may add or remove other taints from nodes,
-                         * e.g. the node controller might add the node.kubernetes.io/not-ready taint.
-                         * Only those taints defined in this list will be added or removed by core Cluster API controllers.
-                         *
-                         * There can be at most 64 taints.
-                         * A pod would have to tolerate all existing taints to run on the corresponding node.
-                         *
-                         * NOTE: This list is implemented as a "map" type, meaning that individual elements can be managed by different owners.
-                         *
-                         * @minItems 1
-                         * @maxItems 64
-                         *
-                         * Items: MachineTaint defines a taint equivalent to corev1.Taint, but additionally having a propagation field.
-                         */
-                        taints?: [
-                            {
-                                /**
-                                 * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
-                                 */
-                                effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
-                                /**
-                                 * key is the taint key to be applied to a node.
-                                 * Must be a valid qualified name of maximum size 63 characters
-                                 * with an optional subdomain prefix of maximum size 253 characters,
-                                 * separated by a `/`.
-                                 */
-                                key: string;
-                                /**
-                                 * propagation defines how this taint should be propagated to nodes.
-                                 * Valid values are 'Always' and 'OnInitialization'.
-                                 * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
-                                 * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
-                                 */
-                                propagation: 'Always' | 'OnInitialization';
-                                /**
-                                 * value is the taint value corresponding to the taint key.
-                                 * It must be a valid label value of maximum size 63 characters.
-                                 */
-                                value?: string;
-                            },
-                            ...{
-                                /**
-                                 * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
-                                 */
-                                effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
-                                /**
-                                 * key is the taint key to be applied to a node.
-                                 * Must be a valid qualified name of maximum size 63 characters
-                                 * with an optional subdomain prefix of maximum size 253 characters,
-                                 * separated by a `/`.
-                                 */
-                                key: string;
-                                /**
-                                 * propagation defines how this taint should be propagated to nodes.
-                                 * Valid values are 'Always' and 'OnInitialization'.
-                                 * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
-                                 * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
-                                 */
-                                propagation: 'Always' | 'OnInitialization';
-                                /**
-                                 * value is the taint value corresponding to the taint key.
-                                 * It must be a valid label value of maximum size 63 characters.
-                                 */
-                                value?: string;
-                            }[]
-                        ];
-                        /**
-                         * variables can be used to customize the MachineDeployment through patches.
-                         */
-                        variables?: {
-                            /**
-                             * overrides can be used to override Cluster level variables.
+                             * unhealthyMachineConditions contains a list of the machine conditions that determine
+                             * whether a machine is considered unhealthy.  The conditions are combined in a
+                             * logical OR, i.e. if any of the conditions is met, the machine is unhealthy.
                              *
                              * @minItems 1
-                             * @maxItems 1000
+                             * @maxItems 100
                              *
-                             * Items: ClusterVariable can be used to customize the Cluster through patches. Each ClusterVariable is associated with a
-                             * Variable definition in the ClusterClass `status` variables.
+                             * Items: UnhealthyMachineCondition represents a Machine condition type and value with a timeout
+                             * specified as a duration.  When the named condition has been in the given
+                             * status for at least the timeout value, a machine is considered unhealthy.
                              */
-                            overrides?: [
-                                {
-                                    /**
-                                     * name of the variable.
-                                     */
-                                    name: string;
-                                    /**
-                                     * value of the variable.
-                                     * Note: the value will be validated against the schema of the corresponding ClusterClassVariable
-                                     * from the ClusterClass.
-                                     * Note: We have to use apiextensionsv1.JSON instead of a custom JSON type, because controller-tools has a
-                                     * hard-coded schema for apiextensionsv1.JSON which cannot be produced by another type via controller-tools,
-                                     * i.e. it is not possible to have no type field.
-                                     * Ref: https://github.com/kubernetes-sigs/controller-tools/blob/d0e03a142d0ecdd5491593e941ee1d6b5d91dba6/pkg/crd/known_types.go#L106-L111
-                                     */
-                                    value: {
-                                        [k: string]: unknown;
-                                    };
-                                },
-                                ...{
-                                    /**
-                                     * name of the variable.
-                                     */
-                                    name: string;
-                                    /**
-                                     * value of the variable.
-                                     * Note: the value will be validated against the schema of the corresponding ClusterClassVariable
-                                     * from the ClusterClass.
-                                     * Note: We have to use apiextensionsv1.JSON instead of a custom JSON type, because controller-tools has a
-                                     * hard-coded schema for apiextensionsv1.JSON which cannot be produced by another type via controller-tools,
-                                     * i.e. it is not possible to have no type field.
-                                     * Ref: https://github.com/kubernetes-sigs/controller-tools/blob/d0e03a142d0ecdd5491593e941ee1d6b5d91dba6/pkg/crd/known_types.go#L106-L111
-                                     */
-                                    value: {
-                                        [k: string]: unknown;
-                                    };
-                                }[]
-                            ];
-                        };
-                    },
-                    ...{
-                        /**
-                         * class is the name of the MachineDeploymentClass used to create the set of worker nodes.
-                         * This should match one of the deployment classes defined in the ClusterClass object
-                         * mentioned in the `Cluster.Spec.Class` field.
-                         */
-                        class: string;
-                        /**
-                         * deletion contains configuration options for Machine deletion.
-                         */
-                        deletion?: {
+                            unhealthyMachineConditions?: {
+                                /**
+                                 * status of the condition, one of True, False, Unknown.
+                                 */
+                                status: 'True' | 'False' | 'Unknown';
+                                /**
+                                 * timeoutSeconds is the duration that a machine must be in a given status for,
+                                 * after which the machine is considered unhealthy.
+                                 * For example, with a value of "3600", the machine must match the status
+                                 * for at least 1 hour before being considered unhealthy.
+                                 */
+                                timeoutSeconds: number;
+                                /**
+                                 * type of Machine condition
+                                 */
+                                type: string;
+                            }[];
                             /**
-                             * nodeDeletionTimeoutSeconds defines how long the controller will attempt to delete the Node that the Machine
-                             * hosts after the Machine is marked for deletion. A duration of 0 will retry deletion indefinitely.
-                             * Defaults to 10 seconds.
-                             */
-                            nodeDeletionTimeoutSeconds?: number;
-                            /**
-                             * nodeDrainTimeoutSeconds is the total amount of time that the controller will spend on draining a node.
-                             * The default value is 0, meaning that the node can be drained without any time limitations.
-                             * NOTE: nodeDrainTimeoutSeconds is different from `kubectl drain --timeout`
-                             */
-                            nodeDrainTimeoutSeconds?: number;
-                            /**
-                             * nodeVolumeDetachTimeoutSeconds is the total amount of time that the controller will spend on waiting for all volumes
-                             * to be detached. The default value is 0, meaning that the volumes can be detached without any time limitations.
-                             */
-                            nodeVolumeDetachTimeoutSeconds?: number;
-                            /**
-                             * order defines the order in which Machines are deleted when downscaling.
-                             * Defaults to "Random".  Valid values are "Random, "Newest", "Oldest"
-                             */
-                            order?: 'Random' | 'Newest' | 'Oldest';
-                        };
-                        /**
-                         * failureDomain is the failure domain the machines will be created in.
-                         * Must match a key in the FailureDomains map stored on the cluster object.
-                         */
-                        failureDomain?: string;
-                        /**
-                         * healthCheck allows to enable, disable and override MachineDeployment health check
-                         * configuration from the ClusterClass for this MachineDeployment.
-                         */
-                        healthCheck?: {
-                            /**
-                             * checks are the checks that are used to evaluate if a Machine is healthy.
-                             *
-                             * If one of checks and remediation fields are set, the system assumes that an healthCheck override is defined,
-                             * and as a consequence the checks and remediation fields from Cluster will be used instead of the
-                             * corresponding fields in ClusterClass.
-                             *
-                             * Independent of this configuration the MachineHealthCheck controller will always
-                             * flag Machines with `cluster.x-k8s.io/remediate-machine` annotation and
-                             * Machines with deleted Nodes as unhealthy.
-                             *
-                             * Furthermore, if checks.nodeStartupTimeoutSeconds is not set it
-                             * is defaulted to 10 minutes and evaluated accordingly.
-                             */
-                            checks?: {
-                                /**
-                                 * nodeStartupTimeoutSeconds allows to set the maximum time for MachineHealthCheck
-                                 * to consider a Machine unhealthy if a corresponding Node isn't associated
-                                 * through a `Spec.ProviderID` field.
-                                 *
-                                 * The duration set in this field is compared to the greatest of:
-                                 * - Cluster's infrastructure ready condition timestamp (if and when available)
-                                 * - Control Plane's initialized condition timestamp (if and when available)
-                                 * - Machine's infrastructure ready condition timestamp (if and when available)
-                                 * - Machine's metadata creation timestamp
-                                 *
-                                 * Defaults to 10 minutes.
-                                 * If you wish to disable this feature, set the value explicitly to 0.
-                                 */
-                                nodeStartupTimeoutSeconds?: number;
-                                /**
-                                 * unhealthyMachineConditions contains a list of the machine conditions that determine
-                                 * whether a machine is considered unhealthy.  The conditions are combined in a
-                                 * logical OR, i.e. if any of the conditions is met, the machine is unhealthy.
-                                 *
-                                 * @minItems 1
-                                 * @maxItems 100
-                                 *
-                                 * Items: UnhealthyMachineCondition represents a Machine condition type and value with a timeout
-                                 * specified as a duration.  When the named condition has been in the given
-                                 * status for at least the timeout value, a machine is considered unhealthy.
-                                 */
-                                unhealthyMachineConditions?: [
-                                    {
-                                        /**
-                                         * status of the condition, one of True, False, Unknown.
-                                         */
-                                        status: 'True' | 'False' | 'Unknown';
-                                        /**
-                                         * timeoutSeconds is the duration that a machine must be in a given status for,
-                                         * after which the machine is considered unhealthy.
-                                         * For example, with a value of "3600", the machine must match the status
-                                         * for at least 1 hour before being considered unhealthy.
-                                         */
-                                        timeoutSeconds: number;
-                                        /**
-                                         * type of Machine condition
-                                         */
-                                        type: string;
-                                    },
-                                    ...{
-                                        /**
-                                         * status of the condition, one of True, False, Unknown.
-                                         */
-                                        status: 'True' | 'False' | 'Unknown';
-                                        /**
-                                         * timeoutSeconds is the duration that a machine must be in a given status for,
-                                         * after which the machine is considered unhealthy.
-                                         * For example, with a value of "3600", the machine must match the status
-                                         * for at least 1 hour before being considered unhealthy.
-                                         */
-                                        timeoutSeconds: number;
-                                        /**
-                                         * type of Machine condition
-                                         */
-                                        type: string;
-                                    }[]
-                                ];
-                                /**
-                                 * unhealthyNodeConditions contains a list of conditions that determine
-                                 * whether a node is considered unhealthy. The conditions are combined in a
-                                 * logical OR, i.e. if any of the conditions is met, the node is unhealthy.
-                                 *
-                                 * @minItems 1
-                                 * @maxItems 100
-                                 *
-                                 * Items: UnhealthyNodeCondition represents a Node condition type and value with a timeout
-                                 * specified as a duration.  When the named condition has been in the given
-                                 * status for at least the timeout value, a node is considered unhealthy.
-                                 */
-                                unhealthyNodeConditions?: [
-                                    {
-                                        /**
-                                         * status of the condition, one of True, False, Unknown.
-                                         */
-                                        status: string;
-                                        /**
-                                         * timeoutSeconds is the duration that a node must be in a given status for,
-                                         * after which the node is considered unhealthy.
-                                         * For example, with a value of "3600", the node must match the status
-                                         * for at least 1 hour before being considered unhealthy.
-                                         */
-                                        timeoutSeconds: number;
-                                        /**
-                                         * type of Node condition
-                                         */
-                                        type: string;
-                                    },
-                                    ...{
-                                        /**
-                                         * status of the condition, one of True, False, Unknown.
-                                         */
-                                        status: string;
-                                        /**
-                                         * timeoutSeconds is the duration that a node must be in a given status for,
-                                         * after which the node is considered unhealthy.
-                                         * For example, with a value of "3600", the node must match the status
-                                         * for at least 1 hour before being considered unhealthy.
-                                         */
-                                        timeoutSeconds: number;
-                                        /**
-                                         * type of Node condition
-                                         */
-                                        type: string;
-                                    }[]
-                                ];
-                            };
-                            /**
-                             * enabled controls if a MachineHealthCheck should be created for the target machines.
-                             *
-                             * If false: No MachineHealthCheck will be created.
-                             *
-                             * If not set(default): A MachineHealthCheck will be created if it is defined here or
-                             *  in the associated ClusterClass. If no MachineHealthCheck is defined then none will be created.
-                             *
-                             * If true: A MachineHealthCheck is guaranteed to be created. Cluster validation will
-                             * block if `enable` is true and no MachineHealthCheck definition is available.
-                             */
-                            enabled?: boolean;
-                            /**
-                             * remediation configures if and how remediations are triggered if a Machine is unhealthy.
-                             *
-                             * If one of checks and remediation fields are set, the system assumes that an healthCheck override is defined,
-                             * and as a consequence the checks and remediation fields from cluster will be used instead of the
-                             * corresponding fields in ClusterClass.
-                             *
-                             * If an health check override is defined and remediation or remediation.triggerIf is not set,
-                             * remediation will always be triggered for unhealthy Machines.
-                             *
-                             * If an health check override is defined and remediation or remediation.templateRef is not set,
-                             * the OwnerRemediated condition will be set on unhealthy Machines to trigger remediation via
-                             * the owner of the Machines, for example a MachineSet or a KubeadmControlPlane.
-                             */
-                            remediation?: {
-                                /**
-                                 * maxInFlight determines how many in flight remediations should happen at the same time.
-                                 *
-                                 * Remediation only happens on the MachineSet with the most current revision, while
-                                 * older MachineSets (usually present during rollout operations) aren't allowed to remediate.
-                                 *
-                                 * Note: In general (independent of remediations), unhealthy machines are always
-                                 * prioritized during scale down operations over healthy ones.
-                                 *
-                                 * MaxInFlight can be set to a fixed number or a percentage.
-                                 * Example: when this is set to 20%, the MachineSet controller deletes at most 20% of
-                                 * the desired replicas.
-                                 *
-                                 * If not set, remediation is limited to all machines (bounded by replicas)
-                                 * under the active MachineSet's management.
-                                 */
-                                maxInFlight?: number | string;
-                                /**
-                                 * templateRef is a reference to a remediation template
-                                 * provided by an infrastructure provider.
-                                 *
-                                 * This field is completely optional, when filled, the MachineHealthCheck controller
-                                 * creates a new object from the template referenced and hands off remediation of the machine to
-                                 * a controller that lives outside of Cluster API.
-                                 */
-                                templateRef?: {
-                                    /**
-                                     * apiVersion of the remediation template.
-                                     * apiVersion must be fully qualified domain name followed by / and a version.
-                                     * NOTE: This field must be kept in sync with the APIVersion of the remediation template.
-                                     */
-                                    apiVersion: string;
-                                    /**
-                                     * kind of the remediation template.
-                                     * kind must consist of alphanumeric characters or '-', start with an alphabetic character, and end with an alphanumeric character.
-                                     */
-                                    kind: string;
-                                    /**
-                                     * name of the remediation template.
-                                     * name must consist of lower case alphanumeric characters, '-' or '.', and must start and end with an alphanumeric character.
-                                     */
-                                    name: string;
-                                };
-                                /**
-                                 * triggerIf configures if remediations are triggered.
-                                 * If this field is not set, remediations are always triggered.
-                                 */
-                                triggerIf?: {
-                                    /**
-                                     * unhealthyInRange specifies that remediations are only triggered if the number of
-                                     * unhealthy Machines is in the configured range.
-                                     * Takes precedence over unhealthyLessThanOrEqualTo.
-                                     * Eg. "[3-5]" - This means that remediation will be allowed only when:
-                                     * (a) there are at least 3 unhealthy Machines (and)
-                                     * (b) there are at most 5 unhealthy Machines
-                                     */
-                                    unhealthyInRange?: string;
-                                    /**
-                                     * unhealthyLessThanOrEqualTo specifies that remediations are only triggered if the number of
-                                     * unhealthy Machines is less than or equal to the configured value.
-                                     * unhealthyInRange takes precedence if set.
-                                     */
-                                    unhealthyLessThanOrEqualTo?: number | string;
-                                };
-                            };
-                        };
-                        /**
-                         * metadata is the metadata applied to the MachineDeployment and the machines of the MachineDeployment.
-                         * At runtime this metadata is merged with the corresponding metadata from the ClusterClass.
-                         */
-                        metadata?: {
-                            /**
-                             * annotations is an unstructured key value map stored with a resource that may be
-                             * set by external tools to store and retrieve arbitrary metadata. They are not
-                             * queryable and should be preserved when modifying objects.
-                             * More info: http://kubernetes.io/docs/user-guide/annotations
-                             */
-                            annotations?: {
-                                [k: string]: string;
-                            };
-                            /**
-                             * labels is a map of string keys and values that can be used to organize and categorize
-                             * (scope and select) objects. May match selectors of replication controllers
-                             * and services.
-                             * More info: http://kubernetes.io/docs/user-guide/labels
-                             */
-                            labels?: {
-                                [k: string]: string;
-                            };
-                        };
-                        /**
-                         * minReadySeconds is the minimum number of seconds for which a newly created machine should
-                         * be ready.
-                         * Defaults to 0 (machine will be considered available as soon as it
-                         * is ready)
-                         */
-                        minReadySeconds?: number;
-                        /**
-                         * name is the unique identifier for this MachineDeploymentTopology.
-                         * The value is used with other unique identifiers to create a MachineDeployment's Name
-                         * (e.g. cluster's name, etc). In case the name is greater than the allowed maximum length,
-                         * the values are hashed together.
-                         */
-                        name: string;
-                        /**
-                         * readinessGates specifies additional conditions to include when evaluating Machine Ready condition.
-                         *
-                         * This field can be used e.g. to instruct the machine controller to include in the computation for Machine's ready
-                         * computation a condition, managed by an external controllers, reporting the status of special software/hardware installed on the Machine.
-                         *
-                         * If this field is not defined, readinessGates from the corresponding MachineDeploymentClass will be used, if any.
-                         *
-                         * @minItems 1
-                         * @maxItems 32
-                         *
-                         * Items: MachineReadinessGate contains the type of a Machine condition to be used as a readiness gate.
-                         */
-                        readinessGates?: [
-                            {
-                                /**
-                                 * conditionType refers to a condition with matching type in the Machine's condition list.
-                                 * If the conditions doesn't exist, it will be treated as unknown.
-                                 * Note: Both Cluster API conditions or conditions added by 3rd party controllers can be used as readiness gates.
-                                 */
-                                conditionType: string;
-                                /**
-                                 * polarity of the conditionType specified in this readinessGate.
-                                 * Valid values are Positive, Negative and omitted.
-                                 * When omitted, the default behaviour will be Positive.
-                                 * A positive polarity means that the condition should report a true status under normal conditions.
-                                 * A negative polarity means that the condition should report a false status under normal conditions.
-                                 */
-                                polarity?: 'Positive' | 'Negative';
-                            },
-                            ...{
-                                /**
-                                 * conditionType refers to a condition with matching type in the Machine's condition list.
-                                 * If the conditions doesn't exist, it will be treated as unknown.
-                                 * Note: Both Cluster API conditions or conditions added by 3rd party controllers can be used as readiness gates.
-                                 */
-                                conditionType: string;
-                                /**
-                                 * polarity of the conditionType specified in this readinessGate.
-                                 * Valid values are Positive, Negative and omitted.
-                                 * When omitted, the default behaviour will be Positive.
-                                 * A positive polarity means that the condition should report a true status under normal conditions.
-                                 * A negative polarity means that the condition should report a false status under normal conditions.
-                                 */
-                                polarity?: 'Positive' | 'Negative';
-                            }[]
-                        ];
-                        /**
-                         * replicas is the number of worker nodes belonging to this set.
-                         * If the value is nil, the MachineDeployment is created without the number of Replicas (defaulting to 1)
-                         * and it's assumed that an external entity (like cluster autoscaler) is responsible for the management
-                         * of this value.
-                         */
-                        replicas?: number;
-                        /**
-                         * rollout allows you to configure the behaviour of rolling updates to the MachineDeployment Machines.
-                         * It allows you to define the strategy used during rolling replacements.
-                         */
-                        rollout?: {
-                            /**
-                             * after is a field to indicate a rollout should be performed
-                             * after the specified time even if no changes have been made to the
-                             * MachineDeployment.
-                             * Example: In the YAML the time can be specified in the RFC3339 format.
-                             * To specify the rolloutAfter target as March 9, 2023, at 9 am UTC
-                             * use "2023-03-09T09:00:00Z".
-                             */
-                            after?: string;
-                            /**
-                             * strategy specifies how to roll out control plane Machines.
-                             */
-                            strategy?: {
-                                /**
-                                 * rollingUpdate is the rolling update config params. Present only if
-                                 * type = RollingUpdate.
-                                 */
-                                rollingUpdate?: {
-                                    /**
-                                     * maxSurge is the maximum number of machines that can be scheduled above the
-                                     * desired number of machines.
-                                     * Value can be an absolute number (ex: 5) or a percentage of
-                                     * desired machines (ex: 10%).
-                                     * This can not be 0 if MaxUnavailable is 0.
-                                     * Absolute number is calculated from percentage by rounding up.
-                                     * Defaults to 1.
-                                     * Example: when this is set to 30%, the new MachineSet can be scaled
-                                     * up immediately when the rolling update starts, such that the total
-                                     * number of old and new machines do not exceed 130% of desired
-                                     * machines. Once old machines have been killed, new MachineSet can
-                                     * be scaled up further, ensuring that total number of machines running
-                                     * at any time during the update is at most 130% of desired machines.
-                                     */
-                                    maxSurge?: number | string;
-                                    /**
-                                     * maxUnavailable is the maximum number of machines that can be unavailable during the update.
-                                     * Value can be an absolute number (ex: 5) or a percentage of desired
-                                     * machines (ex: 10%).
-                                     * Absolute number is calculated from percentage by rounding down.
-                                     * This can not be 0 if MaxSurge is 0.
-                                     * Defaults to 0.
-                                     * Example: when this is set to 30%, the old MachineSet can be scaled
-                                     * down to 70% of desired machines immediately when the rolling update
-                                     * starts. Once new machines are ready, old MachineSet can be scaled
-                                     * down further, followed by scaling up the new MachineSet, ensuring
-                                     * that the total number of machines available at all times
-                                     * during the update is at least 70% of desired machines.
-                                     */
-                                    maxUnavailable?: number | string;
-                                };
-                                /**
-                                 * type of rollout. Allowed values are RollingUpdate and OnDelete.
-                                 * Default is RollingUpdate.
-                                 */
-                                type: 'RollingUpdate' | 'OnDelete';
-                            };
-                        };
-                        /**
-                         * taints are the node taints that Cluster API will manage.
-                         * This list is not necessarily complete: other Kubernetes components may add or remove other taints from nodes,
-                         * e.g. the node controller might add the node.kubernetes.io/not-ready taint.
-                         * Only those taints defined in this list will be added or removed by core Cluster API controllers.
-                         *
-                         * There can be at most 64 taints.
-                         * A pod would have to tolerate all existing taints to run on the corresponding node.
-                         *
-                         * NOTE: This list is implemented as a "map" type, meaning that individual elements can be managed by different owners.
-                         *
-                         * @minItems 1
-                         * @maxItems 64
-                         *
-                         * Items: MachineTaint defines a taint equivalent to corev1.Taint, but additionally having a propagation field.
-                         */
-                        taints?: [
-                            {
-                                /**
-                                 * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
-                                 */
-                                effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
-                                /**
-                                 * key is the taint key to be applied to a node.
-                                 * Must be a valid qualified name of maximum size 63 characters
-                                 * with an optional subdomain prefix of maximum size 253 characters,
-                                 * separated by a `/`.
-                                 */
-                                key: string;
-                                /**
-                                 * propagation defines how this taint should be propagated to nodes.
-                                 * Valid values are 'Always' and 'OnInitialization'.
-                                 * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
-                                 * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
-                                 */
-                                propagation: 'Always' | 'OnInitialization';
-                                /**
-                                 * value is the taint value corresponding to the taint key.
-                                 * It must be a valid label value of maximum size 63 characters.
-                                 */
-                                value?: string;
-                            },
-                            ...{
-                                /**
-                                 * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
-                                 */
-                                effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
-                                /**
-                                 * key is the taint key to be applied to a node.
-                                 * Must be a valid qualified name of maximum size 63 characters
-                                 * with an optional subdomain prefix of maximum size 253 characters,
-                                 * separated by a `/`.
-                                 */
-                                key: string;
-                                /**
-                                 * propagation defines how this taint should be propagated to nodes.
-                                 * Valid values are 'Always' and 'OnInitialization'.
-                                 * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
-                                 * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
-                                 */
-                                propagation: 'Always' | 'OnInitialization';
-                                /**
-                                 * value is the taint value corresponding to the taint key.
-                                 * It must be a valid label value of maximum size 63 characters.
-                                 */
-                                value?: string;
-                            }[]
-                        ];
-                        /**
-                         * variables can be used to customize the MachineDeployment through patches.
-                         */
-                        variables?: {
-                            /**
-                             * overrides can be used to override Cluster level variables.
+                             * unhealthyNodeConditions contains a list of conditions that determine
+                             * whether a node is considered unhealthy. The conditions are combined in a
+                             * logical OR, i.e. if any of the conditions is met, the node is unhealthy.
                              *
                              * @minItems 1
-                             * @maxItems 1000
+                             * @maxItems 100
                              *
-                             * Items: ClusterVariable can be used to customize the Cluster through patches. Each ClusterVariable is associated with a
-                             * Variable definition in the ClusterClass `status` variables.
+                             * Items: UnhealthyNodeCondition represents a Node condition type and value with a timeout
+                             * specified as a duration.  When the named condition has been in the given
+                             * status for at least the timeout value, a node is considered unhealthy.
                              */
-                            overrides?: [
-                                {
-                                    /**
-                                     * name of the variable.
-                                     */
-                                    name: string;
-                                    /**
-                                     * value of the variable.
-                                     * Note: the value will be validated against the schema of the corresponding ClusterClassVariable
-                                     * from the ClusterClass.
-                                     * Note: We have to use apiextensionsv1.JSON instead of a custom JSON type, because controller-tools has a
-                                     * hard-coded schema for apiextensionsv1.JSON which cannot be produced by another type via controller-tools,
-                                     * i.e. it is not possible to have no type field.
-                                     * Ref: https://github.com/kubernetes-sigs/controller-tools/blob/d0e03a142d0ecdd5491593e941ee1d6b5d91dba6/pkg/crd/known_types.go#L106-L111
-                                     */
-                                    value: {
-                                        [k: string]: unknown;
-                                    };
-                                },
-                                ...{
-                                    /**
-                                     * name of the variable.
-                                     */
-                                    name: string;
-                                    /**
-                                     * value of the variable.
-                                     * Note: the value will be validated against the schema of the corresponding ClusterClassVariable
-                                     * from the ClusterClass.
-                                     * Note: We have to use apiextensionsv1.JSON instead of a custom JSON type, because controller-tools has a
-                                     * hard-coded schema for apiextensionsv1.JSON which cannot be produced by another type via controller-tools,
-                                     * i.e. it is not possible to have no type field.
-                                     * Ref: https://github.com/kubernetes-sigs/controller-tools/blob/d0e03a142d0ecdd5491593e941ee1d6b5d91dba6/pkg/crd/known_types.go#L106-L111
-                                     */
-                                    value: {
-                                        [k: string]: unknown;
-                                    };
-                                }[]
-                            ];
+                            unhealthyNodeConditions?: {
+                                /**
+                                 * status of the condition, one of True, False, Unknown.
+                                 */
+                                status: string;
+                                /**
+                                 * timeoutSeconds is the duration that a node must be in a given status for,
+                                 * after which the node is considered unhealthy.
+                                 * For example, with a value of "3600", the node must match the status
+                                 * for at least 1 hour before being considered unhealthy.
+                                 */
+                                timeoutSeconds: number;
+                                /**
+                                 * type of Node condition
+                                 */
+                                type: string;
+                            }[];
                         };
-                    }[]
-                ];
+                        /**
+                         * enabled controls if a MachineHealthCheck should be created for the target machines.
+                         *
+                         * If false: No MachineHealthCheck will be created.
+                         *
+                         * If not set(default): A MachineHealthCheck will be created if it is defined here or
+                         *  in the associated ClusterClass. If no MachineHealthCheck is defined then none will be created.
+                         *
+                         * If true: A MachineHealthCheck is guaranteed to be created. Cluster validation will
+                         * block if `enable` is true and no MachineHealthCheck definition is available.
+                         */
+                        enabled?: boolean;
+                        /**
+                         * remediation configures if and how remediations are triggered if a Machine is unhealthy.
+                         *
+                         * If one of checks and remediation fields are set, the system assumes that an healthCheck override is defined,
+                         * and as a consequence the checks and remediation fields from cluster will be used instead of the
+                         * corresponding fields in ClusterClass.
+                         *
+                         * If an health check override is defined and remediation or remediation.triggerIf is not set,
+                         * remediation will always be triggered for unhealthy Machines.
+                         *
+                         * If an health check override is defined and remediation or remediation.templateRef is not set,
+                         * the OwnerRemediated condition will be set on unhealthy Machines to trigger remediation via
+                         * the owner of the Machines, for example a MachineSet or a KubeadmControlPlane.
+                         */
+                        remediation?: {
+                            /**
+                             * maxInFlight determines how many in flight remediations should happen at the same time.
+                             *
+                             * Remediation only happens on the MachineSet with the most current revision, while
+                             * older MachineSets (usually present during rollout operations) aren't allowed to remediate.
+                             *
+                             * Note: In general (independent of remediations), unhealthy machines are always
+                             * prioritized during scale down operations over healthy ones.
+                             *
+                             * MaxInFlight can be set to a fixed number or a percentage.
+                             * Example: when this is set to 20%, the MachineSet controller deletes at most 20% of
+                             * the desired replicas.
+                             *
+                             * If not set, remediation is limited to all machines (bounded by replicas)
+                             * under the active MachineSet's management.
+                             */
+                            maxInFlight?: number | string;
+                            /**
+                             * templateRef is a reference to a remediation template
+                             * provided by an infrastructure provider.
+                             *
+                             * This field is completely optional, when filled, the MachineHealthCheck controller
+                             * creates a new object from the template referenced and hands off remediation of the machine to
+                             * a controller that lives outside of Cluster API.
+                             */
+                            templateRef?: {
+                                /**
+                                 * apiVersion of the remediation template.
+                                 * apiVersion must be fully qualified domain name followed by / and a version.
+                                 * NOTE: This field must be kept in sync with the APIVersion of the remediation template.
+                                 */
+                                apiVersion: string;
+                                /**
+                                 * kind of the remediation template.
+                                 * kind must consist of alphanumeric characters or '-', start with an alphabetic character, and end with an alphanumeric character.
+                                 */
+                                kind: string;
+                                /**
+                                 * name of the remediation template.
+                                 * name must consist of lower case alphanumeric characters, '-' or '.', and must start and end with an alphanumeric character.
+                                 */
+                                name: string;
+                            };
+                            /**
+                             * triggerIf configures if remediations are triggered.
+                             * If this field is not set, remediations are always triggered.
+                             */
+                            triggerIf?: {
+                                /**
+                                 * unhealthyInRange specifies that remediations are only triggered if the number of
+                                 * unhealthy Machines is in the configured range.
+                                 * Takes precedence over unhealthyLessThanOrEqualTo.
+                                 * Eg. "[3-5]" - This means that remediation will be allowed only when:
+                                 * (a) there are at least 3 unhealthy Machines (and)
+                                 * (b) there are at most 5 unhealthy Machines
+                                 */
+                                unhealthyInRange?: string;
+                                /**
+                                 * unhealthyLessThanOrEqualTo specifies that remediations are only triggered if the number of
+                                 * unhealthy Machines is less than or equal to the configured value.
+                                 * unhealthyInRange takes precedence if set.
+                                 */
+                                unhealthyLessThanOrEqualTo?: number | string;
+                            };
+                        };
+                    };
+                    /**
+                     * metadata is the metadata applied to the MachineDeployment and the machines of the MachineDeployment.
+                     * At runtime this metadata is merged with the corresponding metadata from the ClusterClass.
+                     */
+                    metadata?: {
+                        /**
+                         * annotations is an unstructured key value map stored with a resource that may be
+                         * set by external tools to store and retrieve arbitrary metadata. They are not
+                         * queryable and should be preserved when modifying objects.
+                         * More info: http://kubernetes.io/docs/user-guide/annotations
+                         */
+                        annotations?: {
+                            [k: string]: string;
+                        };
+                        /**
+                         * labels is a map of string keys and values that can be used to organize and categorize
+                         * (scope and select) objects. May match selectors of replication controllers
+                         * and services.
+                         * More info: http://kubernetes.io/docs/user-guide/labels
+                         */
+                        labels?: {
+                            [k: string]: string;
+                        };
+                    };
+                    /**
+                     * minReadySeconds is the minimum number of seconds for which a newly created machine should
+                     * be ready.
+                     * Defaults to 0 (machine will be considered available as soon as it
+                     * is ready)
+                     */
+                    minReadySeconds?: number;
+                    /**
+                     * name is the unique identifier for this MachineDeploymentTopology.
+                     * The value is used with other unique identifiers to create a MachineDeployment's Name
+                     * (e.g. cluster's name, etc). In case the name is greater than the allowed maximum length,
+                     * the values are hashed together.
+                     */
+                    name: string;
+                    /**
+                     * readinessGates specifies additional conditions to include when evaluating Machine Ready condition.
+                     *
+                     * This field can be used e.g. to instruct the machine controller to include in the computation for Machine's ready
+                     * computation a condition, managed by an external controllers, reporting the status of special software/hardware installed on the Machine.
+                     *
+                     * If this field is not defined, readinessGates from the corresponding MachineDeploymentClass will be used, if any.
+                     *
+                     * @minItems 1
+                     * @maxItems 32
+                     *
+                     * Items: MachineReadinessGate contains the type of a Machine condition to be used as a readiness gate.
+                     */
+                    readinessGates?: {
+                        /**
+                         * conditionType refers to a condition with matching type in the Machine's condition list.
+                         * If the conditions doesn't exist, it will be treated as unknown.
+                         * Note: Both Cluster API conditions or conditions added by 3rd party controllers can be used as readiness gates.
+                         */
+                        conditionType: string;
+                        /**
+                         * polarity of the conditionType specified in this readinessGate.
+                         * Valid values are Positive, Negative and omitted.
+                         * When omitted, the default behaviour will be Positive.
+                         * A positive polarity means that the condition should report a true status under normal conditions.
+                         * A negative polarity means that the condition should report a false status under normal conditions.
+                         */
+                        polarity?: 'Positive' | 'Negative';
+                    }[];
+                    /**
+                     * replicas is the number of worker nodes belonging to this set.
+                     * If the value is nil, the MachineDeployment is created without the number of Replicas (defaulting to 1)
+                     * and it's assumed that an external entity (like cluster autoscaler) is responsible for the management
+                     * of this value.
+                     */
+                    replicas?: number;
+                    /**
+                     * rollout allows you to configure the behaviour of rolling updates to the MachineDeployment Machines.
+                     * It allows you to define the strategy used during rolling replacements.
+                     */
+                    rollout?: {
+                        /**
+                         * after is a field to indicate a rollout should be performed
+                         * after the specified time even if no changes have been made to the
+                         * MachineDeployment.
+                         * Example: In the YAML the time can be specified in the RFC3339 format.
+                         * To specify the rolloutAfter target as March 9, 2023, at 9 am UTC
+                         * use "2023-03-09T09:00:00Z".
+                         */
+                        after?: string;
+                        /**
+                         * strategy specifies how to roll out control plane Machines.
+                         */
+                        strategy?: {
+                            /**
+                             * rollingUpdate is the rolling update config params. Present only if
+                             * type = RollingUpdate.
+                             */
+                            rollingUpdate?: {
+                                /**
+                                 * maxSurge is the maximum number of machines that can be scheduled above the
+                                 * desired number of machines.
+                                 * Value can be an absolute number (ex: 5) or a percentage of
+                                 * desired machines (ex: 10%).
+                                 * This can not be 0 if MaxUnavailable is 0.
+                                 * Absolute number is calculated from percentage by rounding up.
+                                 * Defaults to 1.
+                                 * Example: when this is set to 30%, the new MachineSet can be scaled
+                                 * up immediately when the rolling update starts, such that the total
+                                 * number of old and new machines do not exceed 130% of desired
+                                 * machines. Once old machines have been killed, new MachineSet can
+                                 * be scaled up further, ensuring that total number of machines running
+                                 * at any time during the update is at most 130% of desired machines.
+                                 */
+                                maxSurge?: number | string;
+                                /**
+                                 * maxUnavailable is the maximum number of machines that can be unavailable during the update.
+                                 * Value can be an absolute number (ex: 5) or a percentage of desired
+                                 * machines (ex: 10%).
+                                 * Absolute number is calculated from percentage by rounding down.
+                                 * This can not be 0 if MaxSurge is 0.
+                                 * Defaults to 0.
+                                 * Example: when this is set to 30%, the old MachineSet can be scaled
+                                 * down to 70% of desired machines immediately when the rolling update
+                                 * starts. Once new machines are ready, old MachineSet can be scaled
+                                 * down further, followed by scaling up the new MachineSet, ensuring
+                                 * that the total number of machines available at all times
+                                 * during the update is at least 70% of desired machines.
+                                 */
+                                maxUnavailable?: number | string;
+                            };
+                            /**
+                             * type of rollout. Allowed values are RollingUpdate and OnDelete.
+                             * Default is RollingUpdate.
+                             */
+                            type: 'RollingUpdate' | 'OnDelete';
+                        };
+                    };
+                    /**
+                     * taints are the node taints that Cluster API will manage.
+                     * This list is not necessarily complete: other Kubernetes components may add or remove other taints from nodes,
+                     * e.g. the node controller might add the node.kubernetes.io/not-ready taint.
+                     * Only those taints defined in this list will be added or removed by core Cluster API controllers.
+                     *
+                     * There can be at most 64 taints.
+                     * A pod would have to tolerate all existing taints to run on the corresponding node.
+                     *
+                     * NOTE: This list is implemented as a "map" type, meaning that individual elements can be managed by different owners.
+                     *
+                     * @minItems 1
+                     * @maxItems 64
+                     *
+                     * Items: MachineTaint defines a taint equivalent to corev1.Taint, but additionally having a propagation field.
+                     */
+                    taints?: {
+                        /**
+                         * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
+                         */
+                        effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
+                        /**
+                         * key is the taint key to be applied to a node.
+                         * Must be a valid qualified name of maximum size 63 characters
+                         * with an optional subdomain prefix of maximum size 253 characters,
+                         * separated by a `/`.
+                         */
+                        key: string;
+                        /**
+                         * propagation defines how this taint should be propagated to nodes.
+                         * Valid values are 'Always' and 'OnInitialization'.
+                         * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
+                         * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
+                         */
+                        propagation: 'Always' | 'OnInitialization';
+                        /**
+                         * value is the taint value corresponding to the taint key.
+                         * It must be a valid label value of maximum size 63 characters.
+                         */
+                        value?: string;
+                    }[];
+                    /**
+                     * variables can be used to customize the MachineDeployment through patches.
+                     */
+                    variables?: {
+                        /**
+                         * overrides can be used to override Cluster level variables.
+                         *
+                         * @minItems 1
+                         * @maxItems 1000
+                         *
+                         * Items: ClusterVariable can be used to customize the Cluster through patches. Each ClusterVariable is associated with a
+                         * Variable definition in the ClusterClass `status` variables.
+                         */
+                        overrides?: {
+                            /**
+                             * name of the variable.
+                             */
+                            name: string;
+                            /**
+                             * value of the variable.
+                             * Note: the value will be validated against the schema of the corresponding ClusterClassVariable
+                             * from the ClusterClass.
+                             * Note: We have to use apiextensionsv1.JSON instead of a custom JSON type, because controller-tools has a
+                             * hard-coded schema for apiextensionsv1.JSON which cannot be produced by another type via controller-tools,
+                             * i.e. it is not possible to have no type field.
+                             * Ref: https://github.com/kubernetes-sigs/controller-tools/blob/d0e03a142d0ecdd5491593e941ee1d6b5d91dba6/pkg/crd/known_types.go#L106-L111
+                             */
+                            value: {
+                                [k: string]: unknown;
+                            };
+                        }[];
+                    };
+                }[];
                 /**
                  * machinePools is a list of machine pools in the cluster.
                  *
@@ -1805,414 +1020,162 @@ export interface Cluster {
                  * Items: MachinePoolTopology specifies the different parameters for a pool of worker nodes in the topology.
                  * This pool of nodes is managed by a MachinePool object whose lifecycle is managed by the Cluster controller.
                  */
-                machinePools?: [
-                    {
+                machinePools?: {
+                    /**
+                     * class is the name of the MachinePoolClass used to create the pool of worker nodes.
+                     * This should match one of the deployment classes defined in the ClusterClass object
+                     * mentioned in the `Cluster.Spec.Class` field.
+                     */
+                    class: string;
+                    /**
+                     * deletion contains configuration options for Machine deletion.
+                     */
+                    deletion?: {
                         /**
-                         * class is the name of the MachinePoolClass used to create the pool of worker nodes.
-                         * This should match one of the deployment classes defined in the ClusterClass object
-                         * mentioned in the `Cluster.Spec.Class` field.
+                         * nodeDeletionTimeoutSeconds defines how long the controller will attempt to delete the Node that the MachinePool
+                         * hosts after the MachinePool is marked for deletion. A duration of 0 will retry deletion indefinitely.
+                         * Defaults to 10 seconds.
                          */
-                        class: string;
+                        nodeDeletionTimeoutSeconds?: number;
                         /**
-                         * deletion contains configuration options for Machine deletion.
+                         * nodeDrainTimeoutSeconds is the total amount of time that the controller will spend on draining a node.
+                         * The default value is 0, meaning that the node can be drained without any time limitations.
+                         * NOTE: nodeDrainTimeoutSeconds is different from `kubectl drain --timeout`
                          */
-                        deletion?: {
-                            /**
-                             * nodeDeletionTimeoutSeconds defines how long the controller will attempt to delete the Node that the MachinePool
-                             * hosts after the MachinePool is marked for deletion. A duration of 0 will retry deletion indefinitely.
-                             * Defaults to 10 seconds.
-                             */
-                            nodeDeletionTimeoutSeconds?: number;
-                            /**
-                             * nodeDrainTimeoutSeconds is the total amount of time that the controller will spend on draining a node.
-                             * The default value is 0, meaning that the node can be drained without any time limitations.
-                             * NOTE: nodeDrainTimeoutSeconds is different from `kubectl drain --timeout`
-                             */
-                            nodeDrainTimeoutSeconds?: number;
-                            /**
-                             * nodeVolumeDetachTimeoutSeconds is the total amount of time that the controller will spend on waiting for all volumes
-                             * to be detached. The default value is 0, meaning that the volumes can be detached without any time limitations.
-                             */
-                            nodeVolumeDetachTimeoutSeconds?: number;
+                        nodeDrainTimeoutSeconds?: number;
+                        /**
+                         * nodeVolumeDetachTimeoutSeconds is the total amount of time that the controller will spend on waiting for all volumes
+                         * to be detached. The default value is 0, meaning that the volumes can be detached without any time limitations.
+                         */
+                        nodeVolumeDetachTimeoutSeconds?: number;
+                    };
+                    /**
+                     * failureDomains is the list of failure domains the machine pool will be created in.
+                     * Must match a key in the FailureDomains map stored on the cluster object.
+                     *
+                     * @minItems 1
+                     * @maxItems 100
+                     */
+                    failureDomains?: string[];
+                    /**
+                     * metadata is the metadata applied to the MachinePool.
+                     * At runtime this metadata is merged with the corresponding metadata from the ClusterClass.
+                     */
+                    metadata?: {
+                        /**
+                         * annotations is an unstructured key value map stored with a resource that may be
+                         * set by external tools to store and retrieve arbitrary metadata. They are not
+                         * queryable and should be preserved when modifying objects.
+                         * More info: http://kubernetes.io/docs/user-guide/annotations
+                         */
+                        annotations?: {
+                            [k: string]: string;
                         };
                         /**
-                         * failureDomains is the list of failure domains the machine pool will be created in.
-                         * Must match a key in the FailureDomains map stored on the cluster object.
+                         * labels is a map of string keys and values that can be used to organize and categorize
+                         * (scope and select) objects. May match selectors of replication controllers
+                         * and services.
+                         * More info: http://kubernetes.io/docs/user-guide/labels
+                         */
+                        labels?: {
+                            [k: string]: string;
+                        };
+                    };
+                    /**
+                     * minReadySeconds is the minimum number of seconds for which a newly created machine pool should
+                     * be ready.
+                     * Defaults to 0 (machine will be considered available as soon as it
+                     * is ready)
+                     */
+                    minReadySeconds?: number;
+                    /**
+                     * name is the unique identifier for this MachinePoolTopology.
+                     * The value is used with other unique identifiers to create a MachinePool's Name
+                     * (e.g. cluster's name, etc). In case the name is greater than the allowed maximum length,
+                     * the values are hashed together.
+                     */
+                    name: string;
+                    /**
+                     * replicas is the number of nodes belonging to this pool.
+                     * If the value is nil, the MachinePool is created without the number of Replicas (defaulting to 1)
+                     * and it's assumed that an external entity (like cluster autoscaler) is responsible for the management
+                     * of this value.
+                     */
+                    replicas?: number;
+                    /**
+                     * taints are the node taints that Cluster API will manage.
+                     * This list is not necessarily complete: other Kubernetes components may add or remove other taints from nodes,
+                     * e.g. the node controller might add the node.kubernetes.io/not-ready taint.
+                     * Only those taints defined in this list will be added or removed by core Cluster API controllers.
+                     *
+                     * There can be at most 64 taints.
+                     * A pod would have to tolerate all existing taints to run on the corresponding node.
+                     *
+                     * NOTE: This list is implemented as a "map" type, meaning that individual elements can be managed by different owners.
+                     *
+                     * @minItems 1
+                     * @maxItems 64
+                     *
+                     * Items: MachineTaint defines a taint equivalent to corev1.Taint, but additionally having a propagation field.
+                     */
+                    taints?: {
+                        /**
+                         * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
+                         */
+                        effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
+                        /**
+                         * key is the taint key to be applied to a node.
+                         * Must be a valid qualified name of maximum size 63 characters
+                         * with an optional subdomain prefix of maximum size 253 characters,
+                         * separated by a `/`.
+                         */
+                        key: string;
+                        /**
+                         * propagation defines how this taint should be propagated to nodes.
+                         * Valid values are 'Always' and 'OnInitialization'.
+                         * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
+                         * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
+                         */
+                        propagation: 'Always' | 'OnInitialization';
+                        /**
+                         * value is the taint value corresponding to the taint key.
+                         * It must be a valid label value of maximum size 63 characters.
+                         */
+                        value?: string;
+                    }[];
+                    /**
+                     * variables can be used to customize the MachinePool through patches.
+                     */
+                    variables?: {
+                        /**
+                         * overrides can be used to override Cluster level variables.
                          *
                          * @minItems 1
-                         * @maxItems 100
+                         * @maxItems 1000
+                         *
+                         * Items: ClusterVariable can be used to customize the Cluster through patches. Each ClusterVariable is associated with a
+                         * Variable definition in the ClusterClass `status` variables.
                          */
-                        failureDomains?: [string, ...string[]];
-                        /**
-                         * metadata is the metadata applied to the MachinePool.
-                         * At runtime this metadata is merged with the corresponding metadata from the ClusterClass.
-                         */
-                        metadata?: {
+                        overrides?: {
                             /**
-                             * annotations is an unstructured key value map stored with a resource that may be
-                             * set by external tools to store and retrieve arbitrary metadata. They are not
-                             * queryable and should be preserved when modifying objects.
-                             * More info: http://kubernetes.io/docs/user-guide/annotations
+                             * name of the variable.
                              */
-                            annotations?: {
-                                [k: string]: string;
+                            name: string;
+                            /**
+                             * value of the variable.
+                             * Note: the value will be validated against the schema of the corresponding ClusterClassVariable
+                             * from the ClusterClass.
+                             * Note: We have to use apiextensionsv1.JSON instead of a custom JSON type, because controller-tools has a
+                             * hard-coded schema for apiextensionsv1.JSON which cannot be produced by another type via controller-tools,
+                             * i.e. it is not possible to have no type field.
+                             * Ref: https://github.com/kubernetes-sigs/controller-tools/blob/d0e03a142d0ecdd5491593e941ee1d6b5d91dba6/pkg/crd/known_types.go#L106-L111
+                             */
+                            value: {
+                                [k: string]: unknown;
                             };
-                            /**
-                             * labels is a map of string keys and values that can be used to organize and categorize
-                             * (scope and select) objects. May match selectors of replication controllers
-                             * and services.
-                             * More info: http://kubernetes.io/docs/user-guide/labels
-                             */
-                            labels?: {
-                                [k: string]: string;
-                            };
-                        };
-                        /**
-                         * minReadySeconds is the minimum number of seconds for which a newly created machine pool should
-                         * be ready.
-                         * Defaults to 0 (machine will be considered available as soon as it
-                         * is ready)
-                         */
-                        minReadySeconds?: number;
-                        /**
-                         * name is the unique identifier for this MachinePoolTopology.
-                         * The value is used with other unique identifiers to create a MachinePool's Name
-                         * (e.g. cluster's name, etc). In case the name is greater than the allowed maximum length,
-                         * the values are hashed together.
-                         */
-                        name: string;
-                        /**
-                         * replicas is the number of nodes belonging to this pool.
-                         * If the value is nil, the MachinePool is created without the number of Replicas (defaulting to 1)
-                         * and it's assumed that an external entity (like cluster autoscaler) is responsible for the management
-                         * of this value.
-                         */
-                        replicas?: number;
-                        /**
-                         * taints are the node taints that Cluster API will manage.
-                         * This list is not necessarily complete: other Kubernetes components may add or remove other taints from nodes,
-                         * e.g. the node controller might add the node.kubernetes.io/not-ready taint.
-                         * Only those taints defined in this list will be added or removed by core Cluster API controllers.
-                         *
-                         * There can be at most 64 taints.
-                         * A pod would have to tolerate all existing taints to run on the corresponding node.
-                         *
-                         * NOTE: This list is implemented as a "map" type, meaning that individual elements can be managed by different owners.
-                         *
-                         * @minItems 1
-                         * @maxItems 64
-                         *
-                         * Items: MachineTaint defines a taint equivalent to corev1.Taint, but additionally having a propagation field.
-                         */
-                        taints?: [
-                            {
-                                /**
-                                 * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
-                                 */
-                                effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
-                                /**
-                                 * key is the taint key to be applied to a node.
-                                 * Must be a valid qualified name of maximum size 63 characters
-                                 * with an optional subdomain prefix of maximum size 253 characters,
-                                 * separated by a `/`.
-                                 */
-                                key: string;
-                                /**
-                                 * propagation defines how this taint should be propagated to nodes.
-                                 * Valid values are 'Always' and 'OnInitialization'.
-                                 * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
-                                 * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
-                                 */
-                                propagation: 'Always' | 'OnInitialization';
-                                /**
-                                 * value is the taint value corresponding to the taint key.
-                                 * It must be a valid label value of maximum size 63 characters.
-                                 */
-                                value?: string;
-                            },
-                            ...{
-                                /**
-                                 * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
-                                 */
-                                effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
-                                /**
-                                 * key is the taint key to be applied to a node.
-                                 * Must be a valid qualified name of maximum size 63 characters
-                                 * with an optional subdomain prefix of maximum size 253 characters,
-                                 * separated by a `/`.
-                                 */
-                                key: string;
-                                /**
-                                 * propagation defines how this taint should be propagated to nodes.
-                                 * Valid values are 'Always' and 'OnInitialization'.
-                                 * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
-                                 * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
-                                 */
-                                propagation: 'Always' | 'OnInitialization';
-                                /**
-                                 * value is the taint value corresponding to the taint key.
-                                 * It must be a valid label value of maximum size 63 characters.
-                                 */
-                                value?: string;
-                            }[]
-                        ];
-                        /**
-                         * variables can be used to customize the MachinePool through patches.
-                         */
-                        variables?: {
-                            /**
-                             * overrides can be used to override Cluster level variables.
-                             *
-                             * @minItems 1
-                             * @maxItems 1000
-                             *
-                             * Items: ClusterVariable can be used to customize the Cluster through patches. Each ClusterVariable is associated with a
-                             * Variable definition in the ClusterClass `status` variables.
-                             */
-                            overrides?: [
-                                {
-                                    /**
-                                     * name of the variable.
-                                     */
-                                    name: string;
-                                    /**
-                                     * value of the variable.
-                                     * Note: the value will be validated against the schema of the corresponding ClusterClassVariable
-                                     * from the ClusterClass.
-                                     * Note: We have to use apiextensionsv1.JSON instead of a custom JSON type, because controller-tools has a
-                                     * hard-coded schema for apiextensionsv1.JSON which cannot be produced by another type via controller-tools,
-                                     * i.e. it is not possible to have no type field.
-                                     * Ref: https://github.com/kubernetes-sigs/controller-tools/blob/d0e03a142d0ecdd5491593e941ee1d6b5d91dba6/pkg/crd/known_types.go#L106-L111
-                                     */
-                                    value: {
-                                        [k: string]: unknown;
-                                    };
-                                },
-                                ...{
-                                    /**
-                                     * name of the variable.
-                                     */
-                                    name: string;
-                                    /**
-                                     * value of the variable.
-                                     * Note: the value will be validated against the schema of the corresponding ClusterClassVariable
-                                     * from the ClusterClass.
-                                     * Note: We have to use apiextensionsv1.JSON instead of a custom JSON type, because controller-tools has a
-                                     * hard-coded schema for apiextensionsv1.JSON which cannot be produced by another type via controller-tools,
-                                     * i.e. it is not possible to have no type field.
-                                     * Ref: https://github.com/kubernetes-sigs/controller-tools/blob/d0e03a142d0ecdd5491593e941ee1d6b5d91dba6/pkg/crd/known_types.go#L106-L111
-                                     */
-                                    value: {
-                                        [k: string]: unknown;
-                                    };
-                                }[]
-                            ];
-                        };
-                    },
-                    ...{
-                        /**
-                         * class is the name of the MachinePoolClass used to create the pool of worker nodes.
-                         * This should match one of the deployment classes defined in the ClusterClass object
-                         * mentioned in the `Cluster.Spec.Class` field.
-                         */
-                        class: string;
-                        /**
-                         * deletion contains configuration options for Machine deletion.
-                         */
-                        deletion?: {
-                            /**
-                             * nodeDeletionTimeoutSeconds defines how long the controller will attempt to delete the Node that the MachinePool
-                             * hosts after the MachinePool is marked for deletion. A duration of 0 will retry deletion indefinitely.
-                             * Defaults to 10 seconds.
-                             */
-                            nodeDeletionTimeoutSeconds?: number;
-                            /**
-                             * nodeDrainTimeoutSeconds is the total amount of time that the controller will spend on draining a node.
-                             * The default value is 0, meaning that the node can be drained without any time limitations.
-                             * NOTE: nodeDrainTimeoutSeconds is different from `kubectl drain --timeout`
-                             */
-                            nodeDrainTimeoutSeconds?: number;
-                            /**
-                             * nodeVolumeDetachTimeoutSeconds is the total amount of time that the controller will spend on waiting for all volumes
-                             * to be detached. The default value is 0, meaning that the volumes can be detached without any time limitations.
-                             */
-                            nodeVolumeDetachTimeoutSeconds?: number;
-                        };
-                        /**
-                         * failureDomains is the list of failure domains the machine pool will be created in.
-                         * Must match a key in the FailureDomains map stored on the cluster object.
-                         *
-                         * @minItems 1
-                         * @maxItems 100
-                         */
-                        failureDomains?: [string, ...string[]];
-                        /**
-                         * metadata is the metadata applied to the MachinePool.
-                         * At runtime this metadata is merged with the corresponding metadata from the ClusterClass.
-                         */
-                        metadata?: {
-                            /**
-                             * annotations is an unstructured key value map stored with a resource that may be
-                             * set by external tools to store and retrieve arbitrary metadata. They are not
-                             * queryable and should be preserved when modifying objects.
-                             * More info: http://kubernetes.io/docs/user-guide/annotations
-                             */
-                            annotations?: {
-                                [k: string]: string;
-                            };
-                            /**
-                             * labels is a map of string keys and values that can be used to organize and categorize
-                             * (scope and select) objects. May match selectors of replication controllers
-                             * and services.
-                             * More info: http://kubernetes.io/docs/user-guide/labels
-                             */
-                            labels?: {
-                                [k: string]: string;
-                            };
-                        };
-                        /**
-                         * minReadySeconds is the minimum number of seconds for which a newly created machine pool should
-                         * be ready.
-                         * Defaults to 0 (machine will be considered available as soon as it
-                         * is ready)
-                         */
-                        minReadySeconds?: number;
-                        /**
-                         * name is the unique identifier for this MachinePoolTopology.
-                         * The value is used with other unique identifiers to create a MachinePool's Name
-                         * (e.g. cluster's name, etc). In case the name is greater than the allowed maximum length,
-                         * the values are hashed together.
-                         */
-                        name: string;
-                        /**
-                         * replicas is the number of nodes belonging to this pool.
-                         * If the value is nil, the MachinePool is created without the number of Replicas (defaulting to 1)
-                         * and it's assumed that an external entity (like cluster autoscaler) is responsible for the management
-                         * of this value.
-                         */
-                        replicas?: number;
-                        /**
-                         * taints are the node taints that Cluster API will manage.
-                         * This list is not necessarily complete: other Kubernetes components may add or remove other taints from nodes,
-                         * e.g. the node controller might add the node.kubernetes.io/not-ready taint.
-                         * Only those taints defined in this list will be added or removed by core Cluster API controllers.
-                         *
-                         * There can be at most 64 taints.
-                         * A pod would have to tolerate all existing taints to run on the corresponding node.
-                         *
-                         * NOTE: This list is implemented as a "map" type, meaning that individual elements can be managed by different owners.
-                         *
-                         * @minItems 1
-                         * @maxItems 64
-                         *
-                         * Items: MachineTaint defines a taint equivalent to corev1.Taint, but additionally having a propagation field.
-                         */
-                        taints?: [
-                            {
-                                /**
-                                 * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
-                                 */
-                                effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
-                                /**
-                                 * key is the taint key to be applied to a node.
-                                 * Must be a valid qualified name of maximum size 63 characters
-                                 * with an optional subdomain prefix of maximum size 253 characters,
-                                 * separated by a `/`.
-                                 */
-                                key: string;
-                                /**
-                                 * propagation defines how this taint should be propagated to nodes.
-                                 * Valid values are 'Always' and 'OnInitialization'.
-                                 * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
-                                 * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
-                                 */
-                                propagation: 'Always' | 'OnInitialization';
-                                /**
-                                 * value is the taint value corresponding to the taint key.
-                                 * It must be a valid label value of maximum size 63 characters.
-                                 */
-                                value?: string;
-                            },
-                            ...{
-                                /**
-                                 * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
-                                 */
-                                effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
-                                /**
-                                 * key is the taint key to be applied to a node.
-                                 * Must be a valid qualified name of maximum size 63 characters
-                                 * with an optional subdomain prefix of maximum size 253 characters,
-                                 * separated by a `/`.
-                                 */
-                                key: string;
-                                /**
-                                 * propagation defines how this taint should be propagated to nodes.
-                                 * Valid values are 'Always' and 'OnInitialization'.
-                                 * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
-                                 * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
-                                 */
-                                propagation: 'Always' | 'OnInitialization';
-                                /**
-                                 * value is the taint value corresponding to the taint key.
-                                 * It must be a valid label value of maximum size 63 characters.
-                                 */
-                                value?: string;
-                            }[]
-                        ];
-                        /**
-                         * variables can be used to customize the MachinePool through patches.
-                         */
-                        variables?: {
-                            /**
-                             * overrides can be used to override Cluster level variables.
-                             *
-                             * @minItems 1
-                             * @maxItems 1000
-                             *
-                             * Items: ClusterVariable can be used to customize the Cluster through patches. Each ClusterVariable is associated with a
-                             * Variable definition in the ClusterClass `status` variables.
-                             */
-                            overrides?: [
-                                {
-                                    /**
-                                     * name of the variable.
-                                     */
-                                    name: string;
-                                    /**
-                                     * value of the variable.
-                                     * Note: the value will be validated against the schema of the corresponding ClusterClassVariable
-                                     * from the ClusterClass.
-                                     * Note: We have to use apiextensionsv1.JSON instead of a custom JSON type, because controller-tools has a
-                                     * hard-coded schema for apiextensionsv1.JSON which cannot be produced by another type via controller-tools,
-                                     * i.e. it is not possible to have no type field.
-                                     * Ref: https://github.com/kubernetes-sigs/controller-tools/blob/d0e03a142d0ecdd5491593e941ee1d6b5d91dba6/pkg/crd/known_types.go#L106-L111
-                                     */
-                                    value: {
-                                        [k: string]: unknown;
-                                    };
-                                },
-                                ...{
-                                    /**
-                                     * name of the variable.
-                                     */
-                                    name: string;
-                                    /**
-                                     * value of the variable.
-                                     * Note: the value will be validated against the schema of the corresponding ClusterClassVariable
-                                     * from the ClusterClass.
-                                     * Note: We have to use apiextensionsv1.JSON instead of a custom JSON type, because controller-tools has a
-                                     * hard-coded schema for apiextensionsv1.JSON which cannot be produced by another type via controller-tools,
-                                     * i.e. it is not possible to have no type field.
-                                     * Ref: https://github.com/kubernetes-sigs/controller-tools/blob/d0e03a142d0ecdd5491593e941ee1d6b5d91dba6/pkg/crd/known_types.go#L106-L111
-                                     */
-                                    value: {
-                                        [k: string]: unknown;
-                                    };
-                                }[]
-                            ];
-                        };
-                    }[]
-                ];
+                        }[];
+                    };
+                }[];
             };
         };
     };
@@ -2368,40 +1331,22 @@ export interface Cluster {
          * Items: FailureDomain is the Schema for Cluster API failure domains.
          * It allows controllers to understand how many failure domains a cluster can optionally span across.
          */
-        failureDomains?: [
-            {
-                /**
-                 * attributes is a free form map of attributes an infrastructure provider might use or require.
-                 */
-                attributes?: {
-                    [k: string]: string;
-                };
-                /**
-                 * controlPlane determines if this failure domain is suitable for use by control plane machines.
-                 */
-                controlPlane?: boolean;
-                /**
-                 * name is the name of the failure domain.
-                 */
-                name: string;
-            },
-            ...{
-                /**
-                 * attributes is a free form map of attributes an infrastructure provider might use or require.
-                 */
-                attributes?: {
-                    [k: string]: string;
-                };
-                /**
-                 * controlPlane determines if this failure domain is suitable for use by control plane machines.
-                 */
-                controlPlane?: boolean;
-                /**
-                 * name is the name of the failure domain.
-                 */
-                name: string;
-            }[]
-        ];
+        failureDomains?: {
+            /**
+             * attributes is a free form map of attributes an infrastructure provider might use or require.
+             */
+            attributes?: {
+                [k: string]: string;
+            };
+            /**
+             * controlPlane determines if this failure domain is suitable for use by control plane machines.
+             */
+            controlPlane?: boolean;
+            /**
+             * name is the name of the failure domain.
+             */
+            name: string;
+        }[];
         /**
          * initialization provides observations of the Cluster initialization process.
          * NOTE: Fields in this struct are part of the Cluster API contract and are used to orchestrate initial Cluster provisioning.

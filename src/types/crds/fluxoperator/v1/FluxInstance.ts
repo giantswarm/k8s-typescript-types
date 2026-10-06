@@ -249,7 +249,7 @@ export interface FluxInstance {
        *
        * @minItems 1
        */
-      shards: [string, ...string[]];
+      shards: string[];
       /**
        * Storage defines if the source-controller shards
        * should use an emptyDir or a persistent volume claim for storage.

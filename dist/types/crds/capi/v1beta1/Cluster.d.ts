@@ -346,42 +346,23 @@ export interface Cluster {
                      * specified as a duration.  When the named condition has been in the given
                      * status for at least the timeout value, a machine is considered unhealthy.
                      */
-                    unhealthyMachineConditions?: [
-                        {
-                            /**
-                             * status of the condition, one of True, False, Unknown.
-                             */
-                            status: 'True' | 'False' | 'Unknown';
-                            /**
-                             * timeout is the duration that a Machine must be in a given status for,
-                             * after which the Machine is considered unhealthy.
-                             * For example, with a value of "1h", the Machine must match the status
-                             * for at least 1 hour before being considered unhealthy.
-                             */
-                            timeout: string;
-                            /**
-                             * type of Machine condition
-                             */
-                            type: string;
-                        },
-                        ...{
-                            /**
-                             * status of the condition, one of True, False, Unknown.
-                             */
-                            status: 'True' | 'False' | 'Unknown';
-                            /**
-                             * timeout is the duration that a Machine must be in a given status for,
-                             * after which the Machine is considered unhealthy.
-                             * For example, with a value of "1h", the Machine must match the status
-                             * for at least 1 hour before being considered unhealthy.
-                             */
-                            timeout: string;
-                            /**
-                             * type of Machine condition
-                             */
-                            type: string;
-                        }[]
-                    ];
+                    unhealthyMachineConditions?: {
+                        /**
+                         * status of the condition, one of True, False, Unknown.
+                         */
+                        status: 'True' | 'False' | 'Unknown';
+                        /**
+                         * timeout is the duration that a Machine must be in a given status for,
+                         * after which the Machine is considered unhealthy.
+                         * For example, with a value of "1h", the Machine must match the status
+                         * for at least 1 hour before being considered unhealthy.
+                         */
+                        timeout: string;
+                        /**
+                         * type of Machine condition
+                         */
+                        type: string;
+                    }[];
                     /**
                      * unhealthyRange specifies the range of unhealthy machines allowed.
                      * Any further remediation is only allowed if the number of machines selected by "selector" as not healthy
@@ -503,58 +484,31 @@ export interface Cluster {
                  *
                  * Items: MachineTaint defines a taint equivalent to corev1.Taint, but additionally having a propagation field.
                  */
-                taints?: [
-                    {
-                        /**
-                         * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
-                         */
-                        effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
-                        /**
-                         * key is the taint key to be applied to a node.
-                         * Must be a valid qualified name of maximum size 63 characters
-                         * with an optional subdomain prefix of maximum size 253 characters,
-                         * separated by a `/`.
-                         */
-                        key: string;
-                        /**
-                         * propagation defines how this taint should be propagated to nodes.
-                         * Valid values are 'Always' and 'OnInitialization'.
-                         * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
-                         * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
-                         */
-                        propagation: 'Always' | 'OnInitialization';
-                        /**
-                         * value is the taint value corresponding to the taint key.
-                         * It must be a valid label value of maximum size 63 characters.
-                         */
-                        value?: string;
-                    },
-                    ...{
-                        /**
-                         * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
-                         */
-                        effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
-                        /**
-                         * key is the taint key to be applied to a node.
-                         * Must be a valid qualified name of maximum size 63 characters
-                         * with an optional subdomain prefix of maximum size 253 characters,
-                         * separated by a `/`.
-                         */
-                        key: string;
-                        /**
-                         * propagation defines how this taint should be propagated to nodes.
-                         * Valid values are 'Always' and 'OnInitialization'.
-                         * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
-                         * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
-                         */
-                        propagation: 'Always' | 'OnInitialization';
-                        /**
-                         * value is the taint value corresponding to the taint key.
-                         * It must be a valid label value of maximum size 63 characters.
-                         */
-                        value?: string;
-                    }[]
-                ];
+                taints?: {
+                    /**
+                     * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
+                     */
+                    effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
+                    /**
+                     * key is the taint key to be applied to a node.
+                     * Must be a valid qualified name of maximum size 63 characters
+                     * with an optional subdomain prefix of maximum size 253 characters,
+                     * separated by a `/`.
+                     */
+                    key: string;
+                    /**
+                     * propagation defines how this taint should be propagated to nodes.
+                     * Valid values are 'Always' and 'OnInitialization'.
+                     * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
+                     * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
+                     */
+                    propagation: 'Always' | 'OnInitialization';
+                    /**
+                     * value is the taint value corresponding to the taint key.
+                     * It must be a valid label value of maximum size 63 characters.
+                     */
+                    value?: string;
+                }[];
                 /**
                  * variables can be used to customize the ControlPlane through patches.
                  */
@@ -790,42 +744,23 @@ export interface Cluster {
                          * specified as a duration.  When the named condition has been in the given
                          * status for at least the timeout value, a machine is considered unhealthy.
                          */
-                        unhealthyMachineConditions?: [
-                            {
-                                /**
-                                 * status of the condition, one of True, False, Unknown.
-                                 */
-                                status: 'True' | 'False' | 'Unknown';
-                                /**
-                                 * timeout is the duration that a Machine must be in a given status for,
-                                 * after which the Machine is considered unhealthy.
-                                 * For example, with a value of "1h", the Machine must match the status
-                                 * for at least 1 hour before being considered unhealthy.
-                                 */
-                                timeout: string;
-                                /**
-                                 * type of Machine condition
-                                 */
-                                type: string;
-                            },
-                            ...{
-                                /**
-                                 * status of the condition, one of True, False, Unknown.
-                                 */
-                                status: 'True' | 'False' | 'Unknown';
-                                /**
-                                 * timeout is the duration that a Machine must be in a given status for,
-                                 * after which the Machine is considered unhealthy.
-                                 * For example, with a value of "1h", the Machine must match the status
-                                 * for at least 1 hour before being considered unhealthy.
-                                 */
-                                timeout: string;
-                                /**
-                                 * type of Machine condition
-                                 */
-                                type: string;
-                            }[]
-                        ];
+                        unhealthyMachineConditions?: {
+                            /**
+                             * status of the condition, one of True, False, Unknown.
+                             */
+                            status: 'True' | 'False' | 'Unknown';
+                            /**
+                             * timeout is the duration that a Machine must be in a given status for,
+                             * after which the Machine is considered unhealthy.
+                             * For example, with a value of "1h", the Machine must match the status
+                             * for at least 1 hour before being considered unhealthy.
+                             */
+                            timeout: string;
+                            /**
+                             * type of Machine condition
+                             */
+                            type: string;
+                        }[];
                         /**
                          * unhealthyRange specifies the range of unhealthy machines allowed.
                          * Any further remediation is only allowed if the number of machines selected by "selector" as not healthy
@@ -1036,58 +971,31 @@ export interface Cluster {
                      *
                      * Items: MachineTaint defines a taint equivalent to corev1.Taint, but additionally having a propagation field.
                      */
-                    taints?: [
-                        {
-                            /**
-                             * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
-                             */
-                            effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
-                            /**
-                             * key is the taint key to be applied to a node.
-                             * Must be a valid qualified name of maximum size 63 characters
-                             * with an optional subdomain prefix of maximum size 253 characters,
-                             * separated by a `/`.
-                             */
-                            key: string;
-                            /**
-                             * propagation defines how this taint should be propagated to nodes.
-                             * Valid values are 'Always' and 'OnInitialization'.
-                             * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
-                             * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
-                             */
-                            propagation: 'Always' | 'OnInitialization';
-                            /**
-                             * value is the taint value corresponding to the taint key.
-                             * It must be a valid label value of maximum size 63 characters.
-                             */
-                            value?: string;
-                        },
-                        ...{
-                            /**
-                             * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
-                             */
-                            effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
-                            /**
-                             * key is the taint key to be applied to a node.
-                             * Must be a valid qualified name of maximum size 63 characters
-                             * with an optional subdomain prefix of maximum size 253 characters,
-                             * separated by a `/`.
-                             */
-                            key: string;
-                            /**
-                             * propagation defines how this taint should be propagated to nodes.
-                             * Valid values are 'Always' and 'OnInitialization'.
-                             * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
-                             * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
-                             */
-                            propagation: 'Always' | 'OnInitialization';
-                            /**
-                             * value is the taint value corresponding to the taint key.
-                             * It must be a valid label value of maximum size 63 characters.
-                             */
-                            value?: string;
-                        }[]
-                    ];
+                    taints?: {
+                        /**
+                         * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
+                         */
+                        effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
+                        /**
+                         * key is the taint key to be applied to a node.
+                         * Must be a valid qualified name of maximum size 63 characters
+                         * with an optional subdomain prefix of maximum size 253 characters,
+                         * separated by a `/`.
+                         */
+                        key: string;
+                        /**
+                         * propagation defines how this taint should be propagated to nodes.
+                         * Valid values are 'Always' and 'OnInitialization'.
+                         * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
+                         * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
+                         */
+                        propagation: 'Always' | 'OnInitialization';
+                        /**
+                         * value is the taint value corresponding to the taint key.
+                         * It must be a valid label value of maximum size 63 characters.
+                         */
+                        value?: string;
+                    }[];
                     /**
                      * variables can be used to customize the MachineDeployment through patches.
                      */
@@ -1226,58 +1134,31 @@ export interface Cluster {
                      *
                      * Items: MachineTaint defines a taint equivalent to corev1.Taint, but additionally having a propagation field.
                      */
-                    taints?: [
-                        {
-                            /**
-                             * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
-                             */
-                            effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
-                            /**
-                             * key is the taint key to be applied to a node.
-                             * Must be a valid qualified name of maximum size 63 characters
-                             * with an optional subdomain prefix of maximum size 253 characters,
-                             * separated by a `/`.
-                             */
-                            key: string;
-                            /**
-                             * propagation defines how this taint should be propagated to nodes.
-                             * Valid values are 'Always' and 'OnInitialization'.
-                             * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
-                             * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
-                             */
-                            propagation: 'Always' | 'OnInitialization';
-                            /**
-                             * value is the taint value corresponding to the taint key.
-                             * It must be a valid label value of maximum size 63 characters.
-                             */
-                            value?: string;
-                        },
-                        ...{
-                            /**
-                             * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
-                             */
-                            effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
-                            /**
-                             * key is the taint key to be applied to a node.
-                             * Must be a valid qualified name of maximum size 63 characters
-                             * with an optional subdomain prefix of maximum size 253 characters,
-                             * separated by a `/`.
-                             */
-                            key: string;
-                            /**
-                             * propagation defines how this taint should be propagated to nodes.
-                             * Valid values are 'Always' and 'OnInitialization'.
-                             * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
-                             * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
-                             */
-                            propagation: 'Always' | 'OnInitialization';
-                            /**
-                             * value is the taint value corresponding to the taint key.
-                             * It must be a valid label value of maximum size 63 characters.
-                             */
-                            value?: string;
-                        }[]
-                    ];
+                    taints?: {
+                        /**
+                         * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
+                         */
+                        effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
+                        /**
+                         * key is the taint key to be applied to a node.
+                         * Must be a valid qualified name of maximum size 63 characters
+                         * with an optional subdomain prefix of maximum size 253 characters,
+                         * separated by a `/`.
+                         */
+                        key: string;
+                        /**
+                         * propagation defines how this taint should be propagated to nodes.
+                         * Valid values are 'Always' and 'OnInitialization'.
+                         * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
+                         * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
+                         */
+                        propagation: 'Always' | 'OnInitialization';
+                        /**
+                         * value is the taint value corresponding to the taint key.
+                         * It must be a valid label value of maximum size 63 characters.
+                         */
+                        value?: string;
+                    }[];
                     /**
                      * variables can be used to customize the MachinePool through patches.
                      */

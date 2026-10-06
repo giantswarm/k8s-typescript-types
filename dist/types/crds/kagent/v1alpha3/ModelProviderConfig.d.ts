@@ -45,7 +45,7 @@ export interface ModelProviderConfig {
         /**
          * Type is the model provider type (OpenAI, Anthropic, etc.)
          */
-        type: 'Anthropic' | 'OpenAI' | 'AzureOpenAI' | 'Ollama' | 'Gemini' | 'GeminiVertexAI' | 'AnthropicVertexAI' | 'Bedrock' | 'SAPAICore' | 'Foundry';
+        type: 'Anthropic' | 'OpenAI' | 'AzureOpenAI' | 'Ollama' | 'Gemini' | 'GeminiVertexAI' | 'AnthropicVertexAI' | 'Bedrock' | 'SAPAICore' | 'Foundry' | 'Mistral';
     };
     /**
      * ModelProviderConfigStatus defines the observed state of ModelProviderConfig.

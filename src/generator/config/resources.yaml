@@ -17,20 +17,22 @@
 
 - group: capa
   resources:
+    # Pinned to a commit on `main` (2026-09-30): no release tag matches the
+    # committed types, and an unpinned `main` breaks the generated-output check.
     - name: AWSCluster
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-aws/main/config/crd/bases/infrastructure.cluster.x-k8s.io_awsclusters.yaml
+      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-aws/0efa4cc1e6a008c995bac03c09209508877783d6/config/crd/bases/infrastructure.cluster.x-k8s.io_awsclusters.yaml
     - name: AWSMachinePool
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-aws/main/config/crd/bases/infrastructure.cluster.x-k8s.io_awsmachinepools.yaml
+      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-aws/0efa4cc1e6a008c995bac03c09209508877783d6/config/crd/bases/infrastructure.cluster.x-k8s.io_awsmachinepools.yaml
     - name: AWSMachineTemplate
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-aws/main/config/crd/bases/infrastructure.cluster.x-k8s.io_awsmachinetemplates.yaml
+      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-aws/0efa4cc1e6a008c995bac03c09209508877783d6/config/crd/bases/infrastructure.cluster.x-k8s.io_awsmachinetemplates.yaml
     - name: AWSManagedCluster
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-aws/main/config/crd/bases/infrastructure.cluster.x-k8s.io_awsmanagedclusters.yaml
+      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-aws/0efa4cc1e6a008c995bac03c09209508877783d6/config/crd/bases/infrastructure.cluster.x-k8s.io_awsmanagedclusters.yaml
     - name: AWSManagedMachinePool
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-aws/main/config/crd/bases/infrastructure.cluster.x-k8s.io_awsmanagedmachinepools.yaml
+      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-aws/0efa4cc1e6a008c995bac03c09209508877783d6/config/crd/bases/infrastructure.cluster.x-k8s.io_awsmanagedmachinepools.yaml
     - name: AWSManagedControlPlane
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-aws/main/config/crd/bases/controlplane.cluster.x-k8s.io_awsmanagedcontrolplanes.yaml
+      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-aws/0efa4cc1e6a008c995bac03c09209508877783d6/config/crd/bases/controlplane.cluster.x-k8s.io_awsmanagedcontrolplanes.yaml
     - name: AWSClusterRoleIdentity
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-aws/main/config/crd/bases/infrastructure.cluster.x-k8s.io_awsclusterroleidentities.yaml
+      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-aws/0efa4cc1e6a008c995bac03c09209508877783d6/config/crd/bases/infrastructure.cluster.x-k8s.io_awsclusterroleidentities.yaml
 
 - group: capz
   resources:
@@ -49,24 +51,30 @@
 
 - group: capv
   resources:
+    # Pinned to a commit on `main` (2026-10-02): no release tag matches the
+    # committed types, and an unpinned `main` breaks the generated-output check.
     - name: VSphereCluster
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-vsphere/refs/heads/main/config/default/crd/bases/infrastructure.cluster.x-k8s.io_vsphereclusters.yaml
+      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-vsphere/4ad33925cc0f6bb15b7d47499f0599dc60e7cd4a/config/default/crd/bases/infrastructure.cluster.x-k8s.io_vsphereclusters.yaml
     - name: VSphereClusterIdentity
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-vsphere/refs/heads/main/config/default/crd/bases/infrastructure.cluster.x-k8s.io_vsphereclusteridentities.yaml
+      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-vsphere/4ad33925cc0f6bb15b7d47499f0599dc60e7cd4a/config/default/crd/bases/infrastructure.cluster.x-k8s.io_vsphereclusteridentities.yaml
     - name: VSphereMachine
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-vsphere/refs/heads/main/config/default/crd/bases/infrastructure.cluster.x-k8s.io_vspheremachines.yaml
+      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-vsphere/4ad33925cc0f6bb15b7d47499f0599dc60e7cd4a/config/default/crd/bases/infrastructure.cluster.x-k8s.io_vspheremachines.yaml
     - name: VSphereMachineTemplate
-      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-vsphere/refs/heads/main/config/default/crd/bases/infrastructure.cluster.x-k8s.io_vspheremachinetemplates.yaml
+      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-vsphere/4ad33925cc0f6bb15b7d47499f0599dc60e7cd4a/config/default/crd/bases/infrastructure.cluster.x-k8s.io_vspheremachinetemplates.yaml
 
 - group: capvcd
   resources:
+    # Pinned to a commit on `main` (2024-10-10): no release tag matches the
+    # committed types, and an unpinned `main` breaks the generated-output check.
     - name: VCDCluster
-      crdURL: https://raw.githubusercontent.com/vmware/cluster-api-provider-cloud-director/refs/heads/main/config/crd/bases/infrastructure.cluster.x-k8s.io_vcdclusters.yaml
+      crdURL: https://raw.githubusercontent.com/vmware/cluster-api-provider-cloud-director/adc480c6d402f55997045be5e4af0e0cb8381429/config/crd/bases/infrastructure.cluster.x-k8s.io_vcdclusters.yaml
 
 - group: crossplane
   resources:
+    # Pinned to a commit on `main` (2026-10-05): no release tag matches the
+    # committed types, and an unpinned `main` breaks the generated-output check.
     - name: ProviderConfig
-      crdURL: https://raw.githubusercontent.com/crossplane-contrib/provider-upjet-aws/main/package/crds/aws.upbound.io_providerconfigs.yaml
+      crdURL: https://raw.githubusercontent.com/crossplane-contrib/provider-upjet-aws/ee0f9202a36dde528a7bfb5fd610cbf2ebe61ca7/package/crds/aws.upbound.io_providerconfigs.yaml
 
 - group: external-secrets
   resources:
@@ -169,16 +177,19 @@
 
 - group: giantswarm
   resources:
+    # Pinned so a regeneration reproduces the committed types: to the release
+    # tag where it serves the same CRD as `main`, otherwise to a commit on the
+    # default branch (2026-10-06), since no release tag matches.
     - name: App
-      crdURL: https://raw.githubusercontent.com/giantswarm/apiextensions-application/main/config/crd/application.giantswarm.io_apps.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/apiextensions-application/c6ae86f215a34710dd9626509dba32ddf3b75f3f/config/crd/application.giantswarm.io_apps.yaml
     - name: Catalog
-      crdURL: https://raw.githubusercontent.com/giantswarm/apiextensions-application/main/config/crd/application.giantswarm.io_catalogs.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/apiextensions-application/c6ae86f215a34710dd9626509dba32ddf3b75f3f/config/crd/application.giantswarm.io_catalogs.yaml
     - name: Organization
-      crdURL: https://raw.githubusercontent.com/giantswarm/organization-operator/main/config/crd/bases/security.giantswarm.io_organizations.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/organization-operator/refs/tags/v2.1.3/config/crd/bases/security.giantswarm.io_organizations.yaml
     - name: Release
-      crdURL: https://raw.githubusercontent.com/giantswarm/releases/refs/heads/master/sdk/config/crd/bases/release.giantswarm.io_releases.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/releases/e93e7a0e1aa82fdbc4ea9e8d80451468e86694cb/sdk/config/crd/bases/release.giantswarm.io_releases.yaml
     - name: KarpenterMachinePool
-      crdURL: https://raw.githubusercontent.com/giantswarm/aws-resolver-rules-operator/main/config/crd/bases/infrastructure.cluster.x-k8s.io_karpentermachinepools.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/aws-resolver-rules-operator/refs/tags/v0.28.1/config/crd/bases/infrastructure.cluster.x-k8s.io_karpentermachinepools.yaml
 
 - group: kagent
   resources:
@@ -197,17 +208,16 @@
     #    to pin to. The CRDs are the `kagent-crds` chart's templates (plain
     #    YAML, byte-identical to `go/api/config/crd/bases/`).
     #
-    #    Pinned to commit 0ac524031db451634359df3081d7d5d08cea4c93 of that line,
-    #    which is upstream kagent `main` 4a91c27330e8 plus the line's carried
-    #    commits. Pin a commit SHA, never the branch: the branch is force-pushed
-    #    on every re-pin onto upstream `main`, and the fork's plain `vX.Y.Z`
-    #    tags are upstream mirrors, not releases of the line. Once the line
-    #    publishes a release tag (`vX.Y.Z-gs.N`), pin that tag's commit and name
-    #    the tag here.
+    #    Pinned to the line's release v1.2.5, commit
+    #    6f23597fe29a390ab74ea70e4f2c829b0061d2f1 (tag on the `release-1.2`
+    #    maintenance branch): the 1.2 line is the one the Agent Platform meta
+    #    chart runs (`>=1.2.0 <1.3.0`). Pin the release's commit SHA and name
+    #    the tag here: the consumed branch is rebased on every re-pin onto
+    #    upstream `main`, and the line's releases are its own `vX.Y.Z` tags.
     #
-    #    Re-pinning: the line re-pins onto upstream `main` regularly. A re-pin
-    #    that changes any of these CRDs is a new release of this package, which
-    #    the consumers (the Dev Portal) then move their pin to.
+    #    Re-pinning: move to the newest release of the line the meta chart
+    #    runs. A re-pin that changes any of these CRDs is a new release of this
+    #    package, which the consumers (the Dev Portal) then move their pin to.
     - name: Agent
       crdURL: https://raw.githubusercontent.com/kagent-dev/kagent/v0.9.9/go/api/config/crd/bases/kagent.dev_agents.yaml
     - name: ModelConfig
@@ -215,12 +225,12 @@
         # v1alpha1, v1alpha2
         - https://raw.githubusercontent.com/kagent-dev/kagent/v0.9.9/go/api/config/crd/bases/kagent.dev_modelconfigs.yaml
         # v1alpha3
-        - https://raw.githubusercontent.com/giantswarm/kagent-upstream/0ac524031db451634359df3081d7d5d08cea4c93/helm/kagent-crds/templates/kagent.dev_modelconfigs.yaml
+        - https://raw.githubusercontent.com/giantswarm/kagent-upstream/6f23597fe29a390ab74ea70e4f2c829b0061d2f1/helm/kagent-crds/templates/kagent.dev_modelconfigs.yaml
     - name: AgentTemplate
-      crdURL: https://raw.githubusercontent.com/giantswarm/kagent-upstream/0ac524031db451634359df3081d7d5d08cea4c93/helm/kagent-crds/templates/kagent.dev_agenttemplates.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/kagent-upstream/6f23597fe29a390ab74ea70e4f2c829b0061d2f1/helm/kagent-crds/templates/kagent.dev_agenttemplates.yaml
     - name: Harness
-      crdURL: https://raw.githubusercontent.com/giantswarm/kagent-upstream/0ac524031db451634359df3081d7d5d08cea4c93/helm/kagent-crds/templates/kagent.dev_harnesses.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/kagent-upstream/6f23597fe29a390ab74ea70e4f2c829b0061d2f1/helm/kagent-crds/templates/kagent.dev_harnesses.yaml
     - name: RemoteMCPServer
-      crdURL: https://raw.githubusercontent.com/giantswarm/kagent-upstream/0ac524031db451634359df3081d7d5d08cea4c93/helm/kagent-crds/templates/kagent.dev_remotemcpservers.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/kagent-upstream/6f23597fe29a390ab74ea70e4f2c829b0061d2f1/helm/kagent-crds/templates/kagent.dev_remotemcpservers.yaml
     - name: ModelProviderConfig
-      crdURL: https://raw.githubusercontent.com/giantswarm/kagent-upstream/0ac524031db451634359df3081d7d5d08cea4c93/helm/kagent-crds/templates/kagent.dev_modelproviderconfigs.yaml
+      crdURL: https://raw.githubusercontent.com/giantswarm/kagent-upstream/6f23597fe29a390ab74ea70e4f2c829b0061d2f1/helm/kagent-crds/templates/kagent.dev_modelproviderconfigs.yaml

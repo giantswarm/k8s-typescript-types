@@ -57,28 +57,16 @@ export interface Catalog {
          *
          * @minItems 1
          */
-        repositories: [
-            {
-                /**
-                 * URL is the link to where this Catalog's repository is located e.g. https://example.com/app-catalog/
-                 */
-                URL: string;
-                /**
-                 * Type indicates which repository type would be used for this Catalog. e.g. helm
-                 */
-                type: string;
-            },
-            ...{
-                /**
-                 * URL is the link to where this Catalog's repository is located e.g. https://example.com/app-catalog/
-                 */
-                URL: string;
-                /**
-                 * Type indicates which repository type would be used for this Catalog. e.g. helm
-                 */
-                type: string;
-            }[]
-        ];
+        repositories: {
+            /**
+             * URL is the link to where this Catalog's repository is located e.g. https://example.com/app-catalog/
+             */
+            URL: string;
+            /**
+             * Type indicates which repository type would be used for this Catalog. e.g. helm
+             */
+            type: string;
+        }[];
         /**
          * Storage references an object defining catalog repository. This field is deprecated and replaced by Repositories.
          */

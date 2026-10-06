@@ -35,9 +35,50 @@ export interface ModelConfig {
              */
             baseUrl?: string;
             /**
+             * CacheTTL controls how long Anthropic retains a cached prefix when
+             * PromptCaching is enabled. Only meaningful when PromptCaching is true.
+             *
+             *   - "5m" (default): the standard 5-minute cache. Each cache hit refreshes
+             *     the window, so an agent loop whose calls are less than 5 minutes
+             *     apart keeps its prefix cached for the whole task.
+             *   - "1h": the extended 1-hour cache, useful for tasks whose model calls
+             *     are spaced more than 5 minutes apart.
+             *
+             * NOTE: "1h" is NOT strictly better than "5m". 1-hour cache writes are
+             * billed at a higher per-token rate than 5-minute writes. Only choose
+             * "1h" when calls are spaced far enough apart that a 5-minute cache would
+             * expire between them; otherwise the higher write cost is wasted. See the
+             * Anthropic prompt-caching docs above.
+             */
+            cacheTTL?: '5m' | '1h';
+            /**
              * Maximum tokens to generate
              */
             maxTokens?: number;
+            /**
+             * PromptCaching enables Anthropic prompt caching by marking the reusable
+             * prefix of every Messages API request with `cache_control` breakpoints:
+             * the last tool definition, the last system prompt block and the last
+             * content block of the most recent conversation turn. Anthropic caches the
+             * prefix up to each breakpoint and bills a cache hit at a fraction of the
+             * normal input price on later requests within the TTL. Because the
+             * conversation breakpoint moves with every turn, each call of an agent
+             * loop reads the whole previous history from the cache and writes only
+             * the new turn.
+             *
+             * Recommended for tool-using agents that make many model calls per task
+             * with a stable system prompt and tool set — without it the full history
+             * is billed as fresh input on every call. Cache writes are billed at a
+             * premium over normal input, so a prefix has to be read at least once to
+             * pay off, and each model has a minimum cacheable prefix (1024–4096
+             * tokens depending on the model) below which the markers are silently
+             * ignored.
+             *
+             * See https://platform.claude.com/docs/en/build-with-claude/prompt-caching
+             * for the current list of supported models, minimum prefix sizes and
+             * pricing.
+             */
+            promptCaching?: boolean;
             /**
              * Temperature for sampling
              */
@@ -325,6 +366,31 @@ export interface ModelConfig {
              */
             topP?: string;
         };
+        /**
+         * Mistral-specific configuration
+         */
+        mistral?: {
+            /**
+             * Base URL for the Mistral API (overrides default https://api.mistral.ai/v1)
+             */
+            baseUrl?: string;
+            /**
+             * Maximum tokens to generate
+             */
+            maxTokens?: number;
+            /**
+             * Temperature for sampling
+             */
+            temperature?: string;
+            /**
+             * Timeout in seconds for the underlying HTTP client
+             */
+            timeout?: number;
+            /**
+             * Top-p sampling parameter
+             */
+            topP?: string;
+        };
         model: string;
         /**
          * Ollama-specific configuration
@@ -340,6 +406,15 @@ export interface ModelConfig {
             options?: {
                 [k: string]: string;
             };
+            /**
+             * Think switches a thinking model's reasoning on or off. It is sent as the
+             * top-level `think` field of every chat request, not as an option. Unset
+             * leaves Ollama's default, under which a model with the thinking capability
+             * (Qwen3, DeepSeek-R1, Granite 4.2, ...) thinks before every answer. Set it
+             * to false for an agent whose model should answer directly. Ollama refuses
+             * true for a model without the thinking capability.
+             */
+            think?: boolean;
         };
         /**
          * OpenAI-specific configuration
@@ -430,7 +505,7 @@ export interface ModelConfig {
         /**
          * The provider of the model
          */
-        provider?: 'Anthropic' | 'OpenAI' | 'AzureOpenAI' | 'Ollama' | 'Gemini' | 'GeminiVertexAI' | 'AnthropicVertexAI' | 'Bedrock' | 'SAPAICore' | 'Foundry';
+        provider?: 'Anthropic' | 'OpenAI' | 'AzureOpenAI' | 'Ollama' | 'Gemini' | 'GeminiVertexAI' | 'AnthropicVertexAI' | 'Bedrock' | 'SAPAICore' | 'Foundry' | 'Mistral';
         /**
          * SAP AI Core-specific configuration
          */

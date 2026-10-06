@@ -49,80 +49,42 @@ export interface KarpenterMachinePool {
        * Items: AMISelectorTerm defines selection logic for an ami used by Karpenter to launch nodes.
        * If multiple fields are used for selection, the requirements are ANDed.
        */
-      amiSelectorTerms: [
-        {
-          /**
-           * Alias specifies which EKS optimized AMI to select.
-           * Each alias consists of a family and an AMI version, specified as "family@version".
-           * Valid families include: al2, al2023, bottlerocket, windows2019, and windows2022.
-           * The version can either be pinned to a specific AMI release, with that AMIs version format (ex: "al2023@v20240625" or "bottlerocket@v1.10.0").
-           * The version can also be set to "latest" for any family. Setting the version to latest will result in drift when a new AMI is released. This is **not** recommended for production environments.
-           * Note: The Windows families do **not** support version pinning, and only latest may be used.
-           */
-          alias?: string;
-          /**
-           * ID is the ami id in EC2
-           */
-          id?: string;
-          /**
-           * Name is the ami name in EC2.
-           * This value is the name field, which is different from the name tag.
-           */
-          name?: string;
-          /**
-           * Owner is the owner for the ami.
-           * You can specify a combination of AWS account IDs, "self", "amazon", and "aws-marketplace"
-           */
-          owner?: string;
-          /**
-           * SSMParameter is the name (or ARN) of the SSM parameter containing the Image ID.
-           */
-          ssmParameter?: string;
-          /**
-           * Tags is a map of key/value tags used to select amis.
-           * Specifying '*' for a value selects all values for a given tag key.
-           */
-          tags?: {
-            [k: string]: string;
-          };
-        },
-        ...{
-          /**
-           * Alias specifies which EKS optimized AMI to select.
-           * Each alias consists of a family and an AMI version, specified as "family@version".
-           * Valid families include: al2, al2023, bottlerocket, windows2019, and windows2022.
-           * The version can either be pinned to a specific AMI release, with that AMIs version format (ex: "al2023@v20240625" or "bottlerocket@v1.10.0").
-           * The version can also be set to "latest" for any family. Setting the version to latest will result in drift when a new AMI is released. This is **not** recommended for production environments.
-           * Note: The Windows families do **not** support version pinning, and only latest may be used.
-           */
-          alias?: string;
-          /**
-           * ID is the ami id in EC2
-           */
-          id?: string;
-          /**
-           * Name is the ami name in EC2.
-           * This value is the name field, which is different from the name tag.
-           */
-          name?: string;
-          /**
-           * Owner is the owner for the ami.
-           * You can specify a combination of AWS account IDs, "self", "amazon", and "aws-marketplace"
-           */
-          owner?: string;
-          /**
-           * SSMParameter is the name (or ARN) of the SSM parameter containing the Image ID.
-           */
-          ssmParameter?: string;
-          /**
-           * Tags is a map of key/value tags used to select amis.
-           * Specifying '*' for a value selects all values for a given tag key.
-           */
-          tags?: {
-            [k: string]: string;
-          };
-        }[]
-      ];
+      amiSelectorTerms: {
+        /**
+         * Alias specifies which EKS optimized AMI to select.
+         * Each alias consists of a family and an AMI version, specified as "family@version".
+         * Valid families include: al2, al2023, bottlerocket, windows2019, and windows2022.
+         * The version can either be pinned to a specific AMI release, with that AMIs version format (ex: "al2023@v20240625" or "bottlerocket@v1.10.0").
+         * The version can also be set to "latest" for any family. Setting the version to latest will result in drift when a new AMI is released. This is **not** recommended for production environments.
+         * Note: The Windows families do **not** support version pinning, and only latest may be used.
+         */
+        alias?: string;
+        /**
+         * ID is the ami id in EC2
+         */
+        id?: string;
+        /**
+         * Name is the ami name in EC2.
+         * This value is the name field, which is different from the name tag.
+         */
+        name?: string;
+        /**
+         * Owner is the owner for the ami.
+         * You can specify a combination of AWS account IDs, "self", "amazon", and "aws-marketplace"
+         */
+        owner?: string;
+        /**
+         * SSMParameter is the name (or ARN) of the SSM parameter containing the Image ID.
+         */
+        ssmParameter?: string;
+        /**
+         * Tags is a map of key/value tags used to select amis.
+         * Specifying '*' for a value selects all values for a given tag key.
+         */
+        tags?: {
+          [k: string]: string;
+        };
+      }[];
       /**
        * AssociatePublicIPAddress controls if public IP addresses are assigned to instances that are launched with the nodeclass.
        */

@@ -995,34 +995,19 @@ export interface KubeadmControlPlane {
                      *
                      * Items: PartitionSpec defines the size and optional type for a partition.
                      */
-                    diskLayout?: [
-                        {
-                            /**
-                             * partitionType is the partition type (optional).
-                             * Supported values are Linux, LinuxSwap, LinuxRAID, LVM, Fat32, NTFS,
-                             * and LinuxExtended. These are translated to cloud-init partition type codes.
-                             * A full GPT partition GUID is also supported as a passthrough value.
-                             */
-                            partitionType?: string;
-                            /**
-                             * percentage of disk that partition will take (1-100)
-                             */
-                            percentage: number;
-                        },
-                        ...{
-                            /**
-                             * partitionType is the partition type (optional).
-                             * Supported values are Linux, LinuxSwap, LinuxRAID, LVM, Fat32, NTFS,
-                             * and LinuxExtended. These are translated to cloud-init partition type codes.
-                             * A full GPT partition GUID is also supported as a passthrough value.
-                             */
-                            partitionType?: string;
-                            /**
-                             * percentage of disk that partition will take (1-100)
-                             */
-                            percentage: number;
-                        }[]
-                    ];
+                    diskLayout?: {
+                        /**
+                         * partitionType is the partition type (optional).
+                         * Supported values are Linux, LinuxSwap, LinuxRAID, LVM, Fat32, NTFS,
+                         * and LinuxExtended. These are translated to cloud-init partition type codes.
+                         * A full GPT partition GUID is also supported as a passthrough value.
+                         */
+                        partitionType?: string;
+                        /**
+                         * percentage of disk that partition will take (1-100)
+                         */
+                        percentage: number;
+                    }[];
                     /**
                      * layout specifies the device layout.
                      * If it is true, a single partition will be created for the entire device.
@@ -1919,58 +1904,31 @@ export interface KubeadmControlPlane {
              *
              * Items: MachineTaint defines a taint equivalent to corev1.Taint, but additionally having a propagation field.
              */
-            taints?: [
-                {
-                    /**
-                     * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
-                     */
-                    effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
-                    /**
-                     * key is the taint key to be applied to a node.
-                     * Must be a valid qualified name of maximum size 63 characters
-                     * with an optional subdomain prefix of maximum size 253 characters,
-                     * separated by a `/`.
-                     */
-                    key: string;
-                    /**
-                     * propagation defines how this taint should be propagated to nodes.
-                     * Valid values are 'Always' and 'OnInitialization'.
-                     * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
-                     * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
-                     */
-                    propagation: 'Always' | 'OnInitialization';
-                    /**
-                     * value is the taint value corresponding to the taint key.
-                     * It must be a valid label value of maximum size 63 characters.
-                     */
-                    value?: string;
-                },
-                ...{
-                    /**
-                     * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
-                     */
-                    effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
-                    /**
-                     * key is the taint key to be applied to a node.
-                     * Must be a valid qualified name of maximum size 63 characters
-                     * with an optional subdomain prefix of maximum size 253 characters,
-                     * separated by a `/`.
-                     */
-                    key: string;
-                    /**
-                     * propagation defines how this taint should be propagated to nodes.
-                     * Valid values are 'Always' and 'OnInitialization'.
-                     * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
-                     * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
-                     */
-                    propagation: 'Always' | 'OnInitialization';
-                    /**
-                     * value is the taint value corresponding to the taint key.
-                     * It must be a valid label value of maximum size 63 characters.
-                     */
-                    value?: string;
-                }[]
-            ];
+            taints?: {
+                /**
+                 * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
+                 */
+                effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
+                /**
+                 * key is the taint key to be applied to a node.
+                 * Must be a valid qualified name of maximum size 63 characters
+                 * with an optional subdomain prefix of maximum size 253 characters,
+                 * separated by a `/`.
+                 */
+                key: string;
+                /**
+                 * propagation defines how this taint should be propagated to nodes.
+                 * Valid values are 'Always' and 'OnInitialization'.
+                 * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
+                 * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
+                 */
+                propagation: 'Always' | 'OnInitialization';
+                /**
+                 * value is the taint value corresponding to the taint key.
+                 * It must be a valid label value of maximum size 63 characters.
+                 */
+                value?: string;
+            }[];
         };
         /**
          * remediationStrategy is the RemediationStrategy that controls how control plane machine remediation happens.

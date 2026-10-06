@@ -8,14 +8,14 @@ The package is not published on npm. It is consumed straight from this
 repository's release tags; `dist/` is committed, so nothing is built on install.
 
 ```bash
-yarn add @giantswarm/k8s-types@github:giantswarm/k8s-typescript-types#v0.8.0
+yarn add @giantswarm/k8s-types@github:giantswarm/k8s-typescript-types#v0.10.0
 ```
 
 Or pin the tag in `package.json` directly:
 
 ```json
 "dependencies": {
-  "@giantswarm/k8s-types": "github:giantswarm/k8s-typescript-types#v0.8.0"
+  "@giantswarm/k8s-types": "github:giantswarm/k8s-typescript-types#v0.10.0"
 }
 ```
 
@@ -54,6 +54,10 @@ const helmRelease: crds.fluxcd.v2.HelmRelease = {
 ```
 
 ### Direct Imports
+
+Every API group version and the core types are also entry points of their own
+(the `exports` map in `package.json`); a consumer resolves them with TypeScript's
+`node16`, `nodenext` or `bundler` module resolution:
 
 ```typescript
 // Import specific types directly

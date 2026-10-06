@@ -54,52 +54,28 @@ export interface Release {
      *
      * @minItems 1
      */
-    components: [
-      {
-        /**
-         * Catalog specifies the name of the app catalog that this component belongs to.
-         */
-        catalog?: string;
-        /**
-         * Name of the component.
-         */
-        name: string;
-        /**
-         * Reference is the component's version in the catalog (e.g. 1.2.3 or 1.2.3-abc8675309).
-         */
-        reference?: string;
-        /**
-         * ReleaseOperatorDeploy informs the release-operator that it should deploy the component.
-         */
-        releaseOperatorDeploy?: boolean;
-        /**
-         * Version of the component.
-         */
-        version: string;
-      },
-      ...{
-        /**
-         * Catalog specifies the name of the app catalog that this component belongs to.
-         */
-        catalog?: string;
-        /**
-         * Name of the component.
-         */
-        name: string;
-        /**
-         * Reference is the component's version in the catalog (e.g. 1.2.3 or 1.2.3-abc8675309).
-         */
-        reference?: string;
-        /**
-         * ReleaseOperatorDeploy informs the release-operator that it should deploy the component.
-         */
-        releaseOperatorDeploy?: boolean;
-        /**
-         * Version of the component.
-         */
-        version: string;
-      }[]
-    ];
+    components: {
+      /**
+       * Catalog specifies the name of the app catalog that this component belongs to.
+       */
+      catalog?: string;
+      /**
+       * Name of the component.
+       */
+      name: string;
+      /**
+       * Reference is the component's version in the catalog (e.g. 1.2.3 or 1.2.3-abc8675309).
+       */
+      reference?: string;
+      /**
+       * ReleaseOperatorDeploy informs the release-operator that it should deploy the component.
+       */
+      releaseOperatorDeploy?: boolean;
+      /**
+       * Version of the component.
+       */
+      version: string;
+    }[];
     /**
      * Date that the release became active.
      */

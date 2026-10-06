@@ -245,40 +245,22 @@ export interface VSphereCluster {
      * Items: FailureDomain is the Schema for Cluster API failure domains.
      * It allows controllers to understand how many failure domains a cluster can optionally span across.
      */
-    failureDomains?: [
-      {
-        /**
-         * attributes is a free form map of attributes an infrastructure provider might use or require.
-         */
-        attributes?: {
-          [k: string]: string;
-        };
-        /**
-         * controlPlane determines if this failure domain is suitable for use by control plane machines.
-         */
-        controlPlane?: boolean;
-        /**
-         * name is the name of the failure domain.
-         */
-        name: string;
-      },
-      ...{
-        /**
-         * attributes is a free form map of attributes an infrastructure provider might use or require.
-         */
-        attributes?: {
-          [k: string]: string;
-        };
-        /**
-         * controlPlane determines if this failure domain is suitable for use by control plane machines.
-         */
-        controlPlane?: boolean;
-        /**
-         * name is the name of the failure domain.
-         */
-        name: string;
-      }[]
-    ];
+    failureDomains?: {
+      /**
+       * attributes is a free form map of attributes an infrastructure provider might use or require.
+       */
+      attributes?: {
+        [k: string]: string;
+      };
+      /**
+       * controlPlane determines if this failure domain is suitable for use by control plane machines.
+       */
+      controlPlane?: boolean;
+      /**
+       * name is the name of the failure domain.
+       */
+      name: string;
+    }[];
     /**
      * initialization provides observations of the VSphereCluster initialization process.
      * NOTE: Fields in this struct are part of the Cluster API contract and are used to orchestrate initial Cluster provisioning.
