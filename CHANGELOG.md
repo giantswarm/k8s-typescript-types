@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `capz.v1beta1.AzureASOManagedCluster` and `capz.v1beta1.AzureASOManagedMachinePool`
+  (and their `capz.v1alpha1` versions), the CAPZ AKS kinds, from the same pinned
+  `cluster-api-provider-azure` commit as the other `capz` types.
+
 ## [0.10.0] - 2026-10-06
 
 ### Added

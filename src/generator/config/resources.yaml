@@ -48,6 +48,10 @@
       crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-azure/149a62eb2a1989a24afda78f57c51483970aa8ee/config/crd/bases/infrastructure.cluster.x-k8s.io_azuremachines.yaml
     - name: AzureMachinePool
       crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-azure/149a62eb2a1989a24afda78f57c51483970aa8ee/config/crd/bases/infrastructure.cluster.x-k8s.io_azuremachinepools.yaml
+    - name: AzureASOManagedCluster
+      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-azure/149a62eb2a1989a24afda78f57c51483970aa8ee/config/crd/bases/infrastructure.cluster.x-k8s.io_azureasomanagedclusters.yaml
+    - name: AzureASOManagedMachinePool
+      crdURL: https://raw.githubusercontent.com/kubernetes-sigs/cluster-api-provider-azure/149a62eb2a1989a24afda78f57c51483970aa8ee/config/crd/bases/infrastructure.cluster.x-k8s.io_azureasomanagedmachinepools.yaml
 
 - group: capv
   resources:

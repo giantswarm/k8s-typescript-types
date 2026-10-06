@@ -6,3 +6,5 @@ export * from './AzureClusterIdentity';
 export * from './AzureMachineTemplate';
 export * from './AzureMachine';
 export * from './AzureMachinePool';
+export * from './AzureASOManagedCluster';
+export * from './AzureASOManagedMachinePool';

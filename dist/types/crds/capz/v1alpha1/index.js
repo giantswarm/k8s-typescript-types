@@ -17,11 +17,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * This file was automatically generated, PLEASE DO NOT MODIFY IT BY HAND.
  */
-__exportStar(require("./AzureCluster"), exports);
-__exportStar(require("./AzureClusterIdentity"), exports);
-__exportStar(require("./AzureMachineTemplate"), exports);
-__exportStar(require("./AzureMachine"), exports);
-__exportStar(require("./AzureMachinePool"), exports);
 __exportStar(require("./AzureASOManagedCluster"), exports);
 __exportStar(require("./AzureASOManagedMachinePool"), exports);
 //# sourceMappingURL=index.js.map
