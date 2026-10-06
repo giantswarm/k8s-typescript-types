@@ -76,6 +76,12 @@ export async function getTypesForResource(
       {
         additionalProperties: false,
         bannerComment: '',
+        // A bounded array (`maxItems`) becomes a plain array instead of a
+        // union of every tuple length up to the bound: the expansion repeats
+        // the item type once per length, multiplying nested bounds, which made
+        // kagent's AgentTemplate types several hundred KB. The bound stays in
+        // the JSDoc (`@maxItems`); the API server enforces it.
+        ignoreMinAndMaxItems: true,
         style: { singleQuote: true },
       },
     );

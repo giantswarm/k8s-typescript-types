@@ -56,7 +56,8 @@ export interface ModelProviderConfig {
       | 'AnthropicVertexAI'
       | 'Bedrock'
       | 'SAPAICore'
-      | 'Foundry';
+      | 'Foundry'
+      | 'Mistral';
   };
   /**
    * ModelProviderConfigStatus defines the observed state of ModelProviderConfig.

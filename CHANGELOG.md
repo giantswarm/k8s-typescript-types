@@ -7,9 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- An `exports` map: `@giantswarm/k8s-types/crds/<group>/<version>` and
+  `@giantswarm/k8s-types/core/...` are entry points, as the README's "Direct
+  Imports" examples promise. A consumer smoke (`src/smoke/subpath-imports.ts`)
+  type-checks those examples through the map.
+
 ### Changed
 
 - Update tsx to v4.23.15 (giantswarm/k8s-typescript-types#95)
+- `kagent.v1alpha3` types regenerated from the Giant Swarm kagent line's
+  release `v1.2.5` (commit `6f23597f`), the line the Agent Platform runs, instead
+  of the pinned commit `0ac52403`.
+- A bounded array (`minItems`/`maxItems`) is generated as a plain array instead
+  of a union of every tuple length up to its bound; the bound stays in the
+  JSDoc. `kagent.v1alpha3.AgentTemplate` shrinks from 395 KB to 13 KB and
+  `kagent.v1alpha2.Agent` from 1.5 MB to 0.5 MB; the affected types of
+  `capa`, `capi`, `capv`, `capz`, `fluxoperator`, `giantswarm` and `kagent`
+  accept any array length.
+- Pinned the `capa`, `capv`, `capvcd`, `crossplane` and `giantswarm` CRD
+  sources, which tracked upstream `main`, to the release or commit that
+  reproduces the committed types, so `yarn regenerate` on a clean checkout
+  produces no diff. The pins alone change no type.
 
 ## [0.9.0] - 2026-10-05
 

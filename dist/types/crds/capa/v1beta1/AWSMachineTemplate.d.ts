@@ -203,7 +203,7 @@ export interface AWSMachineTemplate {
                  *
                  * @maxItems 2
                  */
-                networkInterfaces?: [] | [string] | [string, string];
+                networkInterfaces?: string[];
                 /**
                  * Configuration options for the non root storage volumes.
                  *

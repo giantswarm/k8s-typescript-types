@@ -486,7 +486,7 @@ export interface AzureCluster {
          *
          * @maxItems 3
          */
-        availabilityZones?: [] | [string] | [string, string] | [string, string, string];
+        availabilityZones?: string[];
         /**
          * BackendPool describes the backend pool of the load balancer.
          */
@@ -606,7 +606,7 @@ export interface AzureCluster {
          *
          * @maxItems 3
          */
-        availabilityZones?: [] | [string] | [string, string] | [string, string, string];
+        availabilityZones?: string[];
         /**
          * BackendPool describes the backend pool of the load balancer.
          */
@@ -725,7 +725,7 @@ export interface AzureCluster {
          *
          * @maxItems 3
          */
-        availabilityZones?: [] | [string] | [string, string] | [string, string, string];
+        availabilityZones?: string[];
         /**
          * BackendPool describes the backend pool of the load balancer.
          */

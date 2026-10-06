@@ -40,7 +40,7 @@ export interface KubeadmControlPlane {
        * @minItems 1
        * @maxItems 1000
        */
-      bootCommands?: [string, ...string[]];
+      bootCommands?: string[];
       /**
        * clusterConfiguration along with InitConfiguration are the configurations necessary for the init command
        */
@@ -55,7 +55,7 @@ export interface KubeadmControlPlane {
            * @minItems 1
            * @maxItems 100
            */
-          certSANs?: [string, ...string[]];
+          certSANs?: string[];
           /**
            * extraArgs is a list of args to pass to the control plane component.
            * The arg name must match the command line flag name except without leading dash(es).
@@ -66,28 +66,16 @@ export interface KubeadmControlPlane {
            *
            * Items: Arg represents an argument with a name and a value.
            */
-          extraArgs?: [
-            {
-              /**
-               * name is the Name of the extraArg.
-               */
-              name: string;
-              /**
-               * value is the Value of the extraArg.
-               */
-              value: string;
-            },
-            ...{
-              /**
-               * name is the Name of the extraArg.
-               */
-              name: string;
-              /**
-               * value is the Value of the extraArg.
-               */
-              value: string;
-            }[]
-          ];
+          extraArgs?: {
+            /**
+             * name is the Name of the extraArg.
+             */
+            name: string;
+            /**
+             * value is the Value of the extraArg.
+             */
+            value: string;
+          }[];
           /**
            * extraEnvs is an extra set of environment variables to pass to the control plane component.
            * Environment variables passed using ExtraEnvs will override any existing environment variables, or *_proxy environment variables that kubeadm adds by default.
@@ -98,266 +86,135 @@ export interface KubeadmControlPlane {
            *
            * Items: EnvVar represents an environment variable present in a Container.
            */
-          extraEnvs?: [
-            {
+          extraEnvs?: {
+            /**
+             * Name of the environment variable.
+             * May consist of any printable ASCII characters except '='.
+             */
+            name: string;
+            /**
+             * Variable references $(VAR_NAME) are expanded
+             * using the previously defined environment variables in the container and
+             * any service environment variables. If a variable cannot be resolved,
+             * the reference in the input string will be unchanged. Double $$ are reduced
+             * to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e.
+             * "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)".
+             * Escaped references will never be expanded, regardless of whether the variable
+             * exists or not.
+             * Defaults to "".
+             */
+            value?: string;
+            /**
+             * Source for the environment variable's value. Cannot be used if value is not empty.
+             */
+            valueFrom?: {
               /**
-               * Name of the environment variable.
-               * May consist of any printable ASCII characters except '='.
+               * Selects a key of a ConfigMap.
                */
-              name: string;
-              /**
-               * Variable references $(VAR_NAME) are expanded
-               * using the previously defined environment variables in the container and
-               * any service environment variables. If a variable cannot be resolved,
-               * the reference in the input string will be unchanged. Double $$ are reduced
-               * to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e.
-               * "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)".
-               * Escaped references will never be expanded, regardless of whether the variable
-               * exists or not.
-               * Defaults to "".
-               */
-              value?: string;
-              /**
-               * Source for the environment variable's value. Cannot be used if value is not empty.
-               */
-              valueFrom?: {
+              configMapKeyRef?: {
                 /**
-                 * Selects a key of a ConfigMap.
+                 * The key to select.
                  */
-                configMapKeyRef?: {
-                  /**
-                   * The key to select.
-                   */
-                  key: string;
-                  /**
-                   * Name of the referent.
-                   * This field is effectively required, but due to backwards compatibility is
-                   * allowed to be empty. Instances of this type with an empty value here are
-                   * almost certainly wrong.
-                   * More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                   */
-                  name?: string;
-                  /**
-                   * Specify whether the ConfigMap or its key must be defined
-                   */
-                  optional?: boolean;
-                };
+                key: string;
                 /**
-                 * Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`,
-                 * spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs.
+                 * Name of the referent.
+                 * This field is effectively required, but due to backwards compatibility is
+                 * allowed to be empty. Instances of this type with an empty value here are
+                 * almost certainly wrong.
+                 * More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
                  */
-                fieldRef?: {
-                  /**
-                   * Version of the schema the FieldPath is written in terms of, defaults to "v1".
-                   */
-                  apiVersion?: string;
-                  /**
-                   * Path of the field to select in the specified API version.
-                   */
-                  fieldPath: string;
-                };
+                name?: string;
                 /**
-                 * FileKeyRef selects a key of the env file.
-                 * Requires the EnvFiles feature gate to be enabled.
+                 * Specify whether the ConfigMap or its key must be defined
                  */
-                fileKeyRef?: {
-                  /**
-                   * The key within the env file. An invalid key will prevent the pod from starting.
-                   * The keys defined within a source may consist of any printable ASCII characters except '='.
-                   * During Alpha stage of the EnvFiles feature gate, the key size is limited to 128 characters.
-                   */
-                  key: string;
-                  /**
-                   * Specify whether the file or its key must be defined. If the file or key
-                   * does not exist, then the env var is not published.
-                   * If optional is set to true and the specified key does not exist,
-                   * the environment variable will not be set in the Pod's containers.
-                   *
-                   * If optional is set to false and the specified key does not exist,
-                   * an error will be returned during Pod creation.
-                   */
-                  optional?: boolean;
-                  /**
-                   * The path within the volume from which to select the file.
-                   * Must be relative and may not contain the '..' path or start with '..'.
-                   */
-                  path: string;
-                  /**
-                   * The name of the volume mount containing the env file.
-                   */
-                  volumeName: string;
-                };
-                /**
-                 * Selects a resource of the container: only resources limits and requests
-                 * (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.
-                 */
-                resourceFieldRef?: {
-                  /**
-                   * Container name: required for volumes, optional for env vars
-                   */
-                  containerName?: string;
-                  /**
-                   * Specifies the output format of the exposed resources, defaults to "1"
-                   */
-                  divisor?: number | string;
-                  /**
-                   * Required: resource to select
-                   */
-                  resource: string;
-                };
-                /**
-                 * Selects a key of a secret in the pod's namespace
-                 */
-                secretKeyRef?: {
-                  /**
-                   * The key of the secret to select from.  Must be a valid secret key.
-                   */
-                  key: string;
-                  /**
-                   * Name of the referent.
-                   * This field is effectively required, but due to backwards compatibility is
-                   * allowed to be empty. Instances of this type with an empty value here are
-                   * almost certainly wrong.
-                   * More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                   */
-                  name?: string;
-                  /**
-                   * Specify whether the Secret or its key must be defined
-                   */
-                  optional?: boolean;
-                };
+                optional?: boolean;
               };
-            },
-            ...{
               /**
-               * Name of the environment variable.
-               * May consist of any printable ASCII characters except '='.
+               * Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`,
+               * spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs.
                */
-              name: string;
-              /**
-               * Variable references $(VAR_NAME) are expanded
-               * using the previously defined environment variables in the container and
-               * any service environment variables. If a variable cannot be resolved,
-               * the reference in the input string will be unchanged. Double $$ are reduced
-               * to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e.
-               * "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)".
-               * Escaped references will never be expanded, regardless of whether the variable
-               * exists or not.
-               * Defaults to "".
-               */
-              value?: string;
-              /**
-               * Source for the environment variable's value. Cannot be used if value is not empty.
-               */
-              valueFrom?: {
+              fieldRef?: {
                 /**
-                 * Selects a key of a ConfigMap.
+                 * Version of the schema the FieldPath is written in terms of, defaults to "v1".
                  */
-                configMapKeyRef?: {
-                  /**
-                   * The key to select.
-                   */
-                  key: string;
-                  /**
-                   * Name of the referent.
-                   * This field is effectively required, but due to backwards compatibility is
-                   * allowed to be empty. Instances of this type with an empty value here are
-                   * almost certainly wrong.
-                   * More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                   */
-                  name?: string;
-                  /**
-                   * Specify whether the ConfigMap or its key must be defined
-                   */
-                  optional?: boolean;
-                };
+                apiVersion?: string;
                 /**
-                 * Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`,
-                 * spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs.
+                 * Path of the field to select in the specified API version.
                  */
-                fieldRef?: {
-                  /**
-                   * Version of the schema the FieldPath is written in terms of, defaults to "v1".
-                   */
-                  apiVersion?: string;
-                  /**
-                   * Path of the field to select in the specified API version.
-                   */
-                  fieldPath: string;
-                };
-                /**
-                 * FileKeyRef selects a key of the env file.
-                 * Requires the EnvFiles feature gate to be enabled.
-                 */
-                fileKeyRef?: {
-                  /**
-                   * The key within the env file. An invalid key will prevent the pod from starting.
-                   * The keys defined within a source may consist of any printable ASCII characters except '='.
-                   * During Alpha stage of the EnvFiles feature gate, the key size is limited to 128 characters.
-                   */
-                  key: string;
-                  /**
-                   * Specify whether the file or its key must be defined. If the file or key
-                   * does not exist, then the env var is not published.
-                   * If optional is set to true and the specified key does not exist,
-                   * the environment variable will not be set in the Pod's containers.
-                   *
-                   * If optional is set to false and the specified key does not exist,
-                   * an error will be returned during Pod creation.
-                   */
-                  optional?: boolean;
-                  /**
-                   * The path within the volume from which to select the file.
-                   * Must be relative and may not contain the '..' path or start with '..'.
-                   */
-                  path: string;
-                  /**
-                   * The name of the volume mount containing the env file.
-                   */
-                  volumeName: string;
-                };
-                /**
-                 * Selects a resource of the container: only resources limits and requests
-                 * (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.
-                 */
-                resourceFieldRef?: {
-                  /**
-                   * Container name: required for volumes, optional for env vars
-                   */
-                  containerName?: string;
-                  /**
-                   * Specifies the output format of the exposed resources, defaults to "1"
-                   */
-                  divisor?: number | string;
-                  /**
-                   * Required: resource to select
-                   */
-                  resource: string;
-                };
-                /**
-                 * Selects a key of a secret in the pod's namespace
-                 */
-                secretKeyRef?: {
-                  /**
-                   * The key of the secret to select from.  Must be a valid secret key.
-                   */
-                  key: string;
-                  /**
-                   * Name of the referent.
-                   * This field is effectively required, but due to backwards compatibility is
-                   * allowed to be empty. Instances of this type with an empty value here are
-                   * almost certainly wrong.
-                   * More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                   */
-                  name?: string;
-                  /**
-                   * Specify whether the Secret or its key must be defined
-                   */
-                  optional?: boolean;
-                };
+                fieldPath: string;
               };
-            }[]
-          ];
+              /**
+               * FileKeyRef selects a key of the env file.
+               * Requires the EnvFiles feature gate to be enabled.
+               */
+              fileKeyRef?: {
+                /**
+                 * The key within the env file. An invalid key will prevent the pod from starting.
+                 * The keys defined within a source may consist of any printable ASCII characters except '='.
+                 * During Alpha stage of the EnvFiles feature gate, the key size is limited to 128 characters.
+                 */
+                key: string;
+                /**
+                 * Specify whether the file or its key must be defined. If the file or key
+                 * does not exist, then the env var is not published.
+                 * If optional is set to true and the specified key does not exist,
+                 * the environment variable will not be set in the Pod's containers.
+                 *
+                 * If optional is set to false and the specified key does not exist,
+                 * an error will be returned during Pod creation.
+                 */
+                optional?: boolean;
+                /**
+                 * The path within the volume from which to select the file.
+                 * Must be relative and may not contain the '..' path or start with '..'.
+                 */
+                path: string;
+                /**
+                 * The name of the volume mount containing the env file.
+                 */
+                volumeName: string;
+              };
+              /**
+               * Selects a resource of the container: only resources limits and requests
+               * (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.
+               */
+              resourceFieldRef?: {
+                /**
+                 * Container name: required for volumes, optional for env vars
+                 */
+                containerName?: string;
+                /**
+                 * Specifies the output format of the exposed resources, defaults to "1"
+                 */
+                divisor?: number | string;
+                /**
+                 * Required: resource to select
+                 */
+                resource: string;
+              };
+              /**
+               * Selects a key of a secret in the pod's namespace
+               */
+              secretKeyRef?: {
+                /**
+                 * The key of the secret to select from.  Must be a valid secret key.
+                 */
+                key: string;
+                /**
+                 * Name of the referent.
+                 * This field is effectively required, but due to backwards compatibility is
+                 * allowed to be empty. Instances of this type with an empty value here are
+                 * almost certainly wrong.
+                 * More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                 */
+                name?: string;
+                /**
+                 * Specify whether the Secret or its key must be defined
+                 */
+                optional?: boolean;
+              };
+            };
+          }[];
           /**
            * extraVolumes is an extra set of host volumes, mounted to the control plane component.
            *
@@ -367,54 +224,29 @@ export interface KubeadmControlPlane {
            * Items: HostPathMount contains elements describing volumes that are mounted from the
            * host.
            */
-          extraVolumes?: [
-            {
-              /**
-               * hostPath is the path in the host that will be mounted inside
-               * the pod.
-               */
-              hostPath: string;
-              /**
-               * mountPath is the path inside the pod where hostPath will be mounted.
-               */
-              mountPath: string;
-              /**
-               * name of the volume inside the pod template.
-               */
-              name: string;
-              /**
-               * pathType is the type of the HostPath.
-               */
-              pathType?: string;
-              /**
-               * readOnly controls write access to the volume
-               */
-              readOnly?: boolean;
-            },
-            ...{
-              /**
-               * hostPath is the path in the host that will be mounted inside
-               * the pod.
-               */
-              hostPath: string;
-              /**
-               * mountPath is the path inside the pod where hostPath will be mounted.
-               */
-              mountPath: string;
-              /**
-               * name of the volume inside the pod template.
-               */
-              name: string;
-              /**
-               * pathType is the type of the HostPath.
-               */
-              pathType?: string;
-              /**
-               * readOnly controls write access to the volume
-               */
-              readOnly?: boolean;
-            }[]
-          ];
+          extraVolumes?: {
+            /**
+             * hostPath is the path in the host that will be mounted inside
+             * the pod.
+             */
+            hostPath: string;
+            /**
+             * mountPath is the path inside the pod where hostPath will be mounted.
+             */
+            mountPath: string;
+            /**
+             * name of the volume inside the pod template.
+             */
+            name: string;
+            /**
+             * pathType is the type of the HostPath.
+             */
+            pathType?: string;
+            /**
+             * readOnly controls write access to the volume
+             */
+            readOnly?: boolean;
+          }[];
         };
         /**
          * caCertificateValidityPeriodDays specifies the validity period for CA certificates generated by Cluster API.
@@ -462,28 +294,16 @@ export interface KubeadmControlPlane {
            *
            * Items: Arg represents an argument with a name and a value.
            */
-          extraArgs?: [
-            {
-              /**
-               * name is the Name of the extraArg.
-               */
-              name: string;
-              /**
-               * value is the Value of the extraArg.
-               */
-              value: string;
-            },
-            ...{
-              /**
-               * name is the Name of the extraArg.
-               */
-              name: string;
-              /**
-               * value is the Value of the extraArg.
-               */
-              value: string;
-            }[]
-          ];
+          extraArgs?: {
+            /**
+             * name is the Name of the extraArg.
+             */
+            name: string;
+            /**
+             * value is the Value of the extraArg.
+             */
+            value: string;
+          }[];
           /**
            * extraEnvs is an extra set of environment variables to pass to the control plane component.
            * Environment variables passed using ExtraEnvs will override any existing environment variables, or *_proxy environment variables that kubeadm adds by default.
@@ -494,266 +314,135 @@ export interface KubeadmControlPlane {
            *
            * Items: EnvVar represents an environment variable present in a Container.
            */
-          extraEnvs?: [
-            {
+          extraEnvs?: {
+            /**
+             * Name of the environment variable.
+             * May consist of any printable ASCII characters except '='.
+             */
+            name: string;
+            /**
+             * Variable references $(VAR_NAME) are expanded
+             * using the previously defined environment variables in the container and
+             * any service environment variables. If a variable cannot be resolved,
+             * the reference in the input string will be unchanged. Double $$ are reduced
+             * to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e.
+             * "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)".
+             * Escaped references will never be expanded, regardless of whether the variable
+             * exists or not.
+             * Defaults to "".
+             */
+            value?: string;
+            /**
+             * Source for the environment variable's value. Cannot be used if value is not empty.
+             */
+            valueFrom?: {
               /**
-               * Name of the environment variable.
-               * May consist of any printable ASCII characters except '='.
+               * Selects a key of a ConfigMap.
                */
-              name: string;
-              /**
-               * Variable references $(VAR_NAME) are expanded
-               * using the previously defined environment variables in the container and
-               * any service environment variables. If a variable cannot be resolved,
-               * the reference in the input string will be unchanged. Double $$ are reduced
-               * to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e.
-               * "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)".
-               * Escaped references will never be expanded, regardless of whether the variable
-               * exists or not.
-               * Defaults to "".
-               */
-              value?: string;
-              /**
-               * Source for the environment variable's value. Cannot be used if value is not empty.
-               */
-              valueFrom?: {
+              configMapKeyRef?: {
                 /**
-                 * Selects a key of a ConfigMap.
+                 * The key to select.
                  */
-                configMapKeyRef?: {
-                  /**
-                   * The key to select.
-                   */
-                  key: string;
-                  /**
-                   * Name of the referent.
-                   * This field is effectively required, but due to backwards compatibility is
-                   * allowed to be empty. Instances of this type with an empty value here are
-                   * almost certainly wrong.
-                   * More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                   */
-                  name?: string;
-                  /**
-                   * Specify whether the ConfigMap or its key must be defined
-                   */
-                  optional?: boolean;
-                };
+                key: string;
                 /**
-                 * Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`,
-                 * spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs.
+                 * Name of the referent.
+                 * This field is effectively required, but due to backwards compatibility is
+                 * allowed to be empty. Instances of this type with an empty value here are
+                 * almost certainly wrong.
+                 * More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
                  */
-                fieldRef?: {
-                  /**
-                   * Version of the schema the FieldPath is written in terms of, defaults to "v1".
-                   */
-                  apiVersion?: string;
-                  /**
-                   * Path of the field to select in the specified API version.
-                   */
-                  fieldPath: string;
-                };
+                name?: string;
                 /**
-                 * FileKeyRef selects a key of the env file.
-                 * Requires the EnvFiles feature gate to be enabled.
+                 * Specify whether the ConfigMap or its key must be defined
                  */
-                fileKeyRef?: {
-                  /**
-                   * The key within the env file. An invalid key will prevent the pod from starting.
-                   * The keys defined within a source may consist of any printable ASCII characters except '='.
-                   * During Alpha stage of the EnvFiles feature gate, the key size is limited to 128 characters.
-                   */
-                  key: string;
-                  /**
-                   * Specify whether the file or its key must be defined. If the file or key
-                   * does not exist, then the env var is not published.
-                   * If optional is set to true and the specified key does not exist,
-                   * the environment variable will not be set in the Pod's containers.
-                   *
-                   * If optional is set to false and the specified key does not exist,
-                   * an error will be returned during Pod creation.
-                   */
-                  optional?: boolean;
-                  /**
-                   * The path within the volume from which to select the file.
-                   * Must be relative and may not contain the '..' path or start with '..'.
-                   */
-                  path: string;
-                  /**
-                   * The name of the volume mount containing the env file.
-                   */
-                  volumeName: string;
-                };
-                /**
-                 * Selects a resource of the container: only resources limits and requests
-                 * (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.
-                 */
-                resourceFieldRef?: {
-                  /**
-                   * Container name: required for volumes, optional for env vars
-                   */
-                  containerName?: string;
-                  /**
-                   * Specifies the output format of the exposed resources, defaults to "1"
-                   */
-                  divisor?: number | string;
-                  /**
-                   * Required: resource to select
-                   */
-                  resource: string;
-                };
-                /**
-                 * Selects a key of a secret in the pod's namespace
-                 */
-                secretKeyRef?: {
-                  /**
-                   * The key of the secret to select from.  Must be a valid secret key.
-                   */
-                  key: string;
-                  /**
-                   * Name of the referent.
-                   * This field is effectively required, but due to backwards compatibility is
-                   * allowed to be empty. Instances of this type with an empty value here are
-                   * almost certainly wrong.
-                   * More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                   */
-                  name?: string;
-                  /**
-                   * Specify whether the Secret or its key must be defined
-                   */
-                  optional?: boolean;
-                };
+                optional?: boolean;
               };
-            },
-            ...{
               /**
-               * Name of the environment variable.
-               * May consist of any printable ASCII characters except '='.
+               * Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`,
+               * spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs.
                */
-              name: string;
-              /**
-               * Variable references $(VAR_NAME) are expanded
-               * using the previously defined environment variables in the container and
-               * any service environment variables. If a variable cannot be resolved,
-               * the reference in the input string will be unchanged. Double $$ are reduced
-               * to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e.
-               * "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)".
-               * Escaped references will never be expanded, regardless of whether the variable
-               * exists or not.
-               * Defaults to "".
-               */
-              value?: string;
-              /**
-               * Source for the environment variable's value. Cannot be used if value is not empty.
-               */
-              valueFrom?: {
+              fieldRef?: {
                 /**
-                 * Selects a key of a ConfigMap.
+                 * Version of the schema the FieldPath is written in terms of, defaults to "v1".
                  */
-                configMapKeyRef?: {
-                  /**
-                   * The key to select.
-                   */
-                  key: string;
-                  /**
-                   * Name of the referent.
-                   * This field is effectively required, but due to backwards compatibility is
-                   * allowed to be empty. Instances of this type with an empty value here are
-                   * almost certainly wrong.
-                   * More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                   */
-                  name?: string;
-                  /**
-                   * Specify whether the ConfigMap or its key must be defined
-                   */
-                  optional?: boolean;
-                };
+                apiVersion?: string;
                 /**
-                 * Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`,
-                 * spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs.
+                 * Path of the field to select in the specified API version.
                  */
-                fieldRef?: {
-                  /**
-                   * Version of the schema the FieldPath is written in terms of, defaults to "v1".
-                   */
-                  apiVersion?: string;
-                  /**
-                   * Path of the field to select in the specified API version.
-                   */
-                  fieldPath: string;
-                };
-                /**
-                 * FileKeyRef selects a key of the env file.
-                 * Requires the EnvFiles feature gate to be enabled.
-                 */
-                fileKeyRef?: {
-                  /**
-                   * The key within the env file. An invalid key will prevent the pod from starting.
-                   * The keys defined within a source may consist of any printable ASCII characters except '='.
-                   * During Alpha stage of the EnvFiles feature gate, the key size is limited to 128 characters.
-                   */
-                  key: string;
-                  /**
-                   * Specify whether the file or its key must be defined. If the file or key
-                   * does not exist, then the env var is not published.
-                   * If optional is set to true and the specified key does not exist,
-                   * the environment variable will not be set in the Pod's containers.
-                   *
-                   * If optional is set to false and the specified key does not exist,
-                   * an error will be returned during Pod creation.
-                   */
-                  optional?: boolean;
-                  /**
-                   * The path within the volume from which to select the file.
-                   * Must be relative and may not contain the '..' path or start with '..'.
-                   */
-                  path: string;
-                  /**
-                   * The name of the volume mount containing the env file.
-                   */
-                  volumeName: string;
-                };
-                /**
-                 * Selects a resource of the container: only resources limits and requests
-                 * (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.
-                 */
-                resourceFieldRef?: {
-                  /**
-                   * Container name: required for volumes, optional for env vars
-                   */
-                  containerName?: string;
-                  /**
-                   * Specifies the output format of the exposed resources, defaults to "1"
-                   */
-                  divisor?: number | string;
-                  /**
-                   * Required: resource to select
-                   */
-                  resource: string;
-                };
-                /**
-                 * Selects a key of a secret in the pod's namespace
-                 */
-                secretKeyRef?: {
-                  /**
-                   * The key of the secret to select from.  Must be a valid secret key.
-                   */
-                  key: string;
-                  /**
-                   * Name of the referent.
-                   * This field is effectively required, but due to backwards compatibility is
-                   * allowed to be empty. Instances of this type with an empty value here are
-                   * almost certainly wrong.
-                   * More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                   */
-                  name?: string;
-                  /**
-                   * Specify whether the Secret or its key must be defined
-                   */
-                  optional?: boolean;
-                };
+                fieldPath: string;
               };
-            }[]
-          ];
+              /**
+               * FileKeyRef selects a key of the env file.
+               * Requires the EnvFiles feature gate to be enabled.
+               */
+              fileKeyRef?: {
+                /**
+                 * The key within the env file. An invalid key will prevent the pod from starting.
+                 * The keys defined within a source may consist of any printable ASCII characters except '='.
+                 * During Alpha stage of the EnvFiles feature gate, the key size is limited to 128 characters.
+                 */
+                key: string;
+                /**
+                 * Specify whether the file or its key must be defined. If the file or key
+                 * does not exist, then the env var is not published.
+                 * If optional is set to true and the specified key does not exist,
+                 * the environment variable will not be set in the Pod's containers.
+                 *
+                 * If optional is set to false and the specified key does not exist,
+                 * an error will be returned during Pod creation.
+                 */
+                optional?: boolean;
+                /**
+                 * The path within the volume from which to select the file.
+                 * Must be relative and may not contain the '..' path or start with '..'.
+                 */
+                path: string;
+                /**
+                 * The name of the volume mount containing the env file.
+                 */
+                volumeName: string;
+              };
+              /**
+               * Selects a resource of the container: only resources limits and requests
+               * (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.
+               */
+              resourceFieldRef?: {
+                /**
+                 * Container name: required for volumes, optional for env vars
+                 */
+                containerName?: string;
+                /**
+                 * Specifies the output format of the exposed resources, defaults to "1"
+                 */
+                divisor?: number | string;
+                /**
+                 * Required: resource to select
+                 */
+                resource: string;
+              };
+              /**
+               * Selects a key of a secret in the pod's namespace
+               */
+              secretKeyRef?: {
+                /**
+                 * The key of the secret to select from.  Must be a valid secret key.
+                 */
+                key: string;
+                /**
+                 * Name of the referent.
+                 * This field is effectively required, but due to backwards compatibility is
+                 * allowed to be empty. Instances of this type with an empty value here are
+                 * almost certainly wrong.
+                 * More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                 */
+                name?: string;
+                /**
+                 * Specify whether the Secret or its key must be defined
+                 */
+                optional?: boolean;
+              };
+            };
+          }[];
           /**
            * extraVolumes is an extra set of host volumes, mounted to the control plane component.
            *
@@ -763,54 +452,29 @@ export interface KubeadmControlPlane {
            * Items: HostPathMount contains elements describing volumes that are mounted from the
            * host.
            */
-          extraVolumes?: [
-            {
-              /**
-               * hostPath is the path in the host that will be mounted inside
-               * the pod.
-               */
-              hostPath: string;
-              /**
-               * mountPath is the path inside the pod where hostPath will be mounted.
-               */
-              mountPath: string;
-              /**
-               * name of the volume inside the pod template.
-               */
-              name: string;
-              /**
-               * pathType is the type of the HostPath.
-               */
-              pathType?: string;
-              /**
-               * readOnly controls write access to the volume
-               */
-              readOnly?: boolean;
-            },
-            ...{
-              /**
-               * hostPath is the path in the host that will be mounted inside
-               * the pod.
-               */
-              hostPath: string;
-              /**
-               * mountPath is the path inside the pod where hostPath will be mounted.
-               */
-              mountPath: string;
-              /**
-               * name of the volume inside the pod template.
-               */
-              name: string;
-              /**
-               * pathType is the type of the HostPath.
-               */
-              pathType?: string;
-              /**
-               * readOnly controls write access to the volume
-               */
-              readOnly?: boolean;
-            }[]
-          ];
+          extraVolumes?: {
+            /**
+             * hostPath is the path in the host that will be mounted inside
+             * the pod.
+             */
+            hostPath: string;
+            /**
+             * mountPath is the path inside the pod where hostPath will be mounted.
+             */
+            mountPath: string;
+            /**
+             * name of the volume inside the pod template.
+             */
+            name: string;
+            /**
+             * pathType is the type of the HostPath.
+             */
+            pathType?: string;
+            /**
+             * readOnly controls write access to the volume
+             */
+            readOnly?: boolean;
+          }[];
         };
         /**
          * dns defines the options for the DNS add-on installed in the cluster.
@@ -863,7 +527,7 @@ export interface KubeadmControlPlane {
              * @minItems 1
              * @maxItems 50
              */
-            endpoints: [string, ...string[]];
+            endpoints: string[];
             /**
              * keyFile is an SSL key file used to secure etcd communication.
              * Required if using a TLS connection.
@@ -890,28 +554,16 @@ export interface KubeadmControlPlane {
              *
              * Items: Arg represents an argument with a name and a value.
              */
-            extraArgs?: [
-              {
-                /**
-                 * name is the Name of the extraArg.
-                 */
-                name: string;
-                /**
-                 * value is the Value of the extraArg.
-                 */
-                value: string;
-              },
-              ...{
-                /**
-                 * name is the Name of the extraArg.
-                 */
-                name: string;
-                /**
-                 * value is the Value of the extraArg.
-                 */
-                value: string;
-              }[]
-            ];
+            extraArgs?: {
+              /**
+               * name is the Name of the extraArg.
+               */
+              name: string;
+              /**
+               * value is the Value of the extraArg.
+               */
+              value: string;
+            }[];
             /**
              * extraEnvs is an extra set of environment variables to pass to etcd.
              * Environment variables passed using ExtraEnvs will override any existing environment variables, or *_proxy environment variables that kubeadm adds by default.
@@ -922,266 +574,135 @@ export interface KubeadmControlPlane {
              *
              * Items: EnvVar represents an environment variable present in a Container.
              */
-            extraEnvs?: [
-              {
+            extraEnvs?: {
+              /**
+               * Name of the environment variable.
+               * May consist of any printable ASCII characters except '='.
+               */
+              name: string;
+              /**
+               * Variable references $(VAR_NAME) are expanded
+               * using the previously defined environment variables in the container and
+               * any service environment variables. If a variable cannot be resolved,
+               * the reference in the input string will be unchanged. Double $$ are reduced
+               * to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e.
+               * "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)".
+               * Escaped references will never be expanded, regardless of whether the variable
+               * exists or not.
+               * Defaults to "".
+               */
+              value?: string;
+              /**
+               * Source for the environment variable's value. Cannot be used if value is not empty.
+               */
+              valueFrom?: {
                 /**
-                 * Name of the environment variable.
-                 * May consist of any printable ASCII characters except '='.
+                 * Selects a key of a ConfigMap.
                  */
-                name: string;
-                /**
-                 * Variable references $(VAR_NAME) are expanded
-                 * using the previously defined environment variables in the container and
-                 * any service environment variables. If a variable cannot be resolved,
-                 * the reference in the input string will be unchanged. Double $$ are reduced
-                 * to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e.
-                 * "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)".
-                 * Escaped references will never be expanded, regardless of whether the variable
-                 * exists or not.
-                 * Defaults to "".
-                 */
-                value?: string;
-                /**
-                 * Source for the environment variable's value. Cannot be used if value is not empty.
-                 */
-                valueFrom?: {
+                configMapKeyRef?: {
                   /**
-                   * Selects a key of a ConfigMap.
+                   * The key to select.
                    */
-                  configMapKeyRef?: {
-                    /**
-                     * The key to select.
-                     */
-                    key: string;
-                    /**
-                     * Name of the referent.
-                     * This field is effectively required, but due to backwards compatibility is
-                     * allowed to be empty. Instances of this type with an empty value here are
-                     * almost certainly wrong.
-                     * More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                     */
-                    name?: string;
-                    /**
-                     * Specify whether the ConfigMap or its key must be defined
-                     */
-                    optional?: boolean;
-                  };
+                  key: string;
                   /**
-                   * Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`,
-                   * spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs.
+                   * Name of the referent.
+                   * This field is effectively required, but due to backwards compatibility is
+                   * allowed to be empty. Instances of this type with an empty value here are
+                   * almost certainly wrong.
+                   * More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
                    */
-                  fieldRef?: {
-                    /**
-                     * Version of the schema the FieldPath is written in terms of, defaults to "v1".
-                     */
-                    apiVersion?: string;
-                    /**
-                     * Path of the field to select in the specified API version.
-                     */
-                    fieldPath: string;
-                  };
+                  name?: string;
                   /**
-                   * FileKeyRef selects a key of the env file.
-                   * Requires the EnvFiles feature gate to be enabled.
+                   * Specify whether the ConfigMap or its key must be defined
                    */
-                  fileKeyRef?: {
-                    /**
-                     * The key within the env file. An invalid key will prevent the pod from starting.
-                     * The keys defined within a source may consist of any printable ASCII characters except '='.
-                     * During Alpha stage of the EnvFiles feature gate, the key size is limited to 128 characters.
-                     */
-                    key: string;
-                    /**
-                     * Specify whether the file or its key must be defined. If the file or key
-                     * does not exist, then the env var is not published.
-                     * If optional is set to true and the specified key does not exist,
-                     * the environment variable will not be set in the Pod's containers.
-                     *
-                     * If optional is set to false and the specified key does not exist,
-                     * an error will be returned during Pod creation.
-                     */
-                    optional?: boolean;
-                    /**
-                     * The path within the volume from which to select the file.
-                     * Must be relative and may not contain the '..' path or start with '..'.
-                     */
-                    path: string;
-                    /**
-                     * The name of the volume mount containing the env file.
-                     */
-                    volumeName: string;
-                  };
-                  /**
-                   * Selects a resource of the container: only resources limits and requests
-                   * (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.
-                   */
-                  resourceFieldRef?: {
-                    /**
-                     * Container name: required for volumes, optional for env vars
-                     */
-                    containerName?: string;
-                    /**
-                     * Specifies the output format of the exposed resources, defaults to "1"
-                     */
-                    divisor?: number | string;
-                    /**
-                     * Required: resource to select
-                     */
-                    resource: string;
-                  };
-                  /**
-                   * Selects a key of a secret in the pod's namespace
-                   */
-                  secretKeyRef?: {
-                    /**
-                     * The key of the secret to select from.  Must be a valid secret key.
-                     */
-                    key: string;
-                    /**
-                     * Name of the referent.
-                     * This field is effectively required, but due to backwards compatibility is
-                     * allowed to be empty. Instances of this type with an empty value here are
-                     * almost certainly wrong.
-                     * More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                     */
-                    name?: string;
-                    /**
-                     * Specify whether the Secret or its key must be defined
-                     */
-                    optional?: boolean;
-                  };
+                  optional?: boolean;
                 };
-              },
-              ...{
                 /**
-                 * Name of the environment variable.
-                 * May consist of any printable ASCII characters except '='.
+                 * Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`,
+                 * spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs.
                  */
-                name: string;
-                /**
-                 * Variable references $(VAR_NAME) are expanded
-                 * using the previously defined environment variables in the container and
-                 * any service environment variables. If a variable cannot be resolved,
-                 * the reference in the input string will be unchanged. Double $$ are reduced
-                 * to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e.
-                 * "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)".
-                 * Escaped references will never be expanded, regardless of whether the variable
-                 * exists or not.
-                 * Defaults to "".
-                 */
-                value?: string;
-                /**
-                 * Source for the environment variable's value. Cannot be used if value is not empty.
-                 */
-                valueFrom?: {
+                fieldRef?: {
                   /**
-                   * Selects a key of a ConfigMap.
+                   * Version of the schema the FieldPath is written in terms of, defaults to "v1".
                    */
-                  configMapKeyRef?: {
-                    /**
-                     * The key to select.
-                     */
-                    key: string;
-                    /**
-                     * Name of the referent.
-                     * This field is effectively required, but due to backwards compatibility is
-                     * allowed to be empty. Instances of this type with an empty value here are
-                     * almost certainly wrong.
-                     * More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                     */
-                    name?: string;
-                    /**
-                     * Specify whether the ConfigMap or its key must be defined
-                     */
-                    optional?: boolean;
-                  };
+                  apiVersion?: string;
                   /**
-                   * Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`,
-                   * spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs.
+                   * Path of the field to select in the specified API version.
                    */
-                  fieldRef?: {
-                    /**
-                     * Version of the schema the FieldPath is written in terms of, defaults to "v1".
-                     */
-                    apiVersion?: string;
-                    /**
-                     * Path of the field to select in the specified API version.
-                     */
-                    fieldPath: string;
-                  };
-                  /**
-                   * FileKeyRef selects a key of the env file.
-                   * Requires the EnvFiles feature gate to be enabled.
-                   */
-                  fileKeyRef?: {
-                    /**
-                     * The key within the env file. An invalid key will prevent the pod from starting.
-                     * The keys defined within a source may consist of any printable ASCII characters except '='.
-                     * During Alpha stage of the EnvFiles feature gate, the key size is limited to 128 characters.
-                     */
-                    key: string;
-                    /**
-                     * Specify whether the file or its key must be defined. If the file or key
-                     * does not exist, then the env var is not published.
-                     * If optional is set to true and the specified key does not exist,
-                     * the environment variable will not be set in the Pod's containers.
-                     *
-                     * If optional is set to false and the specified key does not exist,
-                     * an error will be returned during Pod creation.
-                     */
-                    optional?: boolean;
-                    /**
-                     * The path within the volume from which to select the file.
-                     * Must be relative and may not contain the '..' path or start with '..'.
-                     */
-                    path: string;
-                    /**
-                     * The name of the volume mount containing the env file.
-                     */
-                    volumeName: string;
-                  };
-                  /**
-                   * Selects a resource of the container: only resources limits and requests
-                   * (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.
-                   */
-                  resourceFieldRef?: {
-                    /**
-                     * Container name: required for volumes, optional for env vars
-                     */
-                    containerName?: string;
-                    /**
-                     * Specifies the output format of the exposed resources, defaults to "1"
-                     */
-                    divisor?: number | string;
-                    /**
-                     * Required: resource to select
-                     */
-                    resource: string;
-                  };
-                  /**
-                   * Selects a key of a secret in the pod's namespace
-                   */
-                  secretKeyRef?: {
-                    /**
-                     * The key of the secret to select from.  Must be a valid secret key.
-                     */
-                    key: string;
-                    /**
-                     * Name of the referent.
-                     * This field is effectively required, but due to backwards compatibility is
-                     * allowed to be empty. Instances of this type with an empty value here are
-                     * almost certainly wrong.
-                     * More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                     */
-                    name?: string;
-                    /**
-                     * Specify whether the Secret or its key must be defined
-                     */
-                    optional?: boolean;
-                  };
+                  fieldPath: string;
                 };
-              }[]
-            ];
+                /**
+                 * FileKeyRef selects a key of the env file.
+                 * Requires the EnvFiles feature gate to be enabled.
+                 */
+                fileKeyRef?: {
+                  /**
+                   * The key within the env file. An invalid key will prevent the pod from starting.
+                   * The keys defined within a source may consist of any printable ASCII characters except '='.
+                   * During Alpha stage of the EnvFiles feature gate, the key size is limited to 128 characters.
+                   */
+                  key: string;
+                  /**
+                   * Specify whether the file or its key must be defined. If the file or key
+                   * does not exist, then the env var is not published.
+                   * If optional is set to true and the specified key does not exist,
+                   * the environment variable will not be set in the Pod's containers.
+                   *
+                   * If optional is set to false and the specified key does not exist,
+                   * an error will be returned during Pod creation.
+                   */
+                  optional?: boolean;
+                  /**
+                   * The path within the volume from which to select the file.
+                   * Must be relative and may not contain the '..' path or start with '..'.
+                   */
+                  path: string;
+                  /**
+                   * The name of the volume mount containing the env file.
+                   */
+                  volumeName: string;
+                };
+                /**
+                 * Selects a resource of the container: only resources limits and requests
+                 * (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.
+                 */
+                resourceFieldRef?: {
+                  /**
+                   * Container name: required for volumes, optional for env vars
+                   */
+                  containerName?: string;
+                  /**
+                   * Specifies the output format of the exposed resources, defaults to "1"
+                   */
+                  divisor?: number | string;
+                  /**
+                   * Required: resource to select
+                   */
+                  resource: string;
+                };
+                /**
+                 * Selects a key of a secret in the pod's namespace
+                 */
+                secretKeyRef?: {
+                  /**
+                   * The key of the secret to select from.  Must be a valid secret key.
+                   */
+                  key: string;
+                  /**
+                   * Name of the referent.
+                   * This field is effectively required, but due to backwards compatibility is
+                   * allowed to be empty. Instances of this type with an empty value here are
+                   * almost certainly wrong.
+                   * More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                   */
+                  name?: string;
+                  /**
+                   * Specify whether the Secret or its key must be defined
+                   */
+                  optional?: boolean;
+                };
+              };
+            }[];
             /**
              * imageRepository sets the container registry to pull images from.
              * if not set, the ImageRepository defined in ClusterConfiguration will be used instead.
@@ -1198,14 +719,14 @@ export interface KubeadmControlPlane {
              * @minItems 1
              * @maxItems 100
              */
-            peerCertSANs?: [string, ...string[]];
+            peerCertSANs?: string[];
             /**
              * serverCertSANs sets extra Subject Alternative Names for the etcd server signing cert.
              *
              * @minItems 1
              * @maxItems 100
              */
-            serverCertSANs?: [string, ...string[]];
+            serverCertSANs?: string[];
           };
         };
         /**
@@ -1233,28 +754,16 @@ export interface KubeadmControlPlane {
            *
            * Items: Arg represents an argument with a name and a value.
            */
-          extraArgs?: [
-            {
-              /**
-               * name is the Name of the extraArg.
-               */
-              name: string;
-              /**
-               * value is the Value of the extraArg.
-               */
-              value: string;
-            },
-            ...{
-              /**
-               * name is the Name of the extraArg.
-               */
-              name: string;
-              /**
-               * value is the Value of the extraArg.
-               */
-              value: string;
-            }[]
-          ];
+          extraArgs?: {
+            /**
+             * name is the Name of the extraArg.
+             */
+            name: string;
+            /**
+             * value is the Value of the extraArg.
+             */
+            value: string;
+          }[];
           /**
            * extraEnvs is an extra set of environment variables to pass to the control plane component.
            * Environment variables passed using ExtraEnvs will override any existing environment variables, or *_proxy environment variables that kubeadm adds by default.
@@ -1265,266 +774,135 @@ export interface KubeadmControlPlane {
            *
            * Items: EnvVar represents an environment variable present in a Container.
            */
-          extraEnvs?: [
-            {
+          extraEnvs?: {
+            /**
+             * Name of the environment variable.
+             * May consist of any printable ASCII characters except '='.
+             */
+            name: string;
+            /**
+             * Variable references $(VAR_NAME) are expanded
+             * using the previously defined environment variables in the container and
+             * any service environment variables. If a variable cannot be resolved,
+             * the reference in the input string will be unchanged. Double $$ are reduced
+             * to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e.
+             * "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)".
+             * Escaped references will never be expanded, regardless of whether the variable
+             * exists or not.
+             * Defaults to "".
+             */
+            value?: string;
+            /**
+             * Source for the environment variable's value. Cannot be used if value is not empty.
+             */
+            valueFrom?: {
               /**
-               * Name of the environment variable.
-               * May consist of any printable ASCII characters except '='.
+               * Selects a key of a ConfigMap.
                */
-              name: string;
-              /**
-               * Variable references $(VAR_NAME) are expanded
-               * using the previously defined environment variables in the container and
-               * any service environment variables. If a variable cannot be resolved,
-               * the reference in the input string will be unchanged. Double $$ are reduced
-               * to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e.
-               * "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)".
-               * Escaped references will never be expanded, regardless of whether the variable
-               * exists or not.
-               * Defaults to "".
-               */
-              value?: string;
-              /**
-               * Source for the environment variable's value. Cannot be used if value is not empty.
-               */
-              valueFrom?: {
+              configMapKeyRef?: {
                 /**
-                 * Selects a key of a ConfigMap.
+                 * The key to select.
                  */
-                configMapKeyRef?: {
-                  /**
-                   * The key to select.
-                   */
-                  key: string;
-                  /**
-                   * Name of the referent.
-                   * This field is effectively required, but due to backwards compatibility is
-                   * allowed to be empty. Instances of this type with an empty value here are
-                   * almost certainly wrong.
-                   * More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                   */
-                  name?: string;
-                  /**
-                   * Specify whether the ConfigMap or its key must be defined
-                   */
-                  optional?: boolean;
-                };
+                key: string;
                 /**
-                 * Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`,
-                 * spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs.
+                 * Name of the referent.
+                 * This field is effectively required, but due to backwards compatibility is
+                 * allowed to be empty. Instances of this type with an empty value here are
+                 * almost certainly wrong.
+                 * More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
                  */
-                fieldRef?: {
-                  /**
-                   * Version of the schema the FieldPath is written in terms of, defaults to "v1".
-                   */
-                  apiVersion?: string;
-                  /**
-                   * Path of the field to select in the specified API version.
-                   */
-                  fieldPath: string;
-                };
+                name?: string;
                 /**
-                 * FileKeyRef selects a key of the env file.
-                 * Requires the EnvFiles feature gate to be enabled.
+                 * Specify whether the ConfigMap or its key must be defined
                  */
-                fileKeyRef?: {
-                  /**
-                   * The key within the env file. An invalid key will prevent the pod from starting.
-                   * The keys defined within a source may consist of any printable ASCII characters except '='.
-                   * During Alpha stage of the EnvFiles feature gate, the key size is limited to 128 characters.
-                   */
-                  key: string;
-                  /**
-                   * Specify whether the file or its key must be defined. If the file or key
-                   * does not exist, then the env var is not published.
-                   * If optional is set to true and the specified key does not exist,
-                   * the environment variable will not be set in the Pod's containers.
-                   *
-                   * If optional is set to false and the specified key does not exist,
-                   * an error will be returned during Pod creation.
-                   */
-                  optional?: boolean;
-                  /**
-                   * The path within the volume from which to select the file.
-                   * Must be relative and may not contain the '..' path or start with '..'.
-                   */
-                  path: string;
-                  /**
-                   * The name of the volume mount containing the env file.
-                   */
-                  volumeName: string;
-                };
-                /**
-                 * Selects a resource of the container: only resources limits and requests
-                 * (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.
-                 */
-                resourceFieldRef?: {
-                  /**
-                   * Container name: required for volumes, optional for env vars
-                   */
-                  containerName?: string;
-                  /**
-                   * Specifies the output format of the exposed resources, defaults to "1"
-                   */
-                  divisor?: number | string;
-                  /**
-                   * Required: resource to select
-                   */
-                  resource: string;
-                };
-                /**
-                 * Selects a key of a secret in the pod's namespace
-                 */
-                secretKeyRef?: {
-                  /**
-                   * The key of the secret to select from.  Must be a valid secret key.
-                   */
-                  key: string;
-                  /**
-                   * Name of the referent.
-                   * This field is effectively required, but due to backwards compatibility is
-                   * allowed to be empty. Instances of this type with an empty value here are
-                   * almost certainly wrong.
-                   * More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                   */
-                  name?: string;
-                  /**
-                   * Specify whether the Secret or its key must be defined
-                   */
-                  optional?: boolean;
-                };
+                optional?: boolean;
               };
-            },
-            ...{
               /**
-               * Name of the environment variable.
-               * May consist of any printable ASCII characters except '='.
+               * Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`,
+               * spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs.
                */
-              name: string;
-              /**
-               * Variable references $(VAR_NAME) are expanded
-               * using the previously defined environment variables in the container and
-               * any service environment variables. If a variable cannot be resolved,
-               * the reference in the input string will be unchanged. Double $$ are reduced
-               * to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e.
-               * "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)".
-               * Escaped references will never be expanded, regardless of whether the variable
-               * exists or not.
-               * Defaults to "".
-               */
-              value?: string;
-              /**
-               * Source for the environment variable's value. Cannot be used if value is not empty.
-               */
-              valueFrom?: {
+              fieldRef?: {
                 /**
-                 * Selects a key of a ConfigMap.
+                 * Version of the schema the FieldPath is written in terms of, defaults to "v1".
                  */
-                configMapKeyRef?: {
-                  /**
-                   * The key to select.
-                   */
-                  key: string;
-                  /**
-                   * Name of the referent.
-                   * This field is effectively required, but due to backwards compatibility is
-                   * allowed to be empty. Instances of this type with an empty value here are
-                   * almost certainly wrong.
-                   * More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                   */
-                  name?: string;
-                  /**
-                   * Specify whether the ConfigMap or its key must be defined
-                   */
-                  optional?: boolean;
-                };
+                apiVersion?: string;
                 /**
-                 * Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`,
-                 * spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs.
+                 * Path of the field to select in the specified API version.
                  */
-                fieldRef?: {
-                  /**
-                   * Version of the schema the FieldPath is written in terms of, defaults to "v1".
-                   */
-                  apiVersion?: string;
-                  /**
-                   * Path of the field to select in the specified API version.
-                   */
-                  fieldPath: string;
-                };
-                /**
-                 * FileKeyRef selects a key of the env file.
-                 * Requires the EnvFiles feature gate to be enabled.
-                 */
-                fileKeyRef?: {
-                  /**
-                   * The key within the env file. An invalid key will prevent the pod from starting.
-                   * The keys defined within a source may consist of any printable ASCII characters except '='.
-                   * During Alpha stage of the EnvFiles feature gate, the key size is limited to 128 characters.
-                   */
-                  key: string;
-                  /**
-                   * Specify whether the file or its key must be defined. If the file or key
-                   * does not exist, then the env var is not published.
-                   * If optional is set to true and the specified key does not exist,
-                   * the environment variable will not be set in the Pod's containers.
-                   *
-                   * If optional is set to false and the specified key does not exist,
-                   * an error will be returned during Pod creation.
-                   */
-                  optional?: boolean;
-                  /**
-                   * The path within the volume from which to select the file.
-                   * Must be relative and may not contain the '..' path or start with '..'.
-                   */
-                  path: string;
-                  /**
-                   * The name of the volume mount containing the env file.
-                   */
-                  volumeName: string;
-                };
-                /**
-                 * Selects a resource of the container: only resources limits and requests
-                 * (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.
-                 */
-                resourceFieldRef?: {
-                  /**
-                   * Container name: required for volumes, optional for env vars
-                   */
-                  containerName?: string;
-                  /**
-                   * Specifies the output format of the exposed resources, defaults to "1"
-                   */
-                  divisor?: number | string;
-                  /**
-                   * Required: resource to select
-                   */
-                  resource: string;
-                };
-                /**
-                 * Selects a key of a secret in the pod's namespace
-                 */
-                secretKeyRef?: {
-                  /**
-                   * The key of the secret to select from.  Must be a valid secret key.
-                   */
-                  key: string;
-                  /**
-                   * Name of the referent.
-                   * This field is effectively required, but due to backwards compatibility is
-                   * allowed to be empty. Instances of this type with an empty value here are
-                   * almost certainly wrong.
-                   * More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                   */
-                  name?: string;
-                  /**
-                   * Specify whether the Secret or its key must be defined
-                   */
-                  optional?: boolean;
-                };
+                fieldPath: string;
               };
-            }[]
-          ];
+              /**
+               * FileKeyRef selects a key of the env file.
+               * Requires the EnvFiles feature gate to be enabled.
+               */
+              fileKeyRef?: {
+                /**
+                 * The key within the env file. An invalid key will prevent the pod from starting.
+                 * The keys defined within a source may consist of any printable ASCII characters except '='.
+                 * During Alpha stage of the EnvFiles feature gate, the key size is limited to 128 characters.
+                 */
+                key: string;
+                /**
+                 * Specify whether the file or its key must be defined. If the file or key
+                 * does not exist, then the env var is not published.
+                 * If optional is set to true and the specified key does not exist,
+                 * the environment variable will not be set in the Pod's containers.
+                 *
+                 * If optional is set to false and the specified key does not exist,
+                 * an error will be returned during Pod creation.
+                 */
+                optional?: boolean;
+                /**
+                 * The path within the volume from which to select the file.
+                 * Must be relative and may not contain the '..' path or start with '..'.
+                 */
+                path: string;
+                /**
+                 * The name of the volume mount containing the env file.
+                 */
+                volumeName: string;
+              };
+              /**
+               * Selects a resource of the container: only resources limits and requests
+               * (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.
+               */
+              resourceFieldRef?: {
+                /**
+                 * Container name: required for volumes, optional for env vars
+                 */
+                containerName?: string;
+                /**
+                 * Specifies the output format of the exposed resources, defaults to "1"
+                 */
+                divisor?: number | string;
+                /**
+                 * Required: resource to select
+                 */
+                resource: string;
+              };
+              /**
+               * Selects a key of a secret in the pod's namespace
+               */
+              secretKeyRef?: {
+                /**
+                 * The key of the secret to select from.  Must be a valid secret key.
+                 */
+                key: string;
+                /**
+                 * Name of the referent.
+                 * This field is effectively required, but due to backwards compatibility is
+                 * allowed to be empty. Instances of this type with an empty value here are
+                 * almost certainly wrong.
+                 * More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                 */
+                name?: string;
+                /**
+                 * Specify whether the Secret or its key must be defined
+                 */
+                optional?: boolean;
+              };
+            };
+          }[];
           /**
            * extraVolumes is an extra set of host volumes, mounted to the control plane component.
            *
@@ -1534,54 +912,29 @@ export interface KubeadmControlPlane {
            * Items: HostPathMount contains elements describing volumes that are mounted from the
            * host.
            */
-          extraVolumes?: [
-            {
-              /**
-               * hostPath is the path in the host that will be mounted inside
-               * the pod.
-               */
-              hostPath: string;
-              /**
-               * mountPath is the path inside the pod where hostPath will be mounted.
-               */
-              mountPath: string;
-              /**
-               * name of the volume inside the pod template.
-               */
-              name: string;
-              /**
-               * pathType is the type of the HostPath.
-               */
-              pathType?: string;
-              /**
-               * readOnly controls write access to the volume
-               */
-              readOnly?: boolean;
-            },
-            ...{
-              /**
-               * hostPath is the path in the host that will be mounted inside
-               * the pod.
-               */
-              hostPath: string;
-              /**
-               * mountPath is the path inside the pod where hostPath will be mounted.
-               */
-              mountPath: string;
-              /**
-               * name of the volume inside the pod template.
-               */
-              name: string;
-              /**
-               * pathType is the type of the HostPath.
-               */
-              pathType?: string;
-              /**
-               * readOnly controls write access to the volume
-               */
-              readOnly?: boolean;
-            }[]
-          ];
+          extraVolumes?: {
+            /**
+             * hostPath is the path in the host that will be mounted inside
+             * the pod.
+             */
+            hostPath: string;
+            /**
+             * mountPath is the path inside the pod where hostPath will be mounted.
+             */
+            mountPath: string;
+            /**
+             * name of the volume inside the pod template.
+             */
+            name: string;
+            /**
+             * pathType is the type of the HostPath.
+             */
+            pathType?: string;
+            /**
+             * readOnly controls write access to the volume
+             */
+            readOnly?: boolean;
+          }[];
         };
       };
       /**
@@ -1652,34 +1005,19 @@ export interface KubeadmControlPlane {
            *
            * Items: PartitionSpec defines the size and optional type for a partition.
            */
-          diskLayout?: [
-            {
-              /**
-               * partitionType is the partition type (optional).
-               * Supported values are Linux, LinuxSwap, LinuxRAID, LVM, Fat32, NTFS,
-               * and LinuxExtended. These are translated to cloud-init partition type codes.
-               * A full GPT partition GUID is also supported as a passthrough value.
-               */
-              partitionType?: string;
-              /**
-               * percentage of disk that partition will take (1-100)
-               */
-              percentage: number;
-            },
-            ...{
-              /**
-               * partitionType is the partition type (optional).
-               * Supported values are Linux, LinuxSwap, LinuxRAID, LVM, Fat32, NTFS,
-               * and LinuxExtended. These are translated to cloud-init partition type codes.
-               * A full GPT partition GUID is also supported as a passthrough value.
-               */
-              partitionType?: string;
-              /**
-               * percentage of disk that partition will take (1-100)
-               */
-              percentage: number;
-            }[]
-          ];
+          diskLayout?: {
+            /**
+             * partitionType is the partition type (optional).
+             * Supported values are Linux, LinuxSwap, LinuxRAID, LVM, Fat32, NTFS,
+             * and LinuxExtended. These are translated to cloud-init partition type codes.
+             * A full GPT partition GUID is also supported as a passthrough value.
+             */
+            partitionType?: string;
+            /**
+             * percentage of disk that partition will take (1-100)
+             */
+            percentage: number;
+          }[];
           /**
            * layout specifies the device layout.
            * If it is true, a single partition will be created for the entire device.
@@ -1708,96 +1046,50 @@ export interface KubeadmControlPlane {
        *
        * Items: File defines the input for generating write_files in cloud-init.
        */
-      files?: [
-        {
+      files?: {
+        /**
+         * append specifies whether to append Content to existing file if Path exists.
+         */
+        append?: boolean;
+        /**
+         * content is the actual content of the file.
+         */
+        content?: string;
+        /**
+         * contentFrom is a referenced source of content to populate the file.
+         */
+        contentFrom?: {
           /**
-           * append specifies whether to append Content to existing file if Path exists.
+           * secret represents a secret that should populate this file.
            */
-          append?: boolean;
-          /**
-           * content is the actual content of the file.
-           */
-          content?: string;
-          /**
-           * contentFrom is a referenced source of content to populate the file.
-           */
-          contentFrom?: {
+          secret: {
             /**
-             * secret represents a secret that should populate this file.
+             * key is the key in the secret's data map for this value.
              */
-            secret: {
-              /**
-               * key is the key in the secret's data map for this value.
-               */
-              key: string;
-              /**
-               * name of the secret in the KubeadmBootstrapConfig's namespace to use.
-               */
-              name: string;
-            };
-          };
-          /**
-           * encoding specifies the encoding of the file contents.
-           */
-          encoding?: 'base64' | 'gzip' | 'gzip+base64';
-          /**
-           * owner specifies the ownership of the file, e.g. "root:root".
-           */
-          owner?: string;
-          /**
-           * path specifies the full path on disk where to store the file.
-           */
-          path: string;
-          /**
-           * permissions specifies the permissions to assign to the file, e.g. "0640".
-           */
-          permissions?: string;
-        },
-        ...{
-          /**
-           * append specifies whether to append Content to existing file if Path exists.
-           */
-          append?: boolean;
-          /**
-           * content is the actual content of the file.
-           */
-          content?: string;
-          /**
-           * contentFrom is a referenced source of content to populate the file.
-           */
-          contentFrom?: {
+            key: string;
             /**
-             * secret represents a secret that should populate this file.
+             * name of the secret in the KubeadmBootstrapConfig's namespace to use.
              */
-            secret: {
-              /**
-               * key is the key in the secret's data map for this value.
-               */
-              key: string;
-              /**
-               * name of the secret in the KubeadmBootstrapConfig's namespace to use.
-               */
-              name: string;
-            };
+            name: string;
           };
-          /**
-           * encoding specifies the encoding of the file contents.
-           */
-          encoding?: 'base64' | 'gzip' | 'gzip+base64';
-          /**
-           * owner specifies the ownership of the file, e.g. "root:root".
-           */
-          owner?: string;
-          /**
-           * path specifies the full path on disk where to store the file.
-           */
-          path: string;
-          /**
-           * permissions specifies the permissions to assign to the file, e.g. "0640".
-           */
-          permissions?: string;
-        }[]
-      ];
+        };
+        /**
+         * encoding specifies the encoding of the file contents.
+         */
+        encoding?: 'base64' | 'gzip' | 'gzip+base64';
+        /**
+         * owner specifies the ownership of the file, e.g. "root:root".
+         */
+        owner?: string;
+        /**
+         * path specifies the full path on disk where to store the file.
+         */
+        path: string;
+        /**
+         * permissions specifies the permissions to assign to the file, e.g. "0640".
+         */
+        permissions?: string;
+      }[];
       /**
        * format specifies the output format of the bootstrap data.
        * Defaults to cloud-config if not set.
@@ -1837,84 +1129,44 @@ export interface KubeadmControlPlane {
          *
          * Items: BootstrapToken describes one bootstrap token, stored as a Secret in the cluster.
          */
-        bootstrapTokens?: [
-          {
-            /**
-             * description sets a human-friendly message why this token exists and what it's used
-             * for, so other administrators can know its purpose.
-             */
-            description?: string;
-            /**
-             * expires specifies the timestamp when this token expires. Defaults to being set
-             * dynamically at runtime based on the ttlSeconds. Expires and ttlSeconds are mutually exclusive.
-             */
-            expires?: string;
-            /**
-             * groups specifies the extra groups that this token will authenticate as when/if
-             * used for authentication
-             *
-             * @minItems 1
-             * @maxItems 100
-             */
-            groups?: [string, ...string[]];
-            /**
-             * token is used for establishing bidirectional trust between nodes and control-planes.
-             * Used for joining nodes in the cluster.
-             */
-            token: string;
-            /**
-             * ttlSeconds defines the time to live for this token. Defaults to 24h.
-             * Expires and ttlSeconds are mutually exclusive.
-             */
-            ttlSeconds?: number;
-            /**
-             * usages describes the ways in which this token can be used. Can by default be used
-             * for establishing bidirectional trust, but that can be changed here.
-             *
-             * @minItems 1
-             * @maxItems 100
-             */
-            usages?: [string, ...string[]];
-          },
-          ...{
-            /**
-             * description sets a human-friendly message why this token exists and what it's used
-             * for, so other administrators can know its purpose.
-             */
-            description?: string;
-            /**
-             * expires specifies the timestamp when this token expires. Defaults to being set
-             * dynamically at runtime based on the ttlSeconds. Expires and ttlSeconds are mutually exclusive.
-             */
-            expires?: string;
-            /**
-             * groups specifies the extra groups that this token will authenticate as when/if
-             * used for authentication
-             *
-             * @minItems 1
-             * @maxItems 100
-             */
-            groups?: [string, ...string[]];
-            /**
-             * token is used for establishing bidirectional trust between nodes and control-planes.
-             * Used for joining nodes in the cluster.
-             */
-            token: string;
-            /**
-             * ttlSeconds defines the time to live for this token. Defaults to 24h.
-             * Expires and ttlSeconds are mutually exclusive.
-             */
-            ttlSeconds?: number;
-            /**
-             * usages describes the ways in which this token can be used. Can by default be used
-             * for establishing bidirectional trust, but that can be changed here.
-             *
-             * @minItems 1
-             * @maxItems 100
-             */
-            usages?: [string, ...string[]];
-          }[]
-        ];
+        bootstrapTokens?: {
+          /**
+           * description sets a human-friendly message why this token exists and what it's used
+           * for, so other administrators can know its purpose.
+           */
+          description?: string;
+          /**
+           * expires specifies the timestamp when this token expires. Defaults to being set
+           * dynamically at runtime based on the ttlSeconds. Expires and ttlSeconds are mutually exclusive.
+           */
+          expires?: string;
+          /**
+           * groups specifies the extra groups that this token will authenticate as when/if
+           * used for authentication
+           *
+           * @minItems 1
+           * @maxItems 100
+           */
+          groups?: string[];
+          /**
+           * token is used for establishing bidirectional trust between nodes and control-planes.
+           * Used for joining nodes in the cluster.
+           */
+          token: string;
+          /**
+           * ttlSeconds defines the time to live for this token. Defaults to 24h.
+           * Expires and ttlSeconds are mutually exclusive.
+           */
+          ttlSeconds?: number;
+          /**
+           * usages describes the ways in which this token can be used. Can by default be used
+           * for establishing bidirectional trust, but that can be changed here.
+           *
+           * @minItems 1
+           * @maxItems 100
+           */
+          usages?: string[];
+        }[];
         /**
          * localAPIEndpoint represents the endpoint of the API server instance that's deployed on this control plane node
          * In HA setups, this differs from ClusterConfiguration.ControlPlaneEndpoint in the sense that ControlPlaneEndpoint
@@ -1951,7 +1203,7 @@ export interface KubeadmControlPlane {
            * @minItems 1
            * @maxItems 50
            */
-          ignorePreflightErrors?: [string, ...string[]];
+          ignorePreflightErrors?: string[];
           /**
            * imagePullPolicy specifies the policy for image pulling
            * during kubeadm "init" and "join" operations. The value of
@@ -1975,28 +1227,16 @@ export interface KubeadmControlPlane {
            *
            * Items: Arg represents an argument with a name and a value.
            */
-          kubeletExtraArgs?: [
-            {
-              /**
-               * name is the Name of the extraArg.
-               */
-              name: string;
-              /**
-               * value is the Value of the extraArg.
-               */
-              value: string;
-            },
-            ...{
-              /**
-               * name is the Name of the extraArg.
-               */
-              name: string;
-              /**
-               * value is the Value of the extraArg.
-               */
-              value: string;
-            }[]
-          ];
+          kubeletExtraArgs?: {
+            /**
+             * name is the Name of the extraArg.
+             */
+            name: string;
+            /**
+             * value is the Value of the extraArg.
+             */
+            value: string;
+          }[];
           /**
            * name is the `.Metadata.Name` field of the Node API object that will be created in this `kubeadm init` or `kubeadm join` operation.
            * This field is also used in the CommonName field of the kubelet's client certificate to the API server.
@@ -2062,7 +1302,7 @@ export interface KubeadmControlPlane {
          * @minItems 1
          * @maxItems 50
          */
-        skipPhases?: [string, ...string[]];
+        skipPhases?: string[];
         /**
          * timeouts holds various timeouts that apply to kubeadm commands.
          */
@@ -2161,7 +1401,7 @@ export interface KubeadmControlPlane {
              * @minItems 1
              * @maxItems 100
              */
-            caCertHashes?: [string, ...string[]];
+            caCertHashes?: string[];
             /**
              * token is a token used to validate cluster information
              * fetched from the control-plane.
@@ -2264,7 +1504,7 @@ export interface KubeadmControlPlane {
                    * @minItems 1
                    * @maxItems 100
                    */
-                  args?: [string, ...string[]];
+                  args?: string[];
                   /**
                    * command to execute.
                    */
@@ -2280,28 +1520,16 @@ export interface KubeadmControlPlane {
                    * Items: KubeConfigAuthExecEnv is used for setting environment variables when executing an exec-based
                    * credential plugin.
                    */
-                  env?: [
-                    {
-                      /**
-                       * name of the environment variable
-                       */
-                      name: string;
-                      /**
-                       * value of the environment variable
-                       */
-                      value: string;
-                    },
-                    ...{
-                      /**
-                       * name of the environment variable
-                       */
-                      name: string;
-                      /**
-                       * value of the environment variable
-                       */
-                      value: string;
-                    }[]
-                  ];
+                  env?: {
+                    /**
+                     * name of the environment variable
+                     */
+                    name: string;
+                    /**
+                     * value of the environment variable
+                     */
+                    value: string;
+                  }[];
                   /**
                    * provideClusterInfo determines whether or not to provide cluster information,
                    * which could potentially contain very large CA data, to this exec plugin as a
@@ -2342,7 +1570,7 @@ export interface KubeadmControlPlane {
            * @minItems 1
            * @maxItems 50
            */
-          ignorePreflightErrors?: [string, ...string[]];
+          ignorePreflightErrors?: string[];
           /**
            * imagePullPolicy specifies the policy for image pulling
            * during kubeadm "init" and "join" operations. The value of
@@ -2366,28 +1594,16 @@ export interface KubeadmControlPlane {
            *
            * Items: Arg represents an argument with a name and a value.
            */
-          kubeletExtraArgs?: [
-            {
-              /**
-               * name is the Name of the extraArg.
-               */
-              name: string;
-              /**
-               * value is the Value of the extraArg.
-               */
-              value: string;
-            },
-            ...{
-              /**
-               * name is the Name of the extraArg.
-               */
-              name: string;
-              /**
-               * value is the Value of the extraArg.
-               */
-              value: string;
-            }[]
-          ];
+          kubeletExtraArgs?: {
+            /**
+             * name is the Name of the extraArg.
+             */
+            name: string;
+            /**
+             * value is the Value of the extraArg.
+             */
+            value: string;
+          }[];
           /**
            * name is the `.Metadata.Name` field of the Node API object that will be created in this `kubeadm init` or `kubeadm join` operation.
            * This field is also used in the CommonName field of the kubelet's client certificate to the API server.
@@ -2453,7 +1669,7 @@ export interface KubeadmControlPlane {
          * @minItems 1
          * @maxItems 50
          */
-        skipPhases?: [string, ...string[]];
+        skipPhases?: string[];
         /**
          * timeouts holds various timeouts that apply to kubeadm commands.
          */
@@ -2502,7 +1718,7 @@ export interface KubeadmControlPlane {
        * @minItems 1
        * @maxItems 100
        */
-      mounts?: [[string, ...string[]], ...[string, ...string[]][]];
+      mounts?: string[][];
       /**
        * ntp specifies NTP configuration
        */
@@ -2526,7 +1742,7 @@ export interface KubeadmControlPlane {
        * @minItems 1
        * @maxItems 1000
        */
-      postKubeadmCommands?: [string, ...string[]];
+      postKubeadmCommands?: string[];
       /**
        * preKubeadmCommands specifies extra commands to run before kubeadm runs.
        * With cloud-init, this is prepended to the runcmd module configuration, and is typically executed in
@@ -2535,7 +1751,7 @@ export interface KubeadmControlPlane {
        * @minItems 1
        * @maxItems 1000
        */
-      preKubeadmCommands?: [string, ...string[]];
+      preKubeadmCommands?: string[];
       /**
        * users specifies extra users to add
        *
@@ -2544,140 +1760,72 @@ export interface KubeadmControlPlane {
        *
        * Items: User defines the input for a generated user in cloud-init.
        */
-      users?: [
-        {
+      users?: {
+        /**
+         * gecos specifies the gecos to use for the user
+         */
+        gecos?: string;
+        /**
+         * groups specifies the additional groups for the user
+         */
+        groups?: string;
+        /**
+         * homeDir specifies the home directory to use for the user
+         */
+        homeDir?: string;
+        /**
+         * inactive specifies whether to mark the user as inactive
+         */
+        inactive?: boolean;
+        /**
+         * lockPassword specifies if password login should be disabled
+         */
+        lockPassword?: boolean;
+        /**
+         * name specifies the user name
+         */
+        name: string;
+        /**
+         * passwd specifies a hashed password for the user
+         */
+        passwd?: string;
+        /**
+         * passwdFrom is a referenced source of passwd to populate the passwd.
+         */
+        passwdFrom?: {
           /**
-           * gecos specifies the gecos to use for the user
+           * secret represents a secret that should populate this password.
            */
-          gecos?: string;
-          /**
-           * groups specifies the additional groups for the user
-           */
-          groups?: string;
-          /**
-           * homeDir specifies the home directory to use for the user
-           */
-          homeDir?: string;
-          /**
-           * inactive specifies whether to mark the user as inactive
-           */
-          inactive?: boolean;
-          /**
-           * lockPassword specifies if password login should be disabled
-           */
-          lockPassword?: boolean;
-          /**
-           * name specifies the user name
-           */
-          name: string;
-          /**
-           * passwd specifies a hashed password for the user
-           */
-          passwd?: string;
-          /**
-           * passwdFrom is a referenced source of passwd to populate the passwd.
-           */
-          passwdFrom?: {
+          secret: {
             /**
-             * secret represents a secret that should populate this password.
+             * key is the key in the secret's data map for this value.
              */
-            secret: {
-              /**
-               * key is the key in the secret's data map for this value.
-               */
-              key: string;
-              /**
-               * name of the secret in the KubeadmBootstrapConfig's namespace to use.
-               */
-              name: string;
-            };
-          };
-          /**
-           * primaryGroup specifies the primary group for the user
-           */
-          primaryGroup?: string;
-          /**
-           * shell specifies the user's shell
-           */
-          shell?: string;
-          /**
-           * sshAuthorizedKeys specifies a list of ssh authorized keys for the user
-           *
-           * @maxItems 100
-           */
-          sshAuthorizedKeys?: string[];
-          /**
-           * sudo specifies a sudo role for the user
-           */
-          sudo?: string;
-        },
-        ...{
-          /**
-           * gecos specifies the gecos to use for the user
-           */
-          gecos?: string;
-          /**
-           * groups specifies the additional groups for the user
-           */
-          groups?: string;
-          /**
-           * homeDir specifies the home directory to use for the user
-           */
-          homeDir?: string;
-          /**
-           * inactive specifies whether to mark the user as inactive
-           */
-          inactive?: boolean;
-          /**
-           * lockPassword specifies if password login should be disabled
-           */
-          lockPassword?: boolean;
-          /**
-           * name specifies the user name
-           */
-          name: string;
-          /**
-           * passwd specifies a hashed password for the user
-           */
-          passwd?: string;
-          /**
-           * passwdFrom is a referenced source of passwd to populate the passwd.
-           */
-          passwdFrom?: {
+            key: string;
             /**
-             * secret represents a secret that should populate this password.
+             * name of the secret in the KubeadmBootstrapConfig's namespace to use.
              */
-            secret: {
-              /**
-               * key is the key in the secret's data map for this value.
-               */
-              key: string;
-              /**
-               * name of the secret in the KubeadmBootstrapConfig's namespace to use.
-               */
-              name: string;
-            };
+            name: string;
           };
-          /**
-           * primaryGroup specifies the primary group for the user
-           */
-          primaryGroup?: string;
-          /**
-           * shell specifies the user's shell
-           */
-          shell?: string;
-          /**
-           * sshAuthorizedKeys specifies a list of ssh authorized keys for the user
-           *
-           * @maxItems 100
-           */
-          sshAuthorizedKeys?: string[];
-          /**
-           * sudo specifies a sudo role for the user
-           */
-          sudo?: string;
-        }[]
-      ];
+        };
+        /**
+         * primaryGroup specifies the primary group for the user
+         */
+        primaryGroup?: string;
+        /**
+         * shell specifies the user's shell
+         */
+        shell?: string;
+        /**
+         * sshAuthorizedKeys specifies a list of ssh authorized keys for the user
+         *
+         * @maxItems 100
+         */
+        sshAuthorizedKeys?: string[];
+        /**
+         * sudo specifies a sudo role for the user
+         */
+        sudo?: string;
+      }[];
       /**
        * verbosity is the number for the kubeadm log level verbosity.
        * It overrides the `--v` flag in kubeadm commands.
@@ -2796,40 +1944,22 @@ export interface KubeadmControlPlane {
          *
          * Items: MachineReadinessGate contains the type of a Machine condition to be used as a readiness gate.
          */
-        readinessGates?: [
-          {
-            /**
-             * conditionType refers to a condition with matching type in the Machine's condition list.
-             * If the conditions doesn't exist, it will be treated as unknown.
-             * Note: Both Cluster API conditions or conditions added by 3rd party controllers can be used as readiness gates.
-             */
-            conditionType: string;
-            /**
-             * polarity of the conditionType specified in this readinessGate.
-             * Valid values are Positive, Negative and omitted.
-             * When omitted, the default behaviour will be Positive.
-             * A positive polarity means that the condition should report a true status under normal conditions.
-             * A negative polarity means that the condition should report a false status under normal conditions.
-             */
-            polarity?: 'Positive' | 'Negative';
-          },
-          ...{
-            /**
-             * conditionType refers to a condition with matching type in the Machine's condition list.
-             * If the conditions doesn't exist, it will be treated as unknown.
-             * Note: Both Cluster API conditions or conditions added by 3rd party controllers can be used as readiness gates.
-             */
-            conditionType: string;
-            /**
-             * polarity of the conditionType specified in this readinessGate.
-             * Valid values are Positive, Negative and omitted.
-             * When omitted, the default behaviour will be Positive.
-             * A positive polarity means that the condition should report a true status under normal conditions.
-             * A negative polarity means that the condition should report a false status under normal conditions.
-             */
-            polarity?: 'Positive' | 'Negative';
-          }[]
-        ];
+        readinessGates?: {
+          /**
+           * conditionType refers to a condition with matching type in the Machine's condition list.
+           * If the conditions doesn't exist, it will be treated as unknown.
+           * Note: Both Cluster API conditions or conditions added by 3rd party controllers can be used as readiness gates.
+           */
+          conditionType: string;
+          /**
+           * polarity of the conditionType specified in this readinessGate.
+           * Valid values are Positive, Negative and omitted.
+           * When omitted, the default behaviour will be Positive.
+           * A positive polarity means that the condition should report a true status under normal conditions.
+           * A negative polarity means that the condition should report a false status under normal conditions.
+           */
+          polarity?: 'Positive' | 'Negative';
+        }[];
         /**
          * taints are the node taints that Cluster API will manage.
          * This list is not necessarily complete: other Kubernetes components may add or remove other taints from nodes,
@@ -2846,58 +1976,31 @@ export interface KubeadmControlPlane {
          *
          * Items: MachineTaint defines a taint equivalent to corev1.Taint, but additionally having a propagation field.
          */
-        taints?: [
-          {
-            /**
-             * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
-             */
-            effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
-            /**
-             * key is the taint key to be applied to a node.
-             * Must be a valid qualified name of maximum size 63 characters
-             * with an optional subdomain prefix of maximum size 253 characters,
-             * separated by a `/`.
-             */
-            key: string;
-            /**
-             * propagation defines how this taint should be propagated to nodes.
-             * Valid values are 'Always' and 'OnInitialization'.
-             * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
-             * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
-             */
-            propagation: 'Always' | 'OnInitialization';
-            /**
-             * value is the taint value corresponding to the taint key.
-             * It must be a valid label value of maximum size 63 characters.
-             */
-            value?: string;
-          },
-          ...{
-            /**
-             * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
-             */
-            effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
-            /**
-             * key is the taint key to be applied to a node.
-             * Must be a valid qualified name of maximum size 63 characters
-             * with an optional subdomain prefix of maximum size 253 characters,
-             * separated by a `/`.
-             */
-            key: string;
-            /**
-             * propagation defines how this taint should be propagated to nodes.
-             * Valid values are 'Always' and 'OnInitialization'.
-             * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
-             * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
-             */
-            propagation: 'Always' | 'OnInitialization';
-            /**
-             * value is the taint value corresponding to the taint key.
-             * It must be a valid label value of maximum size 63 characters.
-             */
-            value?: string;
-          }[]
-        ];
+        taints?: {
+          /**
+           * effect is the effect for the taint. Valid values are NoSchedule, PreferNoSchedule and NoExecute.
+           */
+          effect: 'NoSchedule' | 'PreferNoSchedule' | 'NoExecute';
+          /**
+           * key is the taint key to be applied to a node.
+           * Must be a valid qualified name of maximum size 63 characters
+           * with an optional subdomain prefix of maximum size 253 characters,
+           * separated by a `/`.
+           */
+          key: string;
+          /**
+           * propagation defines how this taint should be propagated to nodes.
+           * Valid values are 'Always' and 'OnInitialization'.
+           * Always: The taint will be continuously reconciled. If it is not set for a node, it will be added during reconciliation.
+           * OnInitialization: The taint will be added during node initialization. If it gets removed from the node later on it will not get added again.
+           */
+          propagation: 'Always' | 'OnInitialization';
+          /**
+           * value is the taint value corresponding to the taint key.
+           * It must be a valid label value of maximum size 63 characters.
+           */
+          value?: string;
+        }[];
       };
     };
     /**

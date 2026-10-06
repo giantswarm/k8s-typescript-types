@@ -4,6 +4,29 @@
   "description": "TypeScript type definitions for Kubernetes core objects and custom resource definitions",
   "main": "dist/types/index.js",
   "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "default": "./dist/types/index.js"
+    },
+    "./crds": {
+      "types": "./dist/types/crds/index.d.ts",
+      "default": "./dist/types/crds/index.js"
+    },
+    "./crds/*": {
+      "types": "./dist/types/crds/*/index.d.ts",
+      "default": "./dist/types/crds/*/index.js"
+    },
+    "./core": {
+      "types": "./dist/types/core/index.d.ts",
+      "default": "./dist/types/core/index.js"
+    },
+    "./core/*": {
+      "types": "./dist/types/core/*/index.d.ts",
+      "default": "./dist/types/core/*/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "license": "Apache-2.0",
   "author": "Giant Swarm",
   "keywords": [
