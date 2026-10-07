@@ -35,24 +35,15 @@ export interface VSphereMachine {
     additionalDisksGiB?: number[];
     /**
      * CloneMode specifies the type of clone operation.
-     * The linkedClone mode is only support for templates that have at least
+     * The LinkedClone mode is only support for templates that have at least
      * one snapshot. If the template has no snapshots, then CloneMode defaults
-     * to fullClone.
-     * When linkedClone mode is enabled the DiskGiB field is ignored as it is
+     * to FullClone.
+     * When LinkedClone mode is enabled the DiskGiB field is ignored as it is
      * not possible to expand disks of linked clones.
-     * Defaults to linkedClone, but fails gracefully to fullClone if the source
+     * Defaults to LinkedClone, but fails gracefully to FullClone if the source
      * of the clone operation has no snapshots.
      */
     cloneMode?: string;
-    /**
-     * cryptoKeyID is the crypto key id.
-     */
-    cryptoKeyID?: string;
-    /**
-     * cryptoProfile of the storage encryption policy to use with this
-     * Virtual Machine.
-     */
-    cryptoProfile?: string;
     /**
      * CustomVMXKeys is a dictionary of advanced VMX options that can be set on VM
      * Defaults to empty map
@@ -111,13 +102,6 @@ export interface VSphereMachine {
      */
     folder?: string;
     /**
-     * ftEncryptionMode is the encrypted fault tolerance mode.
-     * Defaults to the eponymous property value in the template from which the
-     * virtual machine is cloned.
-     * Check the compatibility with the ESXi version before setting the value.
-     */
-    ftEncryptionMode?: 'ftEncryptionDisabled' | 'ftEncryptionOpportunistic' | 'ftEncryptionRequired';
-    /**
      * GuestSoftPowerOffTimeout sets the wait timeout for shutdown in the VM guest.
      * The VM will be powered off forcibly after the timeout if the VM is still
      * up and running when the PowerOffMode is set to trySoft.
@@ -141,13 +125,6 @@ export interface VSphereMachine {
      */
     memoryMiB?: number;
     /**
-     * migrateEncryption is the encrypted vMotion mode.
-     * Defaults to the eponymous property value in the template from which the
-     * virtual machine is cloned.
-     * Check the compatibility with the ESXi version before setting the value.
-     */
-    migrateEncryption?: 'disabled' | 'opportunistic' | 'required';
-    /**
      * NamingStrategy allows configuring the naming strategy used when calculating the name of the VSphereVM.
      */
     namingStrategy?: {
@@ -169,13 +146,6 @@ export interface VSphereMachine {
        */
       template?: string;
     };
-    /**
-     * nestedHV controls nested hardware-assisted virtualization.
-     * Defaults to the eponymous property value in the template from which the
-     * virtual machine is cloned.
-     * Check the compatibility with the ESXi version before setting the value.
-     */
-    nestedHV?: boolean;
     /**
      * Network is the network configuration for this machine's VM.
      */
@@ -574,7 +544,7 @@ export interface VSphereMachine {
     server?: string;
     /**
      * Snapshot is the name of the snapshot from which to create a linked clone.
-     * This field is ignored if linkedClone is not enabled.
+     * This field is ignored if LinkedClone is not enabled.
      * Defaults to the source's current snapshot.
      */
     snapshot?: string;

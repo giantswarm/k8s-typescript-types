@@ -18,13 +18,16 @@ export interface IResourceInfo {
   crdURL?: string;
   /**
    * crdURLs lists several URLs of the same CRD, to generate types for the
-   * union of the API versions they serve. Use this when no single CRD release
-   * still serves every version we need to support: an older release for the
+   * union of the API versions they define. Use this when no single CRD release
+   * serves every version we need to support: an older release for the
    * versions our clusters run today, a newer one for the versions they will
    * run after an upgrade.
    *
-   * Order the list oldest first: when the same version appears in more than
-   * one CRD, the last entry wins, so the newest schema is the one generated.
+   * When the same version is defined by more than one CRD, the last entry
+   * wins. Usually that means oldest first, so the newest schema is generated.
+   * To follow a deployed release for every version it defines and take only
+   * the missing versions from a newer one, list the deployed release last
+   * (see capv in resources.yaml).
    *
    * Mutually exclusive with `crdURL`.
    */
@@ -43,7 +46,7 @@ export interface IGroupInfo {
 }
 
 /**
- * Returns the CRD URLs configured for a resource, oldest first.
+ * Returns the CRD URLs configured for a resource, in configured order.
  */
 export function getResourceURLs(resource: IResourceInfo): string[] {
   const { name, crdURL, crdURLs } = resource;
@@ -75,6 +78,10 @@ export async function getResourcesList(): Promise<IGroupInfo[]> {
 
   // Fail on a malformed config before anything gets generated from it.
   for (const group of data) {
+    if (!group.resources?.length) {
+      throw new Error(`Group ${group.group} has no resources.`);
+    }
+
     for (const resource of group.resources) {
       getResourceURLs(resource);
     }

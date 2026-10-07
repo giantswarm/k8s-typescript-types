@@ -7,6 +7,61 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+**Breaking:** the CRD types now follow the versions deployed on Giant Swarm
+management clusters instead of commits on upstream `main`. Fields that only
+`main` had are removed, and a few fields are renamed or become required; see
+Removed and Changed. Code that uses them no longer compiles.
+
+### Added
+
+- `capv.v1alpha3` and `capv.v1alpha4`, which the deployed CAPV release defines
+  (as not served).
+- `capi` Cluster, KubeadmControlPlane, MachineDeployment and MachinePool gain
+  the `upgradePlan`/`versions` fields, and Machine gains
+  `waitForPreDrainHookStartTime`/`waitForPreTerminateHookStartTime`.
+- `capz` AzureCluster's private links gain `natIpConfigurations`.
+- On Renovate pull requests that bump the generator's npm dependencies, the
+  `Regenerate types` workflow pushes the regenerated types onto the branch.
+  Those pull requests are no longer automerged.
+
+### Changed
+
+- CRD sources and the deployed versions they follow:
+  - `capi`: Giant Swarm fork `v1.14.2-gs-df613140e` (was upstream v1.13.4).
+  - `capa`: Giant Swarm fork `v2.11.1-gs-6d635ed37`.
+  - `capz`: Giant Swarm fork `v1.27.0-gs-99647669a`.
+  - `capv`: v1.15.3, plus v1.17.0 for `v1beta2`, which v1.15.3 does not serve.
+  - `capvcd`: Giant Swarm fork commit `06f9f9c8`.
+  - `crossplane`: provider-family-aws v1.21.0.
+  - `giantswarm`: App and Catalog from apiextensions-application v0.6.2,
+    Release from the releases SDK `sdk/v0.13.0` (same CRD as before).
+- `capvcd.v1beta3.VCDCluster`: `spec.ovdc` and `spec.ovdcNetwork` are required,
+  and a zone's `ovdc` is renamed to `ovdcName`.
+- `capz.v1beta1.AzureCluster`: a security rule's `description` is required.
+- Every CRD URL is pinned to the commit its release tag points to, with the tag
+  in an inline comment, so a moved tag cannot change the generated types.
+- The generator fails without writing anything when a CRD cannot be fetched or
+  turned into types, instead of leaving that resource out of the generated
+  indexes. Fetches time out after 30s and are retried on network errors, 429
+  and 5xx. Groups are fetched in parallel, and a group without resources is a
+  configuration error.
+- `yarn generate` replaces `src/types/crds/`, so a type that is no longer
+  generated is removed. `yarn clean` only removes `dist/`, and `yarn build`
+  runs it first. `yarn regenerate` is `yarn generate && yarn build`.
+
+### Removed
+
+- `capa.v1beta2.AWSCluster`: the S3 bucket's `additionalIAMRoles`.
+- `capa.v1beta2.AWSMachinePool` and `AWSManagedMachinePool`: `enclaveOptions`.
+- `capa.v1beta2.AWSManagedControlPlane`: `podIdentityAssociations` and
+  `controlPlaneScalingConfig`.
+- `capa.v1beta1`/`v1beta2.AWSManagedControlPlane`: `status.observedGeneration`.
+- `capv.v1beta1.VSphereMachine` and `VSphereMachineTemplate`: `cryptoKeyID`,
+  `cryptoProfile`, `ftEncryptionMode`, `migrateEncryption` and `nestedHV`.
+- `crossplane.v1beta1.ProviderConfig`: `reconciliationPolicy`.
+- `giantswarm.v1alpha1.Catalog`: `status`. The Catalog CRD management clusters
+  install (apiextensions-application v0.6.2) does not define it.
+
 ## [0.11.0] - 2026-10-06
 
 ### Added

@@ -914,7 +914,7 @@ export interface Cluster {
             rollingUpdate?: {
               /**
                * deletePolicy defines the policy used by the MachineDeployment to identify nodes to delete when downscaling.
-               * Valid values are "Random, "Newest", "Oldest"
+               * Valid values are "Random", "Newest", "Oldest"
                * When no value is supplied, the default DeletePolicy of MachineSet is used
                */
               deletePolicy?: 'Random' | 'Newest' | 'Oldest';
@@ -1374,6 +1374,44 @@ export interface Cluster {
          * upToDateReplicas is the number of up-to-date control plane machines in this cluster. A machine is considered up-to-date when Machine's UpToDate condition is true.
          */
         upToDateReplicas?: number;
+        /**
+         * upgradePlan reports the list of versions that would be applied to the control plane object according to the upgrade plan.
+         * Note:
+         * - This field is set only when the Cluster topology is managed by Cluster API and a Cluster upgrade is in progress.
+         * - Once a version is applied to the control plane object, it is removed from the list (after a version
+         *   is applied to a control plane object, it might take some time for the actual upgrade to complete)
+         * - During a chained upgrade, the upgrade plan is continuously re-computed, and this field will
+         *   report only the last known upgrade plan.
+         *
+         * @minItems 1
+         * @maxItems 32
+         *
+         * Items: StatusUpgradePlanVersion groups upgrade plan version-related status information.
+         */
+        upgradePlan?: {
+          /**
+           * version is the Kubernetes version.
+           */
+          version: string;
+        }[];
+        /**
+         * versions is the aggregated Kubernetes versions in this control plane.
+         *
+         * @minItems 1
+         * @maxItems 32
+         *
+         * Items: StatusVersion groups version-related status information.
+         */
+        versions?: {
+          /**
+           * replicas is the number of replicas at this version.
+           */
+          replicas?: number;
+          /**
+           * version is the Kubernetes version.
+           */
+          version: string;
+        }[];
       };
       /**
        * workers groups all the observations about Cluster's Workers current state.
@@ -1400,6 +1438,44 @@ export interface Cluster {
          * upToDateReplicas is the number of up-to-date worker machines in this cluster. A machine is considered up-to-date when Machine's UpToDate condition is true.
          */
         upToDateReplicas?: number;
+        /**
+         * upgradePlan reports the list of versions that would be applied to the worker objects (all MachineDeployments and MachinePools).
+         * Note:
+         * - This field is set only when the Cluster topology is managed by Cluster API and a Cluster upgrade is in progress.
+         * - Once a version is applied to the worker objects, it is removed from the list (after a version
+         *   is applied to a worker object, it might take some time for the actual upgrade to complete)
+         * - During a chained upgrade, the upgrade plan is continuously re-computed, and this field will
+         *   report only the last known upgrade plan.
+         *
+         * @minItems 1
+         * @maxItems 32
+         *
+         * Items: StatusUpgradePlanVersion groups upgrade plan version-related status information.
+         */
+        upgradePlan?: {
+          /**
+           * version is the Kubernetes version.
+           */
+          version: string;
+        }[];
+        /**
+         * versions is the aggregated Kubernetes versions in cluster workers.
+         *
+         * @minItems 1
+         * @maxItems 32
+         *
+         * Items: StatusVersion groups version-related status information.
+         */
+        versions?: {
+          /**
+           * replicas is the number of replicas at this version.
+           */
+          replicas?: number;
+          /**
+           * version is the Kubernetes version.
+           */
+          version: string;
+        }[];
       };
     };
   };

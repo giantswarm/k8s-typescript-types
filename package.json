@@ -37,10 +37,10 @@
   ],
   "scripts": {
     "generate": "tsx src/generator/index.ts",
-    "build": "tsc && yarn smoke",
+    "build": "yarn clean && tsc && yarn smoke",
     "smoke": "tsc -p tsconfig.smoke.json",
-    "clean": "rm -rf dist src/types/crds/*",
-    "regenerate": "yarn clean && yarn generate && yarn build"
+    "clean": "rm -rf dist",
+    "regenerate": "yarn generate && yarn build"
   },
   "files": [
     "dist"

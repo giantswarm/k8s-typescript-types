@@ -1,6 +1,9 @@
 # Dependencies
 node_modules/
 
+# Generator output before it replaces src/types/crds
+.crds-staging/
+
 # Yarn files
 .yarn/*
 !.yarn/patches

@@ -81,7 +81,12 @@ This will:
 2. Fetch CRD definitions from remote URLs
 3. Auto-discover all available versions
 4. Generate TypeScript interfaces
-5. Create organized output in `src/types/crds/`
+5. Replace `src/types/crds/` with the result
+
+`src/types/crds/` is entirely generated: a version or resource that is no
+longer generated disappears from it. If any CRD cannot be fetched or turned
+into types, the generator reports it, exits non-zero and leaves
+`src/types/crds/` as it was.
 
 ### Build
 
@@ -89,17 +94,19 @@ This will:
 yarn build
 ```
 
-This compiles `src/types` into `dist/` and then runs the consumer smoke
-(`yarn smoke`): `src/smoke/` is type-checked against the built `dist/`
+This empties `dist/`, compiles `src/types` into it and then runs the consumer
+smoke (`yarn smoke`): `src/smoke/` is type-checked against the built `dist/`
 declarations exactly as a consumer would import them, so a regeneration that
 drops or reshapes a type consumers depend on fails the build instead of
 shipping. Nothing under `src/smoke/` is emitted.
 
-### Clean Generated Types
+### Clean Build Output
 
 ```bash
 yarn clean
 ```
+
+Removes `dist/`. `yarn build` does this first, so no stale output survives.
 
 ### Regenerate and Build
 
@@ -118,16 +125,34 @@ To add new CRD types:
 - group: my_group
   resources:
     - name: MyResource
-      crdURL: https://raw.githubusercontent.com/example/repo/main/config/crd/my-resource.yaml
+      crdURL: https://raw.githubusercontent.com/example/repo/<commit-sha>/config/crd/my-resource.yaml  # v1.2.3
 ```
 
 3. Run `yarn generate`
 
 The generator will automatically discover all versions from the CRD and generate types for each.
 
-Pin `crdURL` to a release tag rather than a branch such as `main`. Upstream
-projects drop deprecated API versions over time, so a `main` URL makes a
-regeneration silently remove types that consumers still depend on.
+### Pinning CRD sources
+
+Pin every URL to the commit a release tag points to, with the tag in an inline
+comment, never to a branch such as `main` or to the tag itself. A branch is
+ahead of what any cluster serves, and a tag can be moved: either way a change
+upstream fails CI's generated-output check on every pull request. Pin to the
+version deployed on Giant Swarm management clusters, and name what it follows
+(the app and its version) in a comment. Where no tag matches the deployed
+version, pin the deployed commit.
+
+`git ls-remote https://github.com/<owner>/<repo> 'refs/tags/<tag>^{}' 'refs/tags/<tag>'`
+gives a tag's commit (the `^{}` line, if present, for an annotated tag).
+
+Pins are bumped by hand, in step with the app they follow: change the URLs,
+run `yarn regenerate` and commit the result, so the pull request's diff shows
+every field and API version the bump adds or removes. Renovate does not manage
+them, because upstream releases run ahead of what management clusters deploy.
+
+Renovate does bump the generator's npm dependencies, which can change the
+emitted types too. On those pull requests the `Regenerate types` workflow
+pushes the regenerated types onto the branch, and they are never automerged.
 
 ### Covering several API versions
 
@@ -140,15 +165,21 @@ per version under `crdURLs` instead:
     - name: MyResource
       crdURLs:
         # v1beta1
-        - https://raw.githubusercontent.com/example/repo/refs/tags/v1.0.0/config/crd/my-resource.yaml
+        - https://raw.githubusercontent.com/example/repo/<commit-sha>/config/crd/my-resource.yaml  # v1.0.0
         # v1
-        - https://raw.githubusercontent.com/example/repo/refs/tags/v2.0.0/config/crd/my-resource.yaml
+        - https://raw.githubusercontent.com/example/repo/<commit-sha>/config/crd/my-resource.yaml  # v2.0.0
 ```
 
-Types are generated for the union of the versions the listed CRDs serve. List
-them oldest first: where several CRDs serve the same version, the last one wins,
-so the newest schema is the one generated. The most complete schema for a given
-version is the newest release that still serves it.
+Types are generated for the union of the versions the listed CRDs define,
+whether or not a CRD marks a version as served. List them oldest first: where
+several CRDs define the same version, the last one wins, so the newest schema
+is the one generated. The most complete schema for a given version is the
+newest release that still serves it.
+
+To keep an API version the deployed release does not serve yet, while
+following the deployed release for every other version, list the deployed
+release last (as `capv` does): it then wins for every version it defines, and
+the newer release only fills in the rest.
 
 ## Configuration Format
 

@@ -132,7 +132,7 @@ export interface AWSMachineTemplate {
                  * "None": The instance may not make use of any Capacity Reservations. This is to conserve open reservations for desired workloads
                  * "CapacityReservationsOnly": The instance will only run if matched or targeted to a Capacity Reservation. Note that this is incompatible with a MarketType of `Spot`
                  */
-                capacityReservationPreference?: '' | 'None' | 'CapacityReservationsOnly' | 'Open';
+                capacityReservationPreference?: ('' | 'None' | 'CapacityReservationsOnly' | 'Open') & string;
                 /**
                  * CloudInit defines options related to the bootstrapping systems where
                  * CloudInit is used.

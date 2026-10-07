@@ -1024,7 +1024,7 @@ export interface AWSManagedControlPlane {
        * "None": The instance may not make use of any Capacity Reservations. This is to conserve open reservations for desired workloads
        * "CapacityReservationsOnly": The instance will only run if matched or targeted to a Capacity Reservation. Note that this is incompatible with a MarketType of `Spot`
        */
-      capacityReservationPreference?: '' | 'None' | 'CapacityReservationsOnly' | 'Open';
+      capacityReservationPreference?: ('' | 'None' | 'CapacityReservationsOnly' | 'Open') & string;
       /**
        * CPUOptions defines CPU-related settings for the instance, including the confidential computing policy.
        * When omitted, this means no opinion and the AWS platform is left to choose a reasonable default.
@@ -1808,10 +1808,6 @@ export interface AWSManagedControlPlane {
         };
       };
     };
-    /**
-     * ObservedGeneration is the latest generation observed by the controller.
-     */
-    observedGeneration?: number;
     /**
      * OIDCProvider holds the status of the identity provider for this cluster
      */

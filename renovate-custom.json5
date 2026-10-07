@@ -1,0 +1,21 @@
+// Repo-specific Renovate rules, extended last from renovate.json5.
+//
+// Renovate does not manage the CRD sources in
+// src/generator/config/resources.yaml: each follows what an app deploys on
+// management clusters, and upstream releases run ahead of that. They are
+// bumped by hand.
+{
+  packageRules: [
+    {
+      // The npm packages are the generator's, and a bump can change the
+      // published types, which the regenerate-types workflow pushes onto the
+      // branch. The base preset automerges patch updates.
+      matchManagers: ['npm'],
+      automerge: false,
+    },
+  ],
+  // The regenerate-types workflow commits as taylorbot onto Renovate branches.
+  // Renovate treats a branch whose last commit is by anyone else as edited by
+  // a human and stops rebasing it.
+  gitIgnoredAuthors: ['dev@giantswarm.io'],
+}

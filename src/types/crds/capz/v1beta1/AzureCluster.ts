@@ -239,7 +239,7 @@ export interface AzureCluster {
               /**
                * A description for this rule. Restricted to 140 chars.
                */
-              description?: string;
+              description: string;
               /**
                * Destination is the destination address prefix. CIDR or destination IP range. Asterix '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used.
                */
@@ -583,6 +583,22 @@ export interface AzureCluster {
              */
             subnet: string;
           }[];
+          /**
+           * Compatibility fix; to be removed.
+           */
+          natIpConfigurations?:
+            | {
+                /**
+                 * AllocationMethod specifies how the private link NAT IPs are allocated: "Static" or "Dynamic".
+                 */
+                allocationMethod: 'Static' | 'Dynamic';
+                privateIPAddress?: string;
+                /**
+                 * Subnet from which the IP is allocated.
+                 */
+                subnet: string;
+              }[]
+            | null;
         }[];
         /**
          * SKU defines an Azure load balancer SKU.
@@ -703,6 +719,22 @@ export interface AzureCluster {
              */
             subnet: string;
           }[];
+          /**
+           * Compatibility fix; to be removed.
+           */
+          natIpConfigurations?:
+            | {
+                /**
+                 * AllocationMethod specifies how the private link NAT IPs are allocated: "Static" or "Dynamic".
+                 */
+                allocationMethod: 'Static' | 'Dynamic';
+                privateIPAddress?: string;
+                /**
+                 * Subnet from which the IP is allocated.
+                 */
+                subnet: string;
+              }[]
+            | null;
         }[];
         /**
          * SKU defines an Azure load balancer SKU.
@@ -822,6 +854,22 @@ export interface AzureCluster {
              */
             subnet: string;
           }[];
+          /**
+           * Compatibility fix; to be removed.
+           */
+          natIpConfigurations?:
+            | {
+                /**
+                 * AllocationMethod specifies how the private link NAT IPs are allocated: "Static" or "Dynamic".
+                 */
+                allocationMethod: 'Static' | 'Dynamic';
+                privateIPAddress?: string;
+                /**
+                 * Subnet from which the IP is allocated.
+                 */
+                subnet: string;
+              }[]
+            | null;
         }[];
         /**
          * SKU defines an Azure load balancer SKU.
@@ -995,7 +1043,7 @@ export interface AzureCluster {
             /**
              * A description for this rule. Restricted to 140 chars.
              */
-            description?: string;
+            description: string;
             /**
              * Destination is the destination address prefix. CIDR or destination IP range. Asterix '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used.
              */

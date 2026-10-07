@@ -231,6 +231,7 @@ export interface ProviderConfig {
              * Specifies if the endpoint's hostname can be modified by the SDK's API
              * client.
              *
+             *
              * If the hostname is mutable the SDK API clients may modify any part of
              * the hostname based on the requirements of the API, (e.g. adding, or
              * removing content in the hostname). Such as, Amazon S3 API client
@@ -238,15 +239,18 @@ export interface ProviderConfig {
              * hostname service name component from "s3." to "s3-accesspoint.dualstack."
              * for the dualstack endpoint of an S3 Accesspoint resource.
              *
+             *
              * Care should be taken when providing a custom endpoint for an API. If the
              * endpoint hostname is mutable, and the client cannot modify the endpoint
              * correctly, the operation call will most likely fail, or have undefined
              * behavior.
              *
+             *
              * If hostname is immutable, the SDK API clients will not modify the
              * hostname of the URL. This may cause the API client not to function
              * correctly if the API requires the operation specific hostname values
              * to be used by the client.
+             *
              *
              * This flag does not modify the API client's behavior if this endpoint
              * will be used instead of Endpoint Discovery, or if the endpoint will be
@@ -323,28 +327,6 @@ export interface ProviderConfig {
                  * once you set the type as Dynamic.
                  */
                 type: 'Static' | 'Dynamic' | 'Auto';
-            };
-        };
-        /**
-         * ReconciliationPolicy configures how a managed resource is reconciled.
-         * It currently allows overriding the controller's failure rate limiter
-         * parameters on a per-resource basis via ExponentialFailureRateLimiter.
-         */
-        reconciliationPolicy?: {
-            /**
-             * ExponentialFailureRateLimiter, when set, overrides the parameters of the
-             * exponential failure rate limiter used to schedule retries for the
-             * managed resource that this policy applies to.
-             */
-            exponentialFailureRateLimiter?: {
-                /**
-                 * BaseDelay is the initial delay between retries.
-                 */
-                baseDelay?: string;
-                /**
-                 * MaxDelay is the maximum delay between retries.
-                 */
-                maxDelay?: string;
             };
         };
         /**

@@ -12,6 +12,8 @@ import {
   writeVersionIndex,
   writeGroupIndex,
   writeMainIndex,
+  prepareOutput,
+  commitOutput,
 } from './write';
 
 interface IResourceWithCRD {
@@ -24,12 +26,23 @@ interface IVersionResources {
   resources: IResourceWithCRD[];
 }
 
-async function fetchCRDs(group: IGroupInfo): Promise<IResourceWithCRD[]> {
-  log(`  Fetching CRDs...`, false);
+interface IGeneratedVersion {
+  versionName: string;
+  resources: { name: string; types: string }[];
+}
 
+interface IGeneratedGroup {
+  group: string;
+  versions: IGeneratedVersion[];
+}
+
+async function fetchCRDs(
+  group: IGroupInfo,
+  errors: string[],
+): Promise<IResourceWithCRD[]> {
   // A resource may be configured with several CRD URLs, in which case types
-  // are generated for the union of the versions they serve. Keep them in
-  // configured order, so a version served by more than one CRD ends up
+  // are generated for the union of the versions they define. Keep them in
+  // configured order, so a version defined by more than one CRD ends up
   // resolving to the last of them.
   const sources = group.resources.flatMap(resource =>
     getResourceURLs(resource).map(url => ({ resource, url })),
@@ -45,16 +58,14 @@ async function fetchCRDs(group: IGroupInfo): Promise<IResourceWithCRD[]> {
     const response = responses[i];
 
     if (response.status === 'rejected') {
-      error(
-        `Could not fetch CRD for resource ${resource.name} from ${url}: ${response.reason}`,
+      errors.push(
+        `${group.group}: could not fetch CRD for resource ${resource.name} from ${url}: ${response.reason}`,
       );
       continue;
     }
 
     resourcesWithCRDs.push({ resource: resource, crd: response.value });
   }
-
-  log(` done.`);
 
   return resourcesWithCRDs;
 }
@@ -64,7 +75,7 @@ function organizeByVersion(
 ): IVersionResources[] {
   // version name -> resource name -> CRD to generate that version from.
   // Keyed by resource name so that a resource configured with several CRD URLs
-  // contributes each version once, taking the last CRD that serves it.
+  // contributes each version once, taking the last CRD that defines it.
   const versionMap = new Map<string, Map<string, IResourceWithCRD>>();
 
   for (const resourceWithCRD of resourcesWithCRDs) {
@@ -93,86 +104,72 @@ function organizeByVersion(
 async function generateTypesForVersion(
   groupName: string,
   versionData: IVersionResources,
-): Promise<void> {
-  log(`  Version ${versionData.versionName}:`);
-  log(`    Generating TS types...`, false);
-
+  errors: string[],
+): Promise<IGeneratedVersion> {
   const responses = await Promise.allSettled(
     versionData.resources.map(r =>
       getTypesForResource(versionData.versionName, r.resource.name, r.crd),
     ),
   );
 
-  const successfulResources: string[] = [];
+  const resources: IGeneratedVersion['resources'] = [];
 
   for (let i = 0; i < responses.length; i++) {
-    const resourceWithCRD = versionData.resources[i];
+    const name = versionData.resources[i].resource.name;
     const response = responses[i];
 
     if (response.status === 'rejected') {
-      error(
-        `      Could not generate types for resource ${resourceWithCRD.resource.name}: ${response.reason}`,
+      errors.push(
+        `${groupName}/${versionData.versionName}: could not generate types for resource ${name}: ${response.reason}`,
       );
       continue;
     }
 
-    // Write individual resource type file
-    await writeResourceTypes(
-      groupName,
-      versionData.versionName,
-      resourceWithCRD.resource.name,
-      response.value,
-    );
-
-    successfulResources.push(resourceWithCRD.resource.name);
+    resources.push({ name, types: response.value });
   }
 
-  log(` done.`);
-
-  // Write version index
-  log(`    Writing version index...`, false);
-  await writeVersionIndex(
-    groupName,
-    versionData.versionName,
-    successfulResources,
-  );
-  log(` done.`);
+  return { versionName: versionData.versionName, resources };
 }
 
-async function generateGroup(group: IGroupInfo): Promise<string[]> {
-  try {
-    log(`${group.group}:`);
+async function generateGroup(
+  group: IGroupInfo,
+  errors: string[],
+): Promise<IGeneratedGroup> {
+  const resourcesWithCRDs = await fetchCRDs(group, errors);
+  const versionData = organizeByVersion(resourcesWithCRDs);
 
-    const resourcesWithCRDs = await fetchCRDs(group);
-
-    if (resourcesWithCRDs.length === 0) {
-      log(`  No CRDs fetched successfully, skipping group.`);
-      return [];
-    }
-
-    // Organize resources by version
-    const versionData = organizeByVersion(resourcesWithCRDs);
-
-    log(`  Found ${versionData.length} version(s): ${versionData.map(v => v.versionName).join(', ')}`);
-
-    // Generate types for each version
-    for (const versionResources of versionData) {
-      await generateTypesForVersion(group.group, versionResources);
-    }
-
-    // Write group index
-    log(`  Writing group index...`, false);
-    await writeGroupIndex(
-      group.group,
-      versionData.map(v => v.versionName),
+  const versions: IGeneratedVersion[] = [];
+  for (const versionResources of versionData) {
+    versions.push(
+      await generateTypesForVersion(group.group, versionResources, errors),
     );
-    log(` done.`);
-
-    return versionData.map(v => v.versionName);
-  } catch (err) {
-    error((err as Error).toString());
-    return [];
   }
+
+  return { group: group.group, versions };
+}
+
+async function writeGroup(group: IGeneratedGroup): Promise<void> {
+  for (const version of group.versions) {
+    for (const resource of version.resources) {
+      await writeResourceTypes(
+        group.group,
+        version.versionName,
+        resource.name,
+        resource.types,
+      );
+    }
+
+    await writeVersionIndex(
+      group.group,
+      version.versionName,
+      version.resources.map(r => r.name),
+    );
+  }
+
+  await writeGroupIndex(
+    group.group,
+    group.versions.map(v => v.versionName),
+  );
 }
 
 async function main() {
@@ -182,20 +179,38 @@ async function main() {
     log('done.');
     log('');
 
-    const processedGroups: string[] = [];
+    // Generate everything before writing anything: a CRD that fails to fetch
+    // or compile would otherwise be left out of the indexes, removing its types.
+    // Groups are independent, so they are fetched in parallel.
+    const errors: string[] = [];
+    const generated = await Promise.all(
+      groups.map(group => generateGroup(group, errors)),
+    );
 
-    // Generate types for each group sequentially
-    for (const group of groups) {
-      const versions = await generateGroup(group);
-      if (versions.length > 0) {
-        processedGroups.push(group.group);
+    for (const group of generated) {
+      const versions = group.versions
+        .map(v => `${v.versionName} (${v.resources.length})`)
+        .join(', ');
+      log(`${group.group}: ${versions}`);
+    }
+    log('');
+
+    if (errors.length > 0) {
+      for (const message of errors) {
+        error(message);
       }
-      log('');
+      error('');
+      error('❌ Type generation failed, nothing was written.');
+      process.exit(1);
     }
 
-    // Write main index
-    log('Writing main index... ', false);
-    await writeMainIndex(processedGroups);
+    log('Writing types... ', false);
+    await prepareOutput();
+    for (const group of generated) {
+      await writeGroup(group);
+    }
+    await writeMainIndex(generated.map(g => g.group));
+    await commitOutput();
     log('done.');
     log('');
     log('✅ Type generation completed successfully!');
@@ -206,4 +221,3 @@ async function main() {
 }
 
 main();
-

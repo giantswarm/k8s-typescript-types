@@ -171,7 +171,7 @@ export interface AWSCluster {
             /**
              * DNSResolutionCheck configures the behavior for checking the load balancer DNS resolution.
              * Set to "None" to disable the check.
-             * If omitted, the DNS resolution check is enabled.
+             * If omitted, the provider will pick a reasonable default which may change over time.
              */
             dnsResolutionCheck?: 'None' | 'Enabled';
             /**
@@ -731,30 +731,6 @@ export interface AWSCluster {
          */
         s3Bucket?: {
             /**
-             * AdditionalIAMRoles is a list of additional IAM roles
-             * with custom S3 prefixes for accessing bootstrap data.
-             * This is useful for custom node pools (e.g., Karpenter) that need access
-             * to bootstrap data stored under custom prefixes.
-             *
-             * Items: AdditionalIAMRole defines an additional IAM role
-             * with a custom S3 prefix for accessing bootstrap data from S3 Bucket.
-             * This enables support for custom node pools (e.g., Karpenter) that need
-             * access to bootstrap data with custom S3 prefixes.
-             */
-            additionalIAMRoles?: {
-                /**
-                 * Name is the name of the IAM role that will be granted access.
-                 * This must match the IAM role name (not the ARN).
-                 */
-                name: string;
-                /**
-                 * Prefix is the S3 object key prefix (path) this role is granted access to.
-                 * It is appended to the bucket in the policy's resource ARN, so use a trailing "/*"
-                 * for wildcard access to a path (e.g. "karpenter-nodes/*") or "*" for the whole bucket.
-                 */
-                prefix: string;
-            }[];
-            /**
              * BestEffortDeleteObjects defines whether access/permission errors during object deletion should be ignored.
              */
             bestEffortDeleteObjects?: boolean;
@@ -878,7 +854,7 @@ export interface AWSCluster {
             /**
              * DNSResolutionCheck configures the behavior for checking the load balancer DNS resolution.
              * Set to "None" to disable the check.
-             * If omitted, the DNS resolution check is enabled.
+             * If omitted, the provider will pick a reasonable default which may change over time.
              */
             dnsResolutionCheck?: 'None' | 'Enabled';
             /**
@@ -1036,7 +1012,7 @@ export interface AWSCluster {
              * "None": The instance may not make use of any Capacity Reservations. This is to conserve open reservations for desired workloads
              * "CapacityReservationsOnly": The instance will only run if matched or targeted to a Capacity Reservation. Note that this is incompatible with a MarketType of `Spot`
              */
-            capacityReservationPreference?: '' | 'None' | 'CapacityReservationsOnly' | 'Open';
+            capacityReservationPreference?: ('' | 'None' | 'CapacityReservationsOnly' | 'Open') & string;
             /**
              * CPUOptions defines CPU-related settings for the instance, including the confidential computing policy.
              * When omitted, this means no opinion and the AWS platform is left to choose a reasonable default.

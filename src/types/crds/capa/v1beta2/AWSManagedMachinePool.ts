@@ -132,16 +132,7 @@ export interface AWSManagedMachinePool {
        * "None": The instance may not make use of any Capacity Reservations. This is to conserve open reservations for desired workloads
        * "CapacityReservationsOnly": The instance will only run if matched or targeted to a Capacity Reservation
        */
-      capacityReservationPreference?: '' | 'None' | 'CapacityReservationsOnly' | 'Open';
-      /**
-       * EnclaveOptions defines the options for Nitro Enclave support on the instance.
-       */
-      enclaveOptions?: {
-        /**
-         * Enabled enables the instance for AWS Nitro Enclaves.
-         */
-        enabled?: boolean;
-      };
+      capacityReservationPreference?: ('' | 'None' | 'CapacityReservationsOnly' | 'Open') & string;
       /**
        * The name or the Amazon Resource Name (ARN) of the instance profile associated
        * with the IAM role for the instance. The instance profile contains the IAM

@@ -86,23 +86,4 @@ export interface Catalog {
      */
     title: string;
   };
-  /**
-   * CatalogStatus represents the current state of the catalog.
-   */
-  status?: {
-    /**
-     * HelmRepositoryList contains the list of Flux HelmRepository custom resources that have been successfully created from the Catalog object.
-     */
-    helmRepositoryList?: {
-      /**
-       * Entries of HelmRepository custom resources.
-       *
-       * Items: HelmRepositoryRef represents a basic HelmRepository custom resource information.
-       */
-      entries: {
-        name: string;
-        namespace: string;
-      }[];
-    } | null;
-  };
 }

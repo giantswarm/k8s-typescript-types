@@ -95,7 +95,6 @@ export interface AWSManagedControlPlane {
       type?: 'standard' | 'ec2_linux' | 'ec2_windows' | 'fargate_linux' | 'ec2' | 'hybrid_linux' | 'hyperpod_linux';
       /**
        * Username is the username for the access entry
-       * If left empty, EKS generates one and it is left unmanaged
        */
       username?: string;
     }[];
@@ -194,19 +193,6 @@ export interface AWSManagedControlPlane {
        * port is the port on which the API server is serving.
        */
       port?: number;
-    };
-    /**
-     * ControlPlaneScalingConfig specifies the scaling configuration for the EKS control plane.
-     * Enables selection of predefined scaling tiers to ensure consistent, high-performance operation of the cluster’s control plane.
-     * When omitted, EKS uses Standard mode (automatic scaling). See ControlPlaneScalingConfig in types.go for tier defaults.
-     * (Official AWS docs: https://docs.aws.amazon.com/eks/latest/userguide/eks-provisioned-control-plane.html)
-     */
-    controlPlaneScalingConfig?: {
-      /**
-       * Tier specifies the tier for the EKS control plane.
-       * Valid values are: standard, tier-xl, tier-2xl, tier-4xl.
-       */
-      tier: 'standard' | 'tier-xl' | 'tier-2xl' | 'tier-4xl';
     };
     /**
      * EKSClusterName allows you to specify the name of the EKS cluster in
@@ -837,35 +823,6 @@ export interface AWSManagedControlPlane {
      */
     partition?: string;
     /**
-     * PodIdentityAssociations map IAM roles to Kubernetes Service Accounts using EKS Pod Identities.
-     * The AWS EKS addon for Pod Identity must be installed in the cluster to use this feature.
-     *
-     * Items: PodIdentityAssociation represents an association between a Kubernetes
-     * Service Account in a namespace, and an AWS IAM role. This role must
-     * allow the service principal `pods.eks.amazonaws.com` in its trust policy.
-     */
-    podIdentityAssociations?: {
-      /**
-       * RoleARN is the ARN of an IAM role which the Service Account can assume.
-       */
-      roleARN: string;
-      /**
-       * ServiceAccountName is the name of the kubernetes Service Account
-       * within the namespace
-       */
-      serviceAccountName: string;
-      /**
-       * ServiceAccountNamespace is the kubernetes namespace, which the
-       * kubernetes Service Account resides in. Defaults to "default" namespace.
-       */
-      serviceAccountNamespace: string;
-      /**
-       * TargetRoleARN will be assumed by the IAM role specified in RoleARN,
-       * allowing workloads to inherit the permissions attached to the target IAM role.
-       */
-      targetRoleARN?: string;
-    }[];
-    /**
      * The AWS Region the cluster lives in.
      */
     region?: string;
@@ -1184,7 +1141,7 @@ export interface AWSManagedControlPlane {
        * "None": The instance may not make use of any Capacity Reservations. This is to conserve open reservations for desired workloads
        * "CapacityReservationsOnly": The instance will only run if matched or targeted to a Capacity Reservation. Note that this is incompatible with a MarketType of `Spot`
        */
-      capacityReservationPreference?: '' | 'None' | 'CapacityReservationsOnly' | 'Open';
+      capacityReservationPreference?: ('' | 'None' | 'CapacityReservationsOnly' | 'Open') & string;
       /**
        * CPUOptions defines CPU-related settings for the instance, including the confidential computing policy.
        * When omitted, this means no opinion and the AWS platform is left to choose a reasonable default.
@@ -1968,10 +1925,6 @@ export interface AWSManagedControlPlane {
         };
       };
     };
-    /**
-     * ObservedGeneration is the latest generation observed by the controller.
-     */
-    observedGeneration?: number;
     /**
      * OIDCProvider holds the status of the identity provider for this cluster
      */
