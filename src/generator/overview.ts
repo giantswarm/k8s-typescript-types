@@ -102,7 +102,7 @@ function formatTable(
       const kinds = resources
         .map(r => r.name)
         .sort()
-        .join(', ');
+        .join('<br>');
       const sources = distinct(resources.map(r => formatSource(r.url, tags)))
         .sort()
         .join('<br>');
