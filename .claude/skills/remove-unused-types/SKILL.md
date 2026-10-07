@@ -1,6 +1,6 @@
 ---
 name: remove-unused-types
-description: Find CRD API versions, resources or groups in this package that no cluster we run serves and no consumer uses, report them with evidence, and, once a person has decided, remove them. Use when asked to clean up, prune or remove outdated or unused types, or after bumping a CRD pin to a newer deployed release.
+description: Use when asked to clean up, prune or remove outdated or unused types, or after bumping a CRD pin to a newer deployed release.
 ---
 
 # Remove unused types
