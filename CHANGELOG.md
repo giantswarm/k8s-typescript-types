@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- The README lists every published CRD API version in an "Available Types"
+  table: import path, API group, kinds, whether the pinned CRD serves it, and
+  the source repository and tag. `yarn generate` writes it, so CI's
+  generated-output check keeps it current.
+
+### Changed
+
+- `resources.yaml` names each source's release tag in a `tag` field (next to
+  `crdURL`, or per `crdURLs` entry as `{ url, tag }`) instead of an inline
+  comment. The generator only accepts raw.githubusercontent.com URLs pinned to
+  a commit SHA.
+
 ## [0.12.0] - 2026-10-07
 
 **Breaking:** the CRD types now follow the versions deployed on Giant Swarm

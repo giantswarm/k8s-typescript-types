@@ -4,6 +4,19 @@ import path from 'path';
 
 const filePath = path.resolve(__dirname, 'config', 'resources.yaml');
 
+export interface ICRDSource {
+  /**
+   * url is the raw.githubusercontent.com URL of the CRD's .yaml file, pinned
+   * to a commit SHA.
+   */
+  url: string;
+  /**
+   * tag is the release tag that points to the commit, shown in the README.
+   * Leave it out only for a commit no tag points to.
+   */
+  tag?: string;
+}
+
 export interface IResourceInfo {
   /**
    * name of the resource - this will be used as the name
@@ -12,12 +25,16 @@ export interface IResourceInfo {
    */
   name: string;
   /**
-   * crdURL is the URL at which the .yaml file of the CRD can be found.
-   * Mutually exclusive with `crdURLs`.
+   * crdURL is the URL at which the .yaml file of the CRD can be found, pinned
+   * to a commit SHA. Mutually exclusive with `crdURLs`.
    */
   crdURL?: string;
   /**
-   * crdURLs lists several URLs of the same CRD, to generate types for the
+   * tag is the release tag `crdURL` is pinned to. Only used with `crdURL`.
+   */
+  tag?: string;
+  /**
+   * crdURLs lists several sources of the same CRD, to generate types for the
    * union of the API versions they define. Use this when no single CRD release
    * serves every version we need to support: an older release for the
    * versions our clusters run today, a newer one for the versions they will
@@ -31,7 +48,7 @@ export interface IResourceInfo {
    *
    * Mutually exclusive with `crdURL`.
    */
-  crdURLs?: string[];
+  crdURLs?: ICRDSource[];
 }
 
 export interface IGroupInfo {
@@ -45,11 +62,38 @@ export interface IGroupInfo {
   resources: IResourceInfo[];
 }
 
+const sourceURLPattern =
+  /^https:\/\/raw\.githubusercontent\.com\/([^/]+\/[^/]+)\/([0-9a-f]{40})\/\S+\.ya?ml$/;
+
 /**
- * Returns the CRD URLs configured for a resource, in configured order.
+ * Splits a CRD source URL into the GitHub repository and the commit SHA.
  */
-export function getResourceURLs(resource: IResourceInfo): string[] {
-  const { name, crdURL, crdURLs } = resource;
+export function parseSourceURL(url: string): { repo: string; sha: string } {
+  const match = sourceURLPattern.exec(url);
+  if (!match) {
+    throw new Error(
+      `${url} is not a raw.githubusercontent.com URL of a .yaml file pinned to a commit SHA.`,
+    );
+  }
+  return { repo: match[1], sha: match[2] };
+}
+
+function validateSource(name: string, source: ICRDSource): ICRDSource {
+  if (typeof source?.url !== 'string') {
+    throw new Error(`Resource ${name} has a CRD source without a url.`);
+  }
+  if (source.tag !== undefined && typeof source.tag !== 'string') {
+    throw new Error(`Resource ${name} has a non-string tag for ${source.url}.`);
+  }
+  parseSourceURL(source.url);
+  return source;
+}
+
+/**
+ * Returns the CRD sources configured for a resource, in configured order.
+ */
+export function getResourceSources(resource: IResourceInfo): ICRDSource[] {
+  const { name, crdURL, tag, crdURLs } = resource;
 
   if (crdURL && crdURLs) {
     throw new Error(
@@ -61,15 +105,20 @@ export function getResourceURLs(resource: IResourceInfo): string[] {
     if (crdURLs.length === 0) {
       throw new Error(`Resource ${name} has an empty crdURLs list.`);
     }
+    if (tag !== undefined) {
+      throw new Error(
+        `Resource ${name} sets tag next to crdURLs; set it on each crdURLs entry instead.`,
+      );
+    }
 
-    return crdURLs;
+    return crdURLs.map(source => validateSource(name, source));
   }
 
   if (!crdURL) {
     throw new Error(`Resource ${name} has neither crdURL nor crdURLs set.`);
   }
 
-  return [crdURL];
+  return [validateSource(name, { url: crdURL, tag })];
 }
 
 export async function getResourcesList(): Promise<IGroupInfo[]> {
@@ -83,10 +132,9 @@ export async function getResourcesList(): Promise<IGroupInfo[]> {
     }
 
     for (const resource of group.resources) {
-      getResourceURLs(resource);
+      getResourceSources(resource);
     }
   }
 
   return data;
 }
-

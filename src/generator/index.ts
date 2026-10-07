@@ -1,12 +1,15 @@
 import { error, log } from './utils';
 import { fetchCRD, ICRD } from './getCRD';
 import {
-  getResourceURLs,
+  getResourceSources,
   getResourcesList,
+  ICRDSource,
   IGroupInfo,
   IResourceInfo,
 } from './getResourcesList';
 import { getTypesForResource } from './getTypes';
+import { renderReadme, writeReadme } from './overview';
+import { IGeneratedGroup, IGeneratedVersion } from './types';
 import {
   writeResourceTypes,
   writeVersionIndex,
@@ -18,22 +21,13 @@ import {
 
 interface IResourceWithCRD {
   resource: IResourceInfo;
+  source: ICRDSource;
   crd: ICRD;
 }
 
 interface IVersionResources {
   versionName: string;
   resources: IResourceWithCRD[];
-}
-
-interface IGeneratedVersion {
-  versionName: string;
-  resources: { name: string; types: string }[];
-}
-
-interface IGeneratedGroup {
-  group: string;
-  versions: IGeneratedVersion[];
 }
 
 async function fetchCRDs(
@@ -45,26 +39,26 @@ async function fetchCRDs(
   // configured order, so a version defined by more than one CRD ends up
   // resolving to the last of them.
   const sources = group.resources.flatMap(resource =>
-    getResourceURLs(resource).map(url => ({ resource, url })),
+    getResourceSources(resource).map(source => ({ resource, source })),
   );
 
   const responses = await Promise.allSettled(
-    sources.map(source => fetchCRD(source.url)),
+    sources.map(({ source }) => fetchCRD(source.url)),
   );
 
   const resourcesWithCRDs: IResourceWithCRD[] = [];
   for (let i = 0; i < responses.length; i++) {
-    const { resource, url } = sources[i];
+    const { resource, source } = sources[i];
     const response = responses[i];
 
     if (response.status === 'rejected') {
       errors.push(
-        `${group.group}: could not fetch CRD for resource ${resource.name} from ${url}: ${response.reason}`,
+        `${group.group}: could not fetch CRD for resource ${resource.name} from ${source.url}: ${response.reason}`,
       );
       continue;
     }
 
-    resourcesWithCRDs.push({ resource: resource, crd: response.value });
+    resourcesWithCRDs.push({ resource, source, crd: response.value });
   }
 
   return resourcesWithCRDs;
@@ -115,7 +109,8 @@ async function generateTypesForVersion(
   const resources: IGeneratedVersion['resources'] = [];
 
   for (let i = 0; i < responses.length; i++) {
-    const name = versionData.resources[i].resource.name;
+    const { resource, source, crd } = versionData.resources[i];
+    const name = resource.name;
     const response = responses[i];
 
     if (response.status === 'rejected') {
@@ -125,7 +120,18 @@ async function generateTypesForVersion(
       continue;
     }
 
-    resources.push({ name, types: response.value });
+    const version = crd.spec.versions.find(
+      v => v.name === versionData.versionName,
+    );
+
+    resources.push({
+      name,
+      kind: crd.spec.names.kind,
+      types: response.value,
+      apiGroup: crd.spec.group,
+      served: version?.served !== false,
+      source,
+    });
   }
 
   return { versionName: versionData.versionName, resources };
@@ -205,12 +211,14 @@ async function main() {
     }
 
     log('Writing types... ', false);
+    const readme = await renderReadme(generated);
     await prepareOutput();
     for (const group of generated) {
       await writeGroup(group);
     }
     await writeMainIndex(generated.map(g => g.group));
     await commitOutput();
+    await writeReadme(readme);
     log('done.');
     log('');
     log('✅ Type generation completed successfully!');

@@ -103,9 +103,9 @@ jobs:
           PATCH: ${{ runner.temp }}/regenerated.patch
         run: |
           set -euo pipefail
-          outside="$(git apply --numstat "$PATCH" | cut -f3- | grep -Ev '^(src/types/crds|dist/types)/' || true)"
+          outside="$(git apply --numstat "$PATCH" | cut -f3- | grep -Ev '^((src/types/crds|dist/types)/|README\.md$)' || true)"
           if [ -n "$outside" ]; then
-            echo "::error::The regenerated patch touches files outside src/types/crds/ and dist/types/:"
+            echo "::error::The regenerated patch touches files outside src/types/crds/, dist/types/ and README.md:"
             echo "$outside"
             exit 1
           fi
@@ -114,6 +114,14 @@ jobs:
             exit 1
           fi
           git apply --index "$PATCH"
+          # README.md may only change inside the generated table.
+          outside_table() {
+            sed '/<!-- generated:types-overview:start -->/,/<!-- generated:types-overview:end -->/d'
+          }
+          if ! diff <(git show HEAD:README.md | outside_table) <(outside_table < README.md) > /dev/null; then
+            echo "::error::The regenerated patch changes README.md outside the generated types table."
+            exit 1
+          fi
       - name: Commit and push
         env:
           TOKEN: ${{ secrets.TAYLORBOT_GITHUB_ACTION }}
