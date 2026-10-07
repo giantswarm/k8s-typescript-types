@@ -103,9 +103,9 @@ jobs:
           PATCH: ${{ runner.temp }}/regenerated.patch
         run: |
           set -euo pipefail
-          outside="$(git apply --numstat "$PATCH" | cut -f3- | grep -Ev '^(src/types/crds|dist/types)/' || true)"
+          outside="$(git apply --numstat "$PATCH" | cut -f3- | grep -Ev '^((src/types/crds|dist/types)/|README\.md$)' || true)"
           if [ -n "$outside" ]; then
-            echo "::error::The regenerated patch touches files outside src/types/crds/ and dist/types/:"
+            echo "::error::The regenerated patch touches files outside src/types/crds/, dist/types/ and README.md:"
             echo "$outside"
             exit 1
           fi

@@ -7,6 +7,7 @@ import {
   IResourceInfo,
 } from './getResourcesList';
 import { getTypesForResource } from './getTypes';
+import { IGeneratedGroup, IGeneratedVersion, writeOverview } from './overview';
 import {
   writeResourceTypes,
   writeVersionIndex,
@@ -18,6 +19,7 @@ import {
 
 interface IResourceWithCRD {
   resource: IResourceInfo;
+  url: string;
   crd: ICRD;
 }
 
@@ -26,15 +28,6 @@ interface IVersionResources {
   resources: IResourceWithCRD[];
 }
 
-interface IGeneratedVersion {
-  versionName: string;
-  resources: { name: string; types: string }[];
-}
-
-interface IGeneratedGroup {
-  group: string;
-  versions: IGeneratedVersion[];
-}
 
 async function fetchCRDs(
   group: IGroupInfo,
@@ -64,7 +57,7 @@ async function fetchCRDs(
       continue;
     }
 
-    resourcesWithCRDs.push({ resource: resource, crd: response.value });
+    resourcesWithCRDs.push({ resource, url, crd: response.value });
   }
 
   return resourcesWithCRDs;
@@ -115,7 +108,8 @@ async function generateTypesForVersion(
   const resources: IGeneratedVersion['resources'] = [];
 
   for (let i = 0; i < responses.length; i++) {
-    const name = versionData.resources[i].resource.name;
+    const { resource, url, crd } = versionData.resources[i];
+    const name = resource.name;
     const response = responses[i];
 
     if (response.status === 'rejected') {
@@ -125,7 +119,17 @@ async function generateTypesForVersion(
       continue;
     }
 
-    resources.push({ name, types: response.value });
+    const version = crd.spec.versions.find(
+      v => v.name === versionData.versionName,
+    );
+
+    resources.push({
+      name,
+      types: response.value,
+      apiGroup: crd.spec.group,
+      served: version?.served !== false,
+      url,
+    });
   }
 
   return { versionName: versionData.versionName, resources };
@@ -211,6 +215,7 @@ async function main() {
     }
     await writeMainIndex(generated.map(g => g.group));
     await commitOutput();
+    await writeOverview(generated);
     log('done.');
     log('');
     log('✅ Type generation completed successfully!');

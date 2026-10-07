@@ -9,7 +9,11 @@ interface ICRDPartial {
   kind: 'CustomResourceDefinition';
   spec: {
     group: string;
-    versions: { name: string; schema: { openAPIV3Schema: JSONSchema } }[];
+    versions: {
+      name: string;
+      served?: boolean;
+      schema: { openAPIV3Schema: JSONSchema };
+    }[];
     names: { kind: string; listKind: string; plural: string; singular: string };
     scope: 'Namespaced' | 'Cluster';
   };

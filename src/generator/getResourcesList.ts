@@ -72,6 +72,24 @@ export function getResourceURLs(resource: IResourceInfo): string[] {
   return [crdURL];
 }
 
+/**
+ * Returns the tag noted in the inline comment after each CRD URL, e.g.
+ * `crdURL: https://.../<sha>/...yaml  # v1.15.3`, keyed by URL.
+ */
+export async function getSourceTags(): Promise<Map<string, string>> {
+  const contents = await fs.readFile(filePath, 'utf8');
+  const tags = new Map<string, string>();
+
+  for (const line of contents.split('\n')) {
+    const match = /(https:\/\/\S+)\s+#\s*(\S+)\s*$/.exec(line);
+    if (match) {
+      tags.set(match[1], match[2]);
+    }
+  }
+
+  return tags;
+}
+
 export async function getResourcesList(): Promise<IGroupInfo[]> {
   const contents = await fs.readFile(filePath);
   const data = yaml.load(contents.toString()) as IGroupInfo[];
