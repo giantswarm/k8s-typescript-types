@@ -260,9 +260,12 @@ An API version is removed when both of these hold:
    point, but where a resource combines releases it refers to the Source
    release, not necessarily the deployed one.
 2. **No consumer uses it.** No repository that depends on
-   `@giantswarm/k8s-types` refers to it: not as a type (`crds.<group>.<version>`
-   or `@giantswarm/k8s-types/crds/<group>/<version>`), and not as an API version
-   it requests (`<api-group>/<version>`, `supportedVersions`).
+   `@giantswarm/k8s-types` refers to it: not as a type, and not as an API
+   version it requests (`<api-group>/<version>`, `supportedVersions`). A type
+   is referred to through the group's import name, which is camelCase
+   (`crds.externalSecrets.v1beta1`), or through its directory, which is not
+   (`@giantswarm/k8s-types/crds/external-secrets/v1beta1`), also by importing
+   the group and reaching the version from there.
 
 A version that is still served stays, even if nobody uses it. A version a
 consumer still uses stays too, even if no cluster serves it: open an issue in
@@ -285,8 +288,10 @@ and it is no longer deployed on management clusters.
 5. In `CHANGELOG.md`, list every removed type under Removed and mark the release
    as breaking. Consumers move to it with a type-check.
 
-`excludeVersions` must name versions the resource's CRDs define. Once a bumped
-pin no longer defines one, generation fails until the entry is removed.
+`excludeVersions` must name versions the resource's CRDs define, and leave at
+least one of them. Generation fails otherwise: once a bumped pin no longer
+defines an excluded version, remove it from the list; to remove every version,
+delete the resource's entry.
 
 ## Configuration Format
 

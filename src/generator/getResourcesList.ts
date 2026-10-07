@@ -53,7 +53,7 @@ export interface IResourceInfo {
    * excludeVersions lists API versions the CRDs define that are not
    * published, e.g. `[v1alpha3, v1alpha4]`. Each one must be defined by one of
    * the resource's CRDs; once none defines it any more, generation fails until
-   * the entry is removed. See "Removing unused types" in the README.
+   * the entry is removed. See "Removing Unused Types" in the README.
    */
   excludeVersions?: string[];
 }

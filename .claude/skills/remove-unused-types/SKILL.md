@@ -40,7 +40,7 @@ Find the consumers, the repositories that depend on the package:
 
 ```bash
 gh search code --owner giantswarm '"@giantswarm/k8s-types"' --filename package.json \
-  --json repository,path -q '.[] | "\(.repository.nameWithOwner) \(.path)"' | sort -u
+  --limit 1000 --json repository,path -q '.[] | "\(.repository.nameWithOwner) \(.path)"' | sort -u
 ```
 
 Leave out giantswarm/k8s-typescript-types itself. Clone each consumer's default
@@ -54,9 +54,24 @@ git -C <clone> grep -n -I -P \
   '\b<g>\.<v>\b|k8s-types/crds/<dir>/<v>\b|<api>/<v>\b' -- ':!*.md'
 ```
 
+That misses code that reaches the version through the group: an import from
+the group subpath (`import { <v> } from '@giantswarm/k8s-types/crds/<dir>'`),
+an alias (`const vsphere = crds.<g>`, then `vsphere.<v>`) or destructuring
+(`const { <g> } = crds`). List the files that refer to the group without a
+version and read each one for `<v>`:
+
+```bash
+git -C <clone> grep -l -I -P \
+  "k8s-types/crds/<dir>['\"]|\b<g>\b(?!\.v\d)" -- '*.ts' '*.tsx'
+```
+
+Short group names also match unrelated words (`capa` as a provider name), so
+judge each file; don't count a file as usage just because it is listed.
+
 - Use `-P`: the default regex of git on macOS does not understand `\b`.
 - In zsh, a loop over `"a b c"` strings needs `${=var}` to split them.
-- A hit on `<g>.<v>` or the subpath is **type usage** and blocks removal.
+- A hit on `<g>.<v>`, the version subpath, or `<v>` reached through the
+  group is **type usage** and blocks removal.
 - A hit on `<api>/<v>` is only a hint. Several groups share an API group
   (`infrastructure.cluster.x-k8s.io` is used by capa, capv, capz and capvcd),
   so check the kind next to it. Requesting that version at runtime (an

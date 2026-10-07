@@ -65,52 +65,23 @@ async function fetchCRDs(
 }
 
 function organizeByVersion(
-  groupName: string,
   resourcesWithCRDs: IResourceWithCRD[],
-  errors: string[],
 ): IVersionResources[] {
   // version name -> resource name -> CRD to generate that version from.
   // Keyed by resource name so that a resource configured with several CRD URLs
   // contributes each version once, taking the last CRD that defines it.
   const versionMap = new Map<string, Map<string, IResourceWithCRD>>();
-  // resource name -> every version its CRDs define, to check excludeVersions.
-  const definedVersions = new Map<string, Set<string>>();
 
   for (const resourceWithCRD of resourcesWithCRDs) {
     const { resource, crd } = resourceWithCRD;
 
-    // Extract all versions from the CRD
-    const versions = crd.spec?.versions || [];
-
-    for (const version of versions) {
-      const versionName = version.name;
-
-      if (!definedVersions.has(resource.name)) {
-        definedVersions.set(resource.name, new Set());
-      }
-      definedVersions.get(resource.name)!.add(versionName);
-
+    for (const { name: versionName } of crd.spec?.versions || []) {
       if (resource.excludeVersions?.includes(versionName)) {
         continue;
       }
 
-      if (!versionMap.has(versionName)) {
-        versionMap.set(versionName, new Map());
-      }
-
+      versionMap.set(versionName, versionMap.get(versionName) ?? new Map());
       versionMap.get(versionName)!.set(resource.name, resourceWithCRD);
-    }
-  }
-
-  // An exclusion of a version no CRD defines any more has no effect; fail so
-  // that it gets removed instead of lingering in the config.
-  for (const resource of new Set(resourcesWithCRDs.map(r => r.resource))) {
-    for (const excluded of resource.excludeVersions ?? []) {
-      if (!definedVersions.get(resource.name)?.has(excluded)) {
-        errors.push(
-          `${groupName}: resource ${resource.name} excludes ${excluded}, which none of its CRDs defines; remove it from excludeVersions.`,
-        );
-      }
     }
   }
 
@@ -118,6 +89,48 @@ function organizeByVersion(
     versionName,
     resources: Array.from(resources.values()),
   }));
+}
+
+/**
+ * Checks each resource's excludeVersions against the versions its CRDs
+ * define. An exclusion of a version no CRD defines any more has no effect,
+ * and excluding every version publishes nothing, so both are errors. A
+ * resource whose CRDs did not all fetch is skipped: its fetch error is
+ * reported already, and a missing CRD would make a valid exclusion look stale.
+ */
+function checkExcludedVersions(
+  group: IGroupInfo,
+  resourcesWithCRDs: IResourceWithCRD[],
+  errors: string[],
+): void {
+  for (const resource of group.resources) {
+    if (!resource.excludeVersions) {
+      continue;
+    }
+
+    const fetched = resourcesWithCRDs.filter(r => r.resource === resource);
+    if (fetched.length < getResourceSources(resource).length) {
+      continue;
+    }
+
+    const defined = new Set(
+      fetched.flatMap(r => (r.crd.spec?.versions || []).map(v => v.name)),
+    );
+
+    for (const excluded of resource.excludeVersions) {
+      if (!defined.has(excluded)) {
+        errors.push(
+          `${group.group}: resource ${resource.name} excludes ${excluded}, which none of its CRDs defines; remove it from excludeVersions.`,
+        );
+      }
+    }
+
+    if ([...defined].every(v => resource.excludeVersions!.includes(v))) {
+      errors.push(
+        `${group.group}: resource ${resource.name} excludes every version its CRDs define; delete its entry instead.`,
+      );
+    }
+  }
 }
 
 async function generateTypesForVersion(
@@ -167,7 +180,8 @@ async function generateGroup(
   errors: string[],
 ): Promise<IGeneratedGroup> {
   const resourcesWithCRDs = await fetchCRDs(group, errors);
-  const versionData = organizeByVersion(group.group, resourcesWithCRDs, errors);
+  checkExcludedVersions(group, resourcesWithCRDs, errors);
+  const versionData = organizeByVersion(resourcesWithCRDs);
 
   const versions: IGeneratedVersion[] = [];
   for (const versionResources of versionData) {
