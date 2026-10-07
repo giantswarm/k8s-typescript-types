@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.0] - 2026-10-07
+
 **Breaking:** the CRD types now follow the versions deployed on Giant Swarm
 management clusters instead of commits on upstream `main`. Fields that only
 `main` had are removed, and a few fields are renamed or become required; see
@@ -250,7 +252,8 @@ Removed and Changed. Code that uses them no longer compiles.
 - Added initial generator code.
 - Added core and auto generated types.
 
-[Unreleased]: https://github.com/giantswarm/k8s-typescript-types/compare/v0.11.0...HEAD
+[Unreleased]: https://github.com/giantswarm/k8s-typescript-types/compare/v0.12.0...HEAD
+[0.12.0]: https://github.com/giantswarm/k8s-typescript-types/compare/v0.11.0...v0.12.0
 [0.11.0]: https://github.com/giantswarm/k8s-typescript-types/compare/v0.10.0...v0.11.0
 [0.10.0]: https://github.com/giantswarm/k8s-typescript-types/compare/v0.9.0...v0.10.0
 [0.9.0]: https://github.com/giantswarm/k8s-typescript-types/compare/v0.8.0...v0.9.0
