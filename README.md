@@ -69,10 +69,12 @@ import { ObjectMeta } from '@giantswarm/k8s-types/core/meta/v1';
 ## Available Types
 
 Every CRD API version the package publishes, as configured in
-`src/generator/config/resources.yaml`. **Served** says whether the pinned CRD
-serves that version, i.e. whether a cluster running that release answers
-requests for it. **Source** is the repository and tag the types are generated
-from.
+`src/generator/config/resources.yaml`. **Source** is the repository and tag
+the types are generated from. **Served** says whether the CRD of that release
+serves the version, i.e. whether a cluster running that release answers
+requests for it. Where a resource combines several releases (see "Covering
+several API versions"), the Source release is not necessarily the one deployed
+on management clusters; `resources.yaml` says which one is.
 
 <!-- generated:types-overview:start -->
 <!-- Written by `yarn generate`, do not edit by hand. -->
@@ -129,11 +131,12 @@ This will:
 3. Auto-discover all available versions
 4. Generate TypeScript interfaces
 5. Replace `src/types/crds/` with the result
+6. Rewrite the "Available Types" table in this README
 
-`src/types/crds/` is entirely generated: a version or resource that is no
-longer generated disappears from it. If any CRD cannot be fetched or turned
-into types, the generator reports it, exits non-zero and leaves
-`src/types/crds/` as it was.
+`src/types/crds/` and the table are entirely generated: a version or resource
+that is no longer generated disappears from both. If any CRD cannot be fetched
+or turned into types, the generator reports it, exits non-zero and leaves both
+as they were.
 
 ### Build
 
@@ -172,7 +175,8 @@ To add new CRD types:
 - group: my_group
   resources:
     - name: MyResource
-      crdURL: https://raw.githubusercontent.com/example/repo/<commit-sha>/config/crd/my-resource.yaml  # v1.2.3
+      crdURL: https://raw.githubusercontent.com/example/repo/<commit-sha>/config/crd/my-resource.yaml
+      tag: v1.2.3
 ```
 
 3. Run `yarn generate`
@@ -181,13 +185,14 @@ The generator will automatically discover all versions from the CRD and generate
 
 ### Pinning CRD sources
 
-Pin every URL to the commit a release tag points to, with the tag in an inline
-comment, never to a branch such as `main` or to the tag itself. A branch is
+Pin every URL to the commit a release tag points to and name the tag in `tag`,
+never to a branch such as `main` or to the tag itself; the generator only
+accepts URLs pinned to a commit SHA. A branch is
 ahead of what any cluster serves, and a tag can be moved: either way a change
 upstream fails CI's generated-output check on every pull request. Pin to the
 version deployed on Giant Swarm management clusters, and name what it follows
 (the app and its version) in a comment. Where no tag matches the deployed
-version, pin the deployed commit.
+version, pin the deployed commit and leave `tag` out.
 
 `git ls-remote https://github.com/<owner>/<repo> 'refs/tags/<tag>^{}' 'refs/tags/<tag>'`
 gives a tag's commit (the `^{}` line, if present, for an annotated tag).
@@ -212,9 +217,11 @@ per version under `crdURLs` instead:
     - name: MyResource
       crdURLs:
         # v1beta1
-        - https://raw.githubusercontent.com/example/repo/<commit-sha>/config/crd/my-resource.yaml  # v1.0.0
+        - url: https://raw.githubusercontent.com/example/repo/<commit-sha>/config/crd/my-resource.yaml
+          tag: v1.0.0
         # v1
-        - https://raw.githubusercontent.com/example/repo/<commit-sha>/config/crd/my-resource.yaml  # v2.0.0
+        - url: https://raw.githubusercontent.com/example/repo/<commit-sha>/config/crd/my-resource.yaml
+          tag: v2.0.0
 ```
 
 Types are generated for the union of the versions the listed CRDs define,
@@ -236,11 +243,14 @@ The `resources.yaml` configuration has a simple structure:
 - group: {group-name}        # Used as directory name
   resources:
     - name: {ResourceName}   # PascalCase resource name
-      crdURL: {url}          # URL to CRD YAML file
+      crdURL: {url}          # CRD YAML on raw.githubusercontent.com, pinned to a commit SHA
+      tag: {tag}             # Release tag of that commit (omit only if none)
     - name: {ResourceName}   # Alternatively, several CRD releases for one
       crdURLs:               # resource, oldest first (last wins per version)
-        - {url}
-        - {url}
+        - url: {url}
+          tag: {tag}
+        - url: {url}
+          tag: {tag}
 ```
 
 `crdURL` and `crdURLs` are mutually exclusive; each resource must set exactly

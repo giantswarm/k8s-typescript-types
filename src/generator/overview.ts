@@ -1,28 +1,8 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { getSourceTags } from './getResourcesList';
+import { ICRDSource, parseSourceURL } from './getResourcesList';
 import { toCamelCase } from './templates';
-
-export interface IGeneratedResource {
-  name: string;
-  types: string;
-  /** API group of the CRD, e.g. `cluster.x-k8s.io`. */
-  apiGroup: string;
-  /** Whether the CRD the types come from serves this version. */
-  served: boolean;
-  /** URL of the CRD the types come from. */
-  url: string;
-}
-
-export interface IGeneratedVersion {
-  versionName: string;
-  resources: IGeneratedResource[];
-}
-
-export interface IGeneratedGroup {
-  group: string;
-  versions: IGeneratedVersion[];
-}
+import { IGeneratedGroup, IGeneratedResource } from './types';
 
 const readmePath = path.resolve(__dirname, '..', '..', 'README.md');
 const startMarker = '<!-- generated:types-overview:start -->';
@@ -47,24 +27,17 @@ function compareVersions(a: string, b: string): number {
       return rb[i] - ra[i];
     }
   }
-  return a.localeCompare(b);
+  return a < b ? -1 : a > b ? 1 : 0;
 }
 
-function formatSource(url: string, tags: Map<string, string>): string {
-  const match =
-    /^https:\/\/raw\.githubusercontent\.com\/([^/]+\/[^/]+)\/([0-9a-f]{40})\//.exec(
-      url,
-    );
-  if (!match) {
-    return url;
-  }
-  const [, repo, sha] = match;
-  const ref = tags.get(url) ?? sha.slice(0, 7);
+function formatSource(source: ICRDSource): string {
+  const { repo, sha } = parseSourceURL(source.url);
+  const ref = source.tag ?? sha.slice(0, 7);
   return `[${repo}](https://github.com/${repo}/tree/${sha}) \`${ref}\``;
 }
 
 function formatServed(resources: IGeneratedResource[]): string {
-  const unserved = resources.filter(r => !r.served).map(r => r.name);
+  const unserved = resources.filter(r => !r.served).map(r => r.kind);
   if (unserved.length === 0) {
     return 'yes';
   }
@@ -78,10 +51,7 @@ function distinct(values: string[]): string[] {
   return Array.from(new Set(values));
 }
 
-function formatTable(
-  groups: IGeneratedGroup[],
-  tags: Map<string, string>,
-): string {
+function formatTable(groups: IGeneratedGroup[]): string {
   const lines = [
     '| Import | API group | Kinds | Served | Source |',
     '|---|---|---|---|---|',
@@ -100,10 +70,10 @@ function formatTable(
         .map(g => `\`${g}\``)
         .join('<br>');
       const kinds = resources
-        .map(r => r.name)
+        .map(r => r.kind)
         .sort()
         .join('<br>');
-      const sources = distinct(resources.map(r => formatSource(r.url, tags)))
+      const sources = distinct(resources.map(r => formatSource(r.source)))
         .sort()
         .join('<br>');
 
@@ -117,10 +87,11 @@ function formatTable(
 }
 
 /**
- * Rewrites the overview of the generated types between the markers in
- * README.md. The markers must already be there.
+ * Returns README.md with the overview of the generated types written between
+ * the markers, which must already be there. Nothing is written yet, so a
+ * README without markers fails the run before any types are replaced.
  */
-export async function writeOverview(groups: IGeneratedGroup[]): Promise<void> {
+export async function renderReadme(groups: IGeneratedGroup[]): Promise<string> {
   const readme = await fs.readFile(readmePath, 'utf8');
   const start = readme.indexOf(startMarker);
   const end = readme.indexOf(endMarker);
@@ -130,13 +101,15 @@ export async function writeOverview(groups: IGeneratedGroup[]): Promise<void> {
     );
   }
 
-  const table = formatTable(groups, await getSourceTags());
-  const updated =
+  return (
     readme.slice(0, start + startMarker.length) +
     '\n<!-- Written by `yarn generate`, do not edit by hand. -->\n\n' +
-    table +
+    formatTable(groups) +
     '\n\n' +
-    readme.slice(end);
+    readme.slice(end)
+  );
+}
 
-  await fs.writeFile(readmePath, updated);
+export async function writeReadme(contents: string): Promise<void> {
+  await fs.writeFile(readmePath, contents);
 }
