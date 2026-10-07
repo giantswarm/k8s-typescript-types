@@ -235,6 +235,59 @@ following the deployed release for every other version, list the deployed
 release last (as `capv` does): it then wins for every version it defines, and
 the newer release only fills in the rest.
 
+## Removing Unused Types
+
+The generator publishes every API version a CRD defines, and that is
+deliberate: a version too many costs little. Outdated types are removed now and
+then, by a person, against the criteria below. The `remove-unused-types` agent
+skill (`.claude/skills/remove-unused-types/`) does the research and drafts the
+change.
+
+### When
+
+- After bumping a pin to a newer deployed release, since that is when versions
+  go out of service.
+- Otherwise every few months.
+
+### Criteria
+
+An API version is removed when both of these hold:
+
+1. **No cluster we run serves it.** The release deployed on management clusters
+   (named in `resources.yaml`) does not serve it. For apps that also run on
+   workload clusters, no release we support there serves it either. The
+   **Served** column of [Available Types](#available-types) is the starting
+   point, but where a resource combines releases it refers to the Source
+   release, not necessarily the deployed one.
+2. **No consumer uses it.** No repository that depends on
+   `@giantswarm/k8s-types` refers to it: not as a type (`crds.<group>.<version>`
+   or `@giantswarm/k8s-types/crds/<group>/<version>`), and not as an API version
+   it requests (`<api-group>/<version>`, `supportedVersions`).
+
+A version that is still served stays, even if nobody uses it. A version a
+consumer still uses stays too, even if no cluster serves it: open an issue in
+the consumer instead, and remove the version once the consumer has moved on.
+
+A whole resource or group is removed when no consumer uses any of its versions
+and it is no longer deployed on management clusters.
+
+### How
+
+1. Collect the candidates and the evidence for each (the skill does this), and
+   decide which to remove.
+2. Remove them in `src/generator/config/resources.yaml`:
+   - a version: add it to the resource's `excludeVersions`, with a comment
+     saying why;
+   - a resource or group: delete its entry.
+3. Update `src/smoke/` if it refers to a removed type.
+4. Run `yarn regenerate`. The types, `dist/` and the Available Types table lose
+   the removed entries.
+5. In `CHANGELOG.md`, list every removed type under Removed and mark the release
+   as breaking. Consumers move to it with a type-check.
+
+`excludeVersions` must name versions the resource's CRDs define. Once a bumped
+pin no longer defines one, generation fails until the entry is removed.
+
 ## Configuration Format
 
 The `resources.yaml` configuration has a simple structure:
@@ -251,6 +304,8 @@ The `resources.yaml` configuration has a simple structure:
           tag: {tag}
         - url: {url}
           tag: {tag}
+      excludeVersions:       # Optional: API versions not to publish
+        - {version}
 ```
 
 `crdURL` and `crdURLs` are mutually exclusive; each resource must set exactly

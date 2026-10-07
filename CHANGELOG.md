@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   table: import path, API group, kinds, whether the pinned CRD serves it, and
   the source repository and tag. `yarn generate` writes it, so CI's
   generated-output check keeps it current.
+- A routine for removing unused types: the criteria and steps in the README
+  ("Removing Unused Types"), and the `remove-unused-types` agent skill, which
+  collects candidates with evidence and applies a person's decision.
+- `excludeVersions` on a resource in `resources.yaml` leaves out API versions
+  its CRDs define. Generation fails if an excluded version is no longer defined.
 
 ### Changed
 

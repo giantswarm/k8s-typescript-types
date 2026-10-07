@@ -65,12 +65,16 @@ async function fetchCRDs(
 }
 
 function organizeByVersion(
+  groupName: string,
   resourcesWithCRDs: IResourceWithCRD[],
+  errors: string[],
 ): IVersionResources[] {
   // version name -> resource name -> CRD to generate that version from.
   // Keyed by resource name so that a resource configured with several CRD URLs
   // contributes each version once, taking the last CRD that defines it.
   const versionMap = new Map<string, Map<string, IResourceWithCRD>>();
+  // resource name -> every version its CRDs define, to check excludeVersions.
+  const definedVersions = new Map<string, Set<string>>();
 
   for (const resourceWithCRD of resourcesWithCRDs) {
     const { resource, crd } = resourceWithCRD;
@@ -81,11 +85,32 @@ function organizeByVersion(
     for (const version of versions) {
       const versionName = version.name;
 
+      if (!definedVersions.has(resource.name)) {
+        definedVersions.set(resource.name, new Set());
+      }
+      definedVersions.get(resource.name)!.add(versionName);
+
+      if (resource.excludeVersions?.includes(versionName)) {
+        continue;
+      }
+
       if (!versionMap.has(versionName)) {
         versionMap.set(versionName, new Map());
       }
 
       versionMap.get(versionName)!.set(resource.name, resourceWithCRD);
+    }
+  }
+
+  // An exclusion of a version no CRD defines any more has no effect; fail so
+  // that it gets removed instead of lingering in the config.
+  for (const resource of new Set(resourcesWithCRDs.map(r => r.resource))) {
+    for (const excluded of resource.excludeVersions ?? []) {
+      if (!definedVersions.get(resource.name)?.has(excluded)) {
+        errors.push(
+          `${groupName}: resource ${resource.name} excludes ${excluded}, which none of its CRDs defines; remove it from excludeVersions.`,
+        );
+      }
     }
   }
 
@@ -142,7 +167,7 @@ async function generateGroup(
   errors: string[],
 ): Promise<IGeneratedGroup> {
   const resourcesWithCRDs = await fetchCRDs(group, errors);
-  const versionData = organizeByVersion(resourcesWithCRDs);
+  const versionData = organizeByVersion(group.group, resourcesWithCRDs, errors);
 
   const versions: IGeneratedVersion[] = [];
   for (const versionResources of versionData) {

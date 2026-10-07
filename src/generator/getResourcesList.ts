@@ -49,6 +49,13 @@ export interface IResourceInfo {
    * Mutually exclusive with `crdURL`.
    */
   crdURLs?: ICRDSource[];
+  /**
+   * excludeVersions lists API versions the CRDs define that are not
+   * published, e.g. `[v1alpha3, v1alpha4]`. Each one must be defined by one of
+   * the resource's CRDs; once none defines it any more, generation fails until
+   * the entry is removed. See "Removing unused types" in the README.
+   */
+  excludeVersions?: string[];
 }
 
 export interface IGroupInfo {
@@ -133,6 +140,20 @@ export async function getResourcesList(): Promise<IGroupInfo[]> {
 
     for (const resource of group.resources) {
       getResourceSources(resource);
+
+      const { name, excludeVersions } = resource;
+      if (excludeVersions !== undefined) {
+        if (
+          !Array.isArray(excludeVersions) ||
+          excludeVersions.length === 0 ||
+          excludeVersions.some(v => typeof v !== 'string') ||
+          new Set(excludeVersions).size !== excludeVersions.length
+        ) {
+          throw new Error(
+            `Resource ${name} has an invalid excludeVersions: it must be a non-empty list of distinct version names.`,
+          );
+        }
+      }
     }
   }
 
