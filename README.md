@@ -137,15 +137,14 @@ deployed on Giant Swarm management clusters, and name what it follows (the app
 and its version) in a comment. Pin to a commit only where no tag matches the
 deployed version.
 
-Renovate (`renovate-custom.json5`) opens a pull request for each new release of
-a source pinned by a single `crdURL` tag. The `Regenerate types` workflow then
-pushes the regenerated types onto that pull request, so its diff shows every
-field and API version the release adds or removes. Bumped by hand instead:
+Pins are bumped by hand, in step with the app they follow: change the URLs,
+run `yarn regenerate` and commit the result, so the pull request's diff shows
+every field and API version the bump adds or removes. Renovate does not manage
+them, because upstream releases run ahead of what management clusters deploy.
 
-- `crdURLs` lists, which pin one release per API version on purpose
-- commit pins
-- the Giant Swarm forks (capi, capa, capz) and flux-operator, which follow what
-  their app deploys
+Renovate does bump the generator's npm dependencies, which can change the
+emitted types too. On those pull requests the `Regenerate types` workflow
+pushes the regenerated types onto the branch, and they are never automerged.
 
 ### Covering several API versions
 
@@ -163,14 +162,15 @@ per version under `crdURLs` instead:
         - https://raw.githubusercontent.com/example/repo/refs/tags/v2.0.0/config/crd/my-resource.yaml
 ```
 
-Types are generated for the union of the versions the listed CRDs serve. List
-them oldest first: where several CRDs serve the same version, the last one wins,
-so the newest schema is the one generated. The most complete schema for a given
-version is the newest release that still serves it.
+Types are generated for the union of the versions the listed CRDs define,
+whether or not a CRD marks a version as served. List them oldest first: where
+several CRDs define the same version, the last one wins, so the newest schema
+is the one generated. The most complete schema for a given version is the
+newest release that still serves it.
 
 To keep an API version the deployed release does not serve yet, while
 following the deployed release for every other version, list the deployed
-release last (as `capv` does): it then wins for every version it serves, and
+release last (as `capv` does): it then wins for every version it defines, and
 the newer release only fills in the rest.
 
 ## Configuration Format

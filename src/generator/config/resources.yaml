@@ -2,8 +2,7 @@
   resources:
     # Follows the Giant Swarm fork that cluster-api-app deploys on management
     # clusters (currently v9.0.0, fork tag v1.14.2-gs-df613140e). Bump by hand in
-    # step with the app: the fork's `-gs-<sha>` tags don't sort by release, so
-    # Renovate leaves them alone.
+    # step with the app.
     - name: Cluster
       crdURL: https://raw.githubusercontent.com/giantswarm/cluster-api/refs/tags/v1.14.2-gs-df613140e/core/config/crd/bases/cluster.x-k8s.io_clusters.yaml
     - name: MachineDeployment
@@ -61,7 +60,7 @@
     # clusters (currently v3.0.0, upstream v1.15.3). v1.15.3 does not serve
     # v1beta2 yet, so v1.17.0 is listed for it. The deployed release is listed
     # last, against the usual oldest-first order, so that it wins for every
-    # version it serves and only v1beta2 comes from v1.17.0. Bump both by hand.
+    # version it defines and only v1beta2 comes from v1.17.0. Bump both by hand.
     - name: VSphereCluster
       crdURLs:
         # v1beta2

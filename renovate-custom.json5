@@ -1,47 +1,17 @@
 // Repo-specific Renovate rules, extended last from renovate.json5.
+//
+// Renovate does not manage the CRD sources in
+// src/generator/config/resources.yaml: each follows what an app deploys on
+// management clusters, and upstream releases run ahead of that. They are
+// bumped by hand.
 {
-  customManagers: [
-    {
-      // CRD sources pinned to a release tag with a single `crdURL`. A
-      // `crdURLs` list pins one release per API version on purpose and is
-      // bumped by hand.
-      customType: 'regex',
-      managerFilePatterns: ['/^src/generator/config/resources\\.yaml$/'],
-      matchStrings: [
-        'crdURL: https://raw\\.githubusercontent\\.com/(?<depName>[^/]+/[^/]+)/refs/tags/(?<currentValue>v?\\d[^/]*)/',
-      ],
-      datasourceTemplate: 'github-tags',
-    },
-    {
-      // giantswarm/releases tags the SDK as `sdk/vX.Y.Z`.
-      customType: 'regex',
-      managerFilePatterns: ['/^src/generator/config/resources\\.yaml$/'],
-      matchStrings: [
-        'crdURL: https://raw\\.githubusercontent\\.com/(?<depName>giantswarm/releases)/refs/tags/sdk/(?<currentValue>v[^/]+)/',
-      ],
-      datasourceTemplate: 'github-tags',
-      extractVersionTemplate: '^sdk/(?<version>v.+)$',
-    },
-  ],
   packageRules: [
     {
-      // A pin bump changes the published types, so it is always reviewed. The
-      // base preset automerges patch updates.
-      matchManagers: ['custom.regex'],
-      matchFileNames: ['src/generator/config/resources.yaml'],
+      // The npm packages are the generator's, and a bump can change the
+      // published types, which the regenerate-types workflow pushes onto the
+      // branch. The base preset automerges patch updates.
+      matchManagers: ['npm'],
       automerge: false,
-    },
-    {
-      // These follow what an app deploys on management clusters and are bumped
-      // by hand in step with it. The Giant Swarm forks' `vX.Y.Z-gs-<sha>` tags
-      // don't sort by release, and upstream flux-operator releases run ahead of
-      // flux-operator-app.
-      matchManagers: ['custom.regex'],
-      matchDepNames: [
-        '/^giantswarm\\/cluster-api(-provider-.+)?$/',
-        'controlplaneio-fluxcd/flux-operator',
-      ],
-      enabled: false,
     },
   ],
   // The regenerate-types workflow commits as taylorbot onto Renovate branches.

@@ -1,22 +1,20 @@
 # Regenerates the types on Renovate PR branches and pushes the result back onto
-# the branch, so that a CRD pin bump (or a generator dependency bump) arrives
-# with its regenerated types and the PR diff shows every field and API version
-# it adds or removes. The Mend-hosted Renovate app cannot run postUpgradeTasks.
+# the branch, so that a generator dependency bump arrives with its regenerated
+# types and the PR diff shows every type it changes. The Mend-hosted Renovate
+# app cannot run postUpgradeTasks.
 #
-# `yarn regenerate` starts from a clean tree, so a type or version upstream
-# dropped shows up as deleted files. If any CRD fails to fetch or generate, the
-# generator exits non-zero and nothing is pushed.
-#
-# The push uses the taylorbot PAT, not GITHUB_TOKEN: a GITHUB_TOKEN push does
-# not trigger CI on the new commit. That run finds nothing to change, so this
-# never loops. renovate-custom.json5 lists taylorbot in gitIgnoredAuthors, so
-# Renovate keeps rebasing the branch.
+# The bot token never shares a job with dependency code. `regenerate` installs
+# and runs the bumped packages with no secrets and hands over its changes as a
+# patch. `push` runs no package code: it applies the patch, provided it only
+# touches generated files, and pushes with the taylorbot PAT. A GITHUB_TOKEN
+# push would not trigger CI on the new commit. That CI run finds nothing to
+# change, so this never loops. renovate-custom.json5 lists taylorbot in
+# gitIgnoredAuthors, so Renovate keeps rebasing the branch.
 name: Regenerate types
 
 on:
   pull_request:
     paths:
-      - 'src/generator/**'
       - 'package.json'
       - 'yarn.lock'
 
@@ -28,49 +26,95 @@ concurrency:
 
 jobs:
   regenerate:
-    name: Regenerate and push
+    name: Regenerate
     # Only Renovate branches: on a human's PR the author commits the types.
     if: startsWith(github.head_ref, 'renovate/')
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    outputs:
+      changed: ${{ steps.diff.outputs.changed }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: yarn
+      - run: yarn install --frozen-lockfile --ignore-scripts
+      # Starts from a clean tree, so a type the generator no longer emits shows
+      # up as deleted files. If any CRD fails to fetch or generate, nothing is
+      # written and the job fails.
+      - run: yarn regenerate
+      - name: Collect the changes as a patch
+        id: diff
+        run: |
+          set -euo pipefail
+          git add -A
+          git diff --cached --binary --no-renames > regenerated.patch
+          if [ -s regenerated.patch ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "generated types already in sync, nothing to push"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: steps.diff.outputs.changed == 'true'
+        with:
+          name: regenerated-patch
+          path: regenerated.patch
+          retention-days: 1
+
+  push:
+    name: Push the regenerated types
+    needs: regenerate
+    if: needs.regenerate.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Check the bot token is available
-        id: token
         env:
           TAYLORBOT_GITHUB_ACTION: ${{ secrets.TAYLORBOT_GITHUB_ACTION }}
         run: |
           if [ -z "$TAYLORBOT_GITHUB_ACTION" ]; then
-            echo "::warning::TAYLORBOT_GITHUB_ACTION is not available to this run, nothing is regenerated."
-            echo "available=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "available=true" >> "$GITHUB_OUTPUT"
+            echo "::error::TAYLORBOT_GITHUB_ACTION is not available to this run, the regenerated types cannot be pushed."
+            exit 1
           fi
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        if: steps.token.outputs.available == 'true'
         with:
-          ref: ${{ github.head_ref }}
-          # Kept in the checkout so `git push` below uses it.
-          token: ${{ secrets.TAYLORBOT_GITHUB_ACTION }}
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
-        if: steps.token.outputs.available == 'true'
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
-          node-version: 24
-          cache: yarn
-      - if: steps.token.outputs.available == 'true'
-        run: yarn install --frozen-lockfile
-      - if: steps.token.outputs.available == 'true'
-        run: yarn regenerate
-      - name: Commit and push the regenerated types
-        if: steps.token.outputs.available == 'true'
+          name: regenerated-patch
+          path: ${{ runner.temp }}
+      - name: Apply the patch if it only touches generated files
+        env:
+          PATCH: ${{ runner.temp }}/regenerated.patch
         run: |
           set -euo pipefail
-          if [ -z "$(git status --porcelain)" ]; then
-            echo "generated types already in sync, nothing to push"
-            exit 0
+          outside="$(git apply --numstat "$PATCH" | cut -f3- | grep -Ev '^(src/types/crds|dist/types)/' || true)"
+          if [ -n "$outside" ]; then
+            echo "::error::The regenerated patch touches files outside src/types/crds/ and dist/types/:"
+            echo "$outside"
+            exit 1
           fi
+          if git apply --summary "$PATCH" | grep -E 'mode (change|120000)'; then
+            echo "::error::The regenerated patch changes file modes or adds symlinks."
+            exit 1
+          fi
+          git apply --index "$PATCH"
+      - name: Commit and push
+        env:
+          TOKEN: ${{ secrets.TAYLORBOT_GITHUB_ACTION }}
+        run: |
+          set -euo pipefail
           git config --local user.email "dev@giantswarm.io"
           git config --local user.name "taylorbot"
-          git add -A
           git commit -m "chore: regenerate types"
-          git push
+          # Fails if the branch moved since this run started; the run for the
+          # new head regenerates again.
+          git push "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:refs/heads/${GITHUB_HEAD_REF}"
