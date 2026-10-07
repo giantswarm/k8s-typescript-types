@@ -81,10 +81,12 @@ This will:
 2. Fetch CRD definitions from remote URLs
 3. Auto-discover all available versions
 4. Generate TypeScript interfaces
-5. Create organized output in `src/types/crds/`
+5. Replace `src/types/crds/` with the result
 
-If any CRD cannot be fetched or turned into types, the generator reports it and
-exits non-zero instead of leaving that resource out.
+`src/types/crds/` is entirely generated: a version or resource that is no
+longer generated disappears from it. If any CRD cannot be fetched or turned
+into types, the generator reports it, exits non-zero and leaves
+`src/types/crds/` as it was.
 
 ### Build
 
@@ -92,17 +94,19 @@ exits non-zero instead of leaving that resource out.
 yarn build
 ```
 
-This compiles `src/types` into `dist/` and then runs the consumer smoke
-(`yarn smoke`): `src/smoke/` is type-checked against the built `dist/`
+This empties `dist/`, compiles `src/types` into it and then runs the consumer
+smoke (`yarn smoke`): `src/smoke/` is type-checked against the built `dist/`
 declarations exactly as a consumer would import them, so a regeneration that
 drops or reshapes a type consumers depend on fails the build instead of
 shipping. Nothing under `src/smoke/` is emitted.
 
-### Clean Generated Types
+### Clean Build Output
 
 ```bash
 yarn clean
 ```
+
+Removes `dist/`. `yarn build` does this first, so no stale output survives.
 
 ### Regenerate and Build
 
@@ -121,7 +125,7 @@ To add new CRD types:
 - group: my_group
   resources:
     - name: MyResource
-      crdURL: https://raw.githubusercontent.com/example/repo/refs/tags/v1.2.3/config/crd/my-resource.yaml
+      crdURL: https://raw.githubusercontent.com/example/repo/<commit-sha>/config/crd/my-resource.yaml  # v1.2.3
 ```
 
 3. Run `yarn generate`
@@ -130,12 +134,16 @@ The generator will automatically discover all versions from the CRD and generate
 
 ### Pinning CRD sources
 
-Pin every `crdURL` to a release tag (`refs/tags/<tag>`), never a branch such as
-`main`. A branch is ahead of what any cluster serves, and a change upstream
-fails CI's generated-output check on every pull request. Pin to the version
-deployed on Giant Swarm management clusters, and name what it follows (the app
-and its version) in a comment. Pin to a commit only where no tag matches the
-deployed version.
+Pin every URL to the commit a release tag points to, with the tag in an inline
+comment, never to a branch such as `main` or to the tag itself. A branch is
+ahead of what any cluster serves, and a tag can be moved: either way a change
+upstream fails CI's generated-output check on every pull request. Pin to the
+version deployed on Giant Swarm management clusters, and name what it follows
+(the app and its version) in a comment. Where no tag matches the deployed
+version, pin the deployed commit.
+
+`git ls-remote https://github.com/<owner>/<repo> 'refs/tags/<tag>^{}' 'refs/tags/<tag>'`
+gives a tag's commit (the `^{}` line, if present, for an annotated tag).
 
 Pins are bumped by hand, in step with the app they follow: change the URLs,
 run `yarn regenerate` and commit the result, so the pull request's diff shows
@@ -157,9 +165,9 @@ per version under `crdURLs` instead:
     - name: MyResource
       crdURLs:
         # v1beta1
-        - https://raw.githubusercontent.com/example/repo/refs/tags/v1.0.0/config/crd/my-resource.yaml
+        - https://raw.githubusercontent.com/example/repo/<commit-sha>/config/crd/my-resource.yaml  # v1.0.0
         # v1
-        - https://raw.githubusercontent.com/example/repo/refs/tags/v2.0.0/config/crd/my-resource.yaml
+        - https://raw.githubusercontent.com/example/repo/<commit-sha>/config/crd/my-resource.yaml  # v2.0.0
 ```
 
 Types are generated for the union of the versions the listed CRDs define,

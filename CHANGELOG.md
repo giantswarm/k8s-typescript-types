@@ -38,10 +38,16 @@ Removed and Changed. Code that uses them no longer compiles.
 - `capvcd.v1beta3.VCDCluster`: `spec.ovdc` and `spec.ovdcNetwork` are required,
   and a zone's `ovdc` is renamed to `ovdcName`.
 - `capz.v1beta1.AzureCluster`: a security rule's `description` is required.
+- Every CRD URL is pinned to the commit its release tag points to, with the tag
+  in an inline comment, so a moved tag cannot change the generated types.
 - The generator fails without writing anything when a CRD cannot be fetched or
   turned into types, instead of leaving that resource out of the generated
   indexes. Fetches time out after 30s and are retried on network errors, 429
-  and 5xx.
+  and 5xx. Groups are fetched in parallel, and a group without resources is a
+  configuration error.
+- `yarn generate` replaces `src/types/crds/`, so a type that is no longer
+  generated is removed. `yarn clean` only removes `dist/`, and `yarn build`
+  runs it first. `yarn regenerate` is `yarn generate && yarn build`.
 
 ### Removed
 

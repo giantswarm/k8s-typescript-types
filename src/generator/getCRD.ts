@@ -50,6 +50,9 @@ async function fetchText(URL: string): Promise<string> {
     // A moved or renamed CRD path answers with a 404 page, which parses as a
     // plain string and yields no versions. Without this check the resource is
     // silently dropped from the generated types instead of reported as an error.
+    // Read the body so its connection is released before the retry.
+    await response.arrayBuffer().catch(() => {});
+
     const retryable = response.status === 429 || response.status >= 500;
     if (!retryable || isLastAttempt) {
       throw new Error(`GET ${URL} returned ${response.status}`);

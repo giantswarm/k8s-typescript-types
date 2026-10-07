@@ -20,15 +20,19 @@ on:
 
 permissions: {}
 
-concurrency:
-  group: regenerate-types-${{ github.head_ref }}
-  cancel-in-progress: true
-
 jobs:
   regenerate:
     name: Regenerate
-    # Only Renovate branches: on a human's PR the author commits the types.
-    if: startsWith(github.head_ref, 'renovate/')
+    # Only Renovate branches in this repository: on a human's PR the author
+    # commits the types, and a fork's branch is not ours to push to.
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository
+      && startsWith(github.head_ref, 'renovate/')
+    # A newer head supersedes this run. Only this job is cancellable: the run
+    # that taylorbot's push triggers must not cancel the push job that made it.
+    concurrency:
+      group: regenerate-types-${{ github.head_ref }}
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -71,6 +75,9 @@ jobs:
     name: Push the regenerated types
     needs: regenerate
     if: needs.regenerate.outputs.changed == 'true'
+    concurrency:
+      group: regenerate-types-push-${{ github.head_ref }}
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     permissions:
       contents: read
