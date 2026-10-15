@@ -6,10 +6,10 @@
 # The bot token never shares a job with dependency code. `regenerate` installs
 # and runs the bumped packages with no secrets and hands over its changes as a
 # patch. `push` runs no package code: it applies the patch, provided it only
-# touches generated files, and pushes with the taylorbot PAT. A GITHUB_TOKEN
-# push would not trigger CI on the new commit. That CI run finds nothing to
-# change, so this never loops. renovate-custom.json5 lists taylorbot in
-# gitIgnoredAuthors, so Renovate keeps rebasing the branch.
+# touches generated files, and pushes with a giantswarm-release App token. A
+# GITHUB_TOKEN push would not trigger CI on the new commit. That CI run finds
+# nothing to change, so this never loops. renovate-custom.json5 lists the App's
+# noreply address in gitIgnoredAuthors, so Renovate keeps rebasing the branch.
 name: Regenerate types
 
 on:
@@ -29,7 +29,7 @@ jobs:
       github.event.pull_request.head.repo.full_name == github.repository
       && startsWith(github.head_ref, 'renovate/')
     # A newer head supersedes this run. Only this job is cancellable: the run
-    # that taylorbot's push triggers must not cancel the push job that made it.
+    # that the bot's push triggers must not cancel the push job that made it.
     concurrency:
       group: regenerate-types-${{ github.head_ref }}
       cancel-in-progress: true
@@ -82,14 +82,13 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: Check the bot token is available
-        env:
-          TAYLORBOT_GITHUB_ACTION: ${{ secrets.TAYLORBOT_GITHUB_ACTION }}
-        run: |
-          if [ -z "$TAYLORBOT_GITHUB_ACTION" ]; then
-            echo "::error::TAYLORBOT_GITHUB_ACTION is not available to this run, the regenerated types cannot be pushed."
-            exit 1
-          fi
+      - name: Generate giantswarm-release token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ secrets.RELEASE_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
+          permission-contents: write
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ github.event.pull_request.head.sha }}
@@ -124,11 +123,11 @@ jobs:
           fi
       - name: Commit and push
         env:
-          TOKEN: ${{ secrets.TAYLORBOT_GITHUB_ACTION }}
+          TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           set -euo pipefail
-          git config --local user.email "dev@giantswarm.io"
-          git config --local user.name "taylorbot"
+          git config --local user.email "342014845+giantswarm-release[bot]@users.noreply.github.com"
+          git config --local user.name "giantswarm-release[bot]"
           git commit -m "chore: regenerate types"
           # Fails if the branch moved since this run started; the run for the
           # new head regenerates again.

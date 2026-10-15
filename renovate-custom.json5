@@ -14,8 +14,13 @@
       automerge: false,
     },
   ],
-  // The regenerate-types workflow commits as taylorbot onto Renovate branches.
+  // The regenerate-types workflow commits as giantswarm-release[bot] (formerly
+  // taylorbot, <dev@giantswarm.io>, kept here) onto Renovate branches.
   // Renovate treats a branch whose last commit is by anyone else as edited by
   // a human and stops rebasing it.
-  gitIgnoredAuthors: ['dev@giantswarm.io'],
+  gitIgnoredAuthors: [
+    'dev@giantswarm.io',
+    '342014845+giantswarm-release[bot]@users.noreply.github.com',
+    '329428426+giantswarm-marge[bot]@users.noreply.github.com',
+  ],
 }
