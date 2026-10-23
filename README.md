@@ -8,14 +8,14 @@ The package is not published on npm. It is consumed straight from this
 repository's release tags; `dist/` is committed, so nothing is built on install.
 
 ```bash
-yarn add @giantswarm/k8s-types@github:giantswarm/k8s-typescript-types#v0.10.0
+yarn add @giantswarm/k8s-types@github:giantswarm/k8s-typescript-types#v0.12.0
 ```
 
 Or pin the tag in `package.json` directly:
 
 ```json
 "dependencies": {
-  "@giantswarm/k8s-types": "github:giantswarm/k8s-typescript-types#v0.10.0"
+  "@giantswarm/k8s-types": "github:giantswarm/k8s-typescript-types#v0.12.0"
 }
 ```
 
